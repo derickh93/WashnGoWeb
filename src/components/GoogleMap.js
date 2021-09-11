@@ -54,8 +54,8 @@ export class MapContainer extends Component {
     //////////////////////////////////
     var zoneCheck;
     if (
-      comps[4].long_name === "Nassau County" ||
-      comps[5].long_name === "Nassau County" ||
+      //comps[4].long_name === "Nassau County" ||
+      //comps[5].long_name === "Nassau County" ||
       comps[4].long_name === "Queens County" ||
       comps[5].long_name === "Queens County"
     ) {

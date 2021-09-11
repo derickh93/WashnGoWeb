@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
@@ -5,7 +6,7 @@ import { format } from "date-fns";
 import StripeContainer from "./StripeContainer";
 import CardList from "./Preferences/CardList";
 import washngo from "../Assets/washngo.png";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from "react-router-dom";
@@ -184,6 +185,10 @@ export default function Confirmation() {
         </Button>
       </div>
       <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
+      <Card style={{ padding: "10px", color: "black",fontWeight:"bold",backgroundColor:"lightblue"}}>
+        To schedule your pickup, we require a $22 deposit. This amount will be
+        deducted from your final total.
+      </Card>
       <CardList cardList={cardList}></CardList>
       <StripeContainer></StripeContainer>
     </div>

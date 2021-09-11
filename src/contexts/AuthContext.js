@@ -34,8 +34,8 @@ export function AuthProvider({ children }) {
   const [email, setEmail] = useState(false);
   const [phone, setPhone] = useState(false);
   const [text, setText] = useState(false);
-  const domain = "https://wash-and-go.herokuapp.com/";
-  //const domain = "http://localhost:4000/";
+  //const domain = "https://wash-and-go.herokuapp.com/";
+  const domain = "http://localhost:4000/";
 
   const addNewProfile = async (authID, custID) => {
     console.log("add new profile function");

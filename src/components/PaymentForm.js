@@ -2,12 +2,13 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useState } from "react";
 import "../App.css";
+import { format } from "date-fns";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
-const domain = "https://wash-and-go.herokuapp.com/";
-//const domain = "http://localhost:4000/";
+//const domain = "https://wash-and-go.herokuapp.com/";
+const domain = "http://localhost:4000/";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -38,7 +39,8 @@ export default function PaymentForm() {
   const history = useHistory();
   const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   const puTime = JSON.parse(sessionStorage.getItem("pickupTime"));
-  const puDay = JSON.parse(sessionStorage.getItem("pickupDay"));
+  const rawDay = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
+  const puDay = format(rawDay, "MMMM do, yyyy");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +56,7 @@ export default function PaymentForm() {
         try {
           const { id } = paymentMethod;
           const response = await axios.post(`${domain}payment`, {
-            amount: 3000,
+            amount: 2200,
             id,
             cid: stripeData.id,
             email: stripeData.email,
@@ -100,7 +102,7 @@ export default function PaymentForm() {
         try {
           const id = JSON.parse(sessionStorage.getItem("cardID"));
           const response = await axios.post(`${domain}payment`, {
-            amount: 2500,
+            amount: 2200,
             id,
             cid: stripeData.id,
             email: stripeData.email,

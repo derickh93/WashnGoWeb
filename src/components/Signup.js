@@ -72,7 +72,7 @@ export default function Signup() {
       {currentUser ? <Redirect to="/address" /> : ""}
       <Card>
         <Card.Body>
-          <h2 className="text-center mb-4">Fill form below</h2>
+          <h2 className="text-center mb-4">Sign Up Below</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="firstname">

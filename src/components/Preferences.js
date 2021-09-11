@@ -231,7 +231,7 @@ export default function Preferences() {
                 pointColor="#61b258"
                 value={detergentChoice}
               >
-                All free and clear
+                All Free & Clear
               </RadioButton>
               <RadioButton
                 iconSize={20}
@@ -240,7 +240,7 @@ export default function Preferences() {
                 pointColor="#61b258"
                 value={detergentChoiceTwo}
               >
-                Tide simply clean
+                Tide
               </RadioButton>
             </RadioGroup>
           </div>

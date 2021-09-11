@@ -26,10 +26,28 @@ export default function Login() {
           history.push("/time");
         })
         .catch((err) => {
-          setError(err.message);
+          if (
+            err.message ===
+            "There is no user record corresponding to this identifier. The user may have been deleted."
+          ) {
+            setError(
+              "There is no account associated with this email. Please sign up below."
+            );
+          } else {
+            setError(err.message);
+          }
         });
     } catch (err) {
-      setError(err.message);
+      if (
+        err.message ===
+        "There is no user record corresponding to this identifier. The user may have been deleted."
+      ) {
+        setError(
+          "There is no account associated with this email. Please sign up below."
+        );
+      } else {
+        setError(err.message);
+      }
     }
 
     setLoading(false);

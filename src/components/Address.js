@@ -212,7 +212,7 @@ export default function Address() {
               console.log("Phone: " + !phone);
             }}
           />
-          Phone
+          Call
         </div>
         <div>
           <input

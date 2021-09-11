@@ -154,7 +154,7 @@ export default function Confirmation() {
         Summary of Charges
       </span>
       <div style={{ display: "flex" }}>
-        $25 minimum
+        $22 minimum
         <Button
           style={{
             width: "20%",
