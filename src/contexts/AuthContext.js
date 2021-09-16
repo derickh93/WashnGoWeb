@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import firebase from "../firebase";
 import axios from "axios";
+require("dotenv").config();
 
 const AuthContext = React.createContext();
 const auth = firebase.auth();
@@ -34,8 +35,7 @@ export function AuthProvider({ children }) {
   const [email, setEmail] = useState(false);
   const [phone, setPhone] = useState(false);
   const [text, setText] = useState(false);
-  //const domain = "https://wash-and-go.herokuapp.com/";
-  const domain = "http://localhost:4000/";
+  const domain = process.env.REACT_APP_DOMAIN;
 
   const addNewProfile = async (authID, custID) => {
     console.log("add new profile function");
@@ -56,9 +56,6 @@ export function AuthProvider({ children }) {
       .orderByChild("authID")
       .equalTo(uid)
       .on("child_added", (snapshot) => {
-        console.log("uid from db: " + snapshot.child("authID").val());
-        console.log("stripe id from db: " + snapshot.child("custID").val());
-        //setCurrentStripeUser(snapshot.child("custID").val());
         getCustomer(snapshot.child("custID").val());
       });
   };
@@ -88,15 +85,13 @@ export function AuthProvider({ children }) {
       });
 
       if (response.data.success) {
-        console.log(response.data.success);
-        console.log("created stripe id" + response.data.stripeCust.id);
+        console.log("created stripe id");
         //setCurrentStripeUser(response.data.stripeCust.id);
         setCurrentStripeInstance(response.data.stripeCust);
         sessionStorage.setItem(
           "stripeInstance",
           JSON.stringify(response.data.stripeCust)
         );
-        console.log(response.data.stripeCust);
         addNewProfile(uid, response.data.stripeCust.id);
       }
     } catch (error) {
@@ -114,8 +109,6 @@ export function AuthProvider({ children }) {
       });
 
     if (response.data.success) {
-      console.log(response.data.success);
-      //console.log(response.data.portalURL);
     }
     return response.data.portalURL;
   };
@@ -147,20 +140,17 @@ export function AuthProvider({ children }) {
 
     if (response.data.success) {
       //setCurrentStripeInstance(response.data.result);
-      console.log(response.data.result);
       sessionStorage.setItem(
         "stripeInstance",
         JSON.stringify(response.data.result)
       );
-      //console.log(response.data.success);
-      //console.log(response.data.portalURL);
     }
     return response.data.portalURL;
   };
   //////////////////////////////////////////////////////////////////
 
   const login = async (email, password) => {
-    console.log(`${domain}get-customer`);
+    console.log(`get-customer`);
     const authObj = await auth
       .signInWithEmailAndPassword(email, password)
       .catch((error) => {
@@ -173,8 +163,6 @@ export function AuthProvider({ children }) {
   };
   ///////////////////////////////////////////////////////////////////
   const getCustomer = async (cst) => {
-    console.log(cst);
-
     //setCurrentStripeUser((prevuser) => cst);
     const response = await axios
       .post(`${domain}get-customer`, {
@@ -206,7 +194,6 @@ export function AuthProvider({ children }) {
       });
 
     if (response.data.success) {
-      console.log(response.data.result);
     }
     return response.data.result;
   };
@@ -227,7 +214,6 @@ export function AuthProvider({ children }) {
         });
 
       if (response.data.success) {
-        console.log(response.data.result);
       }
       return response.data.result;
     }

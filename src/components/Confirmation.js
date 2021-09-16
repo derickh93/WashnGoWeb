@@ -9,6 +9,7 @@ import washngo from "../Assets/washngo.png";
 import { Button, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+
 import { useHistory } from "react-router-dom";
 
 export default function Confirmation() {
@@ -17,6 +18,8 @@ export default function Confirmation() {
 
   const history = useHistory();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
@@ -27,6 +30,7 @@ export default function Confirmation() {
     setError("");
 
     try {
+      setLoading(true)
       customerPortal(userData.id).then((url) => {
         console.log(url);
         window.location = url;
@@ -35,10 +39,12 @@ export default function Confirmation() {
       setError("Failed open portal");
       console.log(err.message);
     }
+    setLoading(false)
   }
 
   async function handleLogout() {
     setError("");
+    setLoading(true)
 
     try {
       await logout()
@@ -52,6 +58,7 @@ export default function Confirmation() {
       console.log(err.message);
       setError("Failed to log out");
     }
+    setLoading(false)
   }
 
   var commonProps;
@@ -117,10 +124,12 @@ export default function Confirmation() {
 
   function goBack() {
     try {
+      setLoading(true)
       history.push("/products");
     } catch (err) {
       console.log(err.message);
     }
+    setLoading(false)
   }
 
   //pull address from stripe

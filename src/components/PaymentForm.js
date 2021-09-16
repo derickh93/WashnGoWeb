@@ -6,9 +6,11 @@ import { format } from "date-fns";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
+import animation from "../Assets/890-loading-animation.gif";
 
-//const domain = "https://wash-and-go.herokuapp.com/";
-const domain = "http://localhost:4000/";
+require("dotenv").config();
+
+const domain = process.env.REACT_APP_DOMAIN;
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -41,8 +43,10 @@ export default function PaymentForm() {
   const puTime = JSON.parse(sessionStorage.getItem("pickupTime"));
   const rawDay = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
   const puDay = format(rawDay, "MMMM do, yyyy");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!stripeData.shipping) {
       setError("Please add an address");
@@ -56,7 +60,7 @@ export default function PaymentForm() {
         try {
           const { id } = paymentMethod;
           const response = await axios.post(`${domain}payment`, {
-            amount: 2200,
+            amount: parseInt(process.env.REACT_APP_PRICE),
             id,
             cid: stripeData.id,
             email: stripeData.email,
@@ -83,7 +87,7 @@ export default function PaymentForm() {
                 .then(() => {
                   sendMessage(
                     `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}`,
-                    "+13474942864",
+                    process.env.REACT_APP_TWILIO_TO,
                     stripeData.metadata.Text
                   ).catch((error) => {
                     console.log(error);
@@ -102,7 +106,7 @@ export default function PaymentForm() {
         try {
           const id = JSON.parse(sessionStorage.getItem("cardID"));
           const response = await axios.post(`${domain}payment`, {
-            amount: 2200,
+            amount: parseInt(process.env.REACT_APP_PRICE),
             id,
             cid: stripeData.id,
             email: stripeData.email,
@@ -131,7 +135,7 @@ export default function PaymentForm() {
                 .then(() => {
                   sendMessage(
                     `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}`,
-                    "+13474942864",
+                    process.env.REACT_APP_TWILIO_TO,
                     stripeData.metadata.Text
                   ).catch((error) => {
                     console.log(error);
@@ -146,37 +150,16 @@ export default function PaymentForm() {
         console.log(error.message);
       }
     }
+    setLoading(false);
   };
-
-  /**
-     return (
-    <>
-      {!success ? (
-        <form onSubmit={handleSubmit}>
-          <fieldset className="FormGroup">
-            <div className="FormRow">
-              <CardElement options={CARD_OPTIONS} />
-            </div>
-          </fieldset>
-          <button>Pay</button>
-        </form>
-      ) : (
-        <div>
-          <h2>
-            You just bought a sweet spatula congrats this is the best decision
-            of you're life
-          </h2>
-        </div>
-      )}
-    </>
-  );
-}
-   */
-
-  ////////////////////////////////////////////////////////////
 
   return (
     <>
+      {loading ? (
+        <div className="homepage">
+          <img src={animation} alt="loading..." />
+        </div>
+      ) : null}
       {error && <Alert variant="danger">{error}</Alert>}
       {!success ? (
         <div>

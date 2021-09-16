@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { RadioGroup, RadioButton } from "react-radio-buttons";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Alert } from "react-bootstrap";
+import animation from "../Assets/8166-laundry-illustration-animation.gif";
 
 export default function Time() {
   const {
@@ -23,6 +24,7 @@ export default function Time() {
   const [secondTimeSlot, setSecondTimeSlot] = useState("12pm - 3pm");
   const [thirdTimeSlot, setThirdTimeSlot] = useState("3pm - 6pm");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   //const [clicked, setClicked] = useState(false);
 
   const history = useHistory();
@@ -41,6 +43,7 @@ export default function Time() {
     setError("");
 
     try {
+      setLoading(true);
       await logout()
         .then(() => {
           sessionStorage.clear();
@@ -52,12 +55,14 @@ export default function Time() {
       console.log(err.message);
       setError("Failed to log out");
     }
+    setLoading(false);
   }
 
   async function handlePortal() {
     setError("");
 
     try {
+      setLoading(true);
       customerPortal(userData.id).then((url) => {
         console.log(url);
         window.location = url;
@@ -66,6 +71,7 @@ export default function Time() {
       setError("Failed open portal");
       console.log(err.message);
     }
+    setLoading(false);
   }
 
   const PUTimePicker = styled(TimePicker)`
@@ -74,28 +80,9 @@ export default function Time() {
   `;
 
   const selectedDay = (val) => {
-    console.log(val);
     setPickupDate(val);
     sessionStorage.setItem("pickupDay", JSON.stringify(val));
   };
-
-  /**
-   * 
-   * 
-  const selectedDay = (val) => {
-    console.log(val);
-    var data = sessionStorage.getItem("selectedDay");
-    if (data) {
-      setPickupDate(JSON.parse(data));
-      console.log("data from session storage");
-      val = data;
-    } else {
-      sessionStorage.setItem("selectedDay", JSON.stringify(val));
-      console.log("data from picker");
-    }
-    setPickupDate(val);
-  };
-   */
 
   const handleClick = (val) => {
     console.log(val);
@@ -106,19 +93,22 @@ export default function Time() {
 
   async function nextPage() {
     try {
-      //if (clicked === false) {
-      //console.log("choose date and time first");
-      //setError("Choose date and time first");
-      //} else {
+      setLoading(true);
       history.push("/products");
       //}
     } catch (err) {
       console.log(err.message);
     }
+    setLoading(false);
   }
 
   return (
     <>
+      {loading ? (
+        <div className="homepage">
+          <img src={animation} alt="loading..." />
+        </div>
+      ) : null}
       <div className="homepage">
         <img className="logo" src={washngo} alt="washngo" />
       </div>

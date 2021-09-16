@@ -16,9 +16,8 @@ export default class CardList extends Component {
   }
 
   componentDidMount() {
-    ///////////////////////////////////////////////////////////////////
-    //const domain = "https://wash-and-go.herokuapp.com/";
-    const domain = "http://localhost:4000/";
+    const domain = process.env.REACT_APP_DOMAIN;
+
     const getCardList = async (cst) => {
       const response = await axios
         .post(`${domain}get-cards`, {
