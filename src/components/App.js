@@ -23,6 +23,8 @@ import {
   faCoffee,
   faChevronCircleLeft,
   faChevronCircleRight,
+  faPlusCircle,
+  faMinusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
@@ -31,7 +33,9 @@ function App() {
     faCheckSquare,
     faCoffee,
     faChevronCircleLeft,
-    faChevronCircleRight
+    faChevronCircleRight,
+    faPlusCircle,
+    faMinusCircle
   );
 
   return (

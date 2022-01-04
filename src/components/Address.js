@@ -28,10 +28,6 @@ export default function Address() {
   const aptRef = useRef();
   const codeRef = useRef();
 
-  //        <h3>Got Laundry?</h3> <h3> Schedule and it's done.</h3>
-
-  //Radar.initialize("prj_test_pk_5db879d442bbf8f82a1e12b5120f248963c3e589 ");
-  //Radar.setUserId("washngo");
 
   const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
@@ -94,12 +90,9 @@ export default function Address() {
   const handleCallback = (childData) => {
     setError("");
     const { address, zone } = childData;
-    console.log(address);
     setCurrentAddress(address);
     if (zone === "In") {
-      console.log("In Zone");
     } else {
-      console.log("Out of Zone");
       setError("Out of Zone, We currently do not serve your area.");
     }
   };

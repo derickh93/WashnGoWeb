@@ -1,25 +1,34 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
 import { format } from "date-fns";
 import StripeContainer from "./StripeContainer";
 import CardList from "./Preferences/CardList";
 import washngo from "../Assets/washngo.png";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Form, Collapse, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import animation from "../Assets/success.gif";
 
 import { useHistory } from "react-router-dom";
 
 export default function Confirmation() {
-  const { pickupDate, logout, readProfile, currentUser, customerPortal } =
-    useAuth();
+  const {
+    pickupDate,
+    logout,
+    readProfile,
+    currentUser,
+    customerPortal,
+    getPromos,
+  } = useAuth();
 
   const history = useHistory();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
 
+  const couponCode = useRef();
+  const [open, setOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
@@ -30,21 +39,20 @@ export default function Confirmation() {
     setError("");
 
     try {
-      setLoading(true)
+      setLoading(true);
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {
       setError("Failed open portal");
       console.log(err.message);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   async function handleLogout() {
     setError("");
-    setLoading(true)
+    setLoading(true);
 
     try {
       await logout()
@@ -58,11 +66,11 @@ export default function Confirmation() {
       console.log(err.message);
       setError("Failed to log out");
     }
-    setLoading(false)
+    setLoading(false);
   }
 
-  var commonProps;
-  var cardList;
+  let commonProps;
+  let cardList;
 
   try {
     const data = JSON.parse(sessionStorage.getItem("stripeInstance"));
@@ -79,16 +87,11 @@ export default function Confirmation() {
     var pieces = JSON.parse(sessionStorage.getItem("pieces"));
 
     cardList = data.id;
-    console.log(day);
-    console.log(pickupDate);
-    //currentStripeInstance.id;
 
     var address;
     if (data.shipping) {
-      console.log("shipping valid");
       address = data.shipping.address;
     } else {
-      console.log("shipping not valid");
       address = "N/A";
     }
     commonProps = {
@@ -105,36 +108,37 @@ export default function Confirmation() {
       addit: additional,
       whi: whites,
     };
-
-    console.log(day);
-    console.log(time);
-    //console.log(data.shipping.address);
-    console.log(bags);
-    console.log(pieces);
-
-    console.log(dryer);
-    console.log(detergent);
-    console.log(whites);
-    console.log(softener);
-    console.log(additional);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
     setError("Failed to log out");
   }
 
   function goBack() {
     try {
-      setLoading(true)
+      setLoading(true);
       history.push("/products");
     } catch (err) {
       console.log(err.message);
     }
-    setLoading(false)
+    setLoading(false);
   }
 
-  //pull address from stripe
-  //design confirmation page
-  //pull saved credit cards
+  function applyCoupon() {
+    try {
+      getPromos(couponCode.current.value).then((coupon) => {
+        if (coupon) {
+          setSuccess("Coupon Applied");
+          setError("");
+        } else {
+          setError("Coupon not valid");
+          setSuccess("");
+        }
+      });
+    } catch (err) {
+      console.log(err.message);
+      setError(err.message);
+    }
+  }
 
   return (
     <div>
@@ -194,11 +198,88 @@ export default function Confirmation() {
         </Button>
       </div>
       <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
-      <Card style={{ padding: "10px", color: "black",fontWeight:"bold",backgroundColor:"lightblue"}}>
+      <Card
+        style={{
+          padding: "10px",
+          color: "black",
+          fontWeight: "bold",
+          backgroundColor: "lightblue",
+        }}
+      >
         To schedule your pickup, we require a $22 deposit. This amount will be
         deducted from your final total.
       </Card>
-      <CardList cardList={cardList}></CardList>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "5px",
+        }}
+      >
+        <Button
+          style={{
+            margin: "0px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            border: "none",
+          }}
+          onClick={() => {
+            setOpen(!open);
+            setError("");
+          }}
+          aria-controls="example-collapse-text"
+          aria-expanded={open}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {open ? (
+              <FontAwesomeIcon icon="minus-circle" size="md" color="#336daf" />
+            ) : (
+              <div>
+                <p
+                  style={{
+                    color: "black",
+                    fontSize: "12px",
+                    margin: "0px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add Promo Code
+                </p>
+                <FontAwesomeIcon icon="plus-circle" size="md" color="#336daf" />
+              </div>
+            )}
+          </div>
+        </Button>
+        <Collapse in={open}>
+          <div id="example-collapse-text">
+            <Form>
+              <Form.Group id="coupon">
+                <Form.Control ref={couponCode} placeholder="Promo Code" />
+              </Form.Group>
+              <Button
+                style={{ margin: "0px" }}
+                className="w-100"
+                onClick={applyCoupon}
+              >
+                Apply
+              </Button>
+            </Form>
+          </div>
+        </Collapse>
+      </div>
+      {error && <Alert variant="danger">{error}</Alert>}
+      {success && <Alert variant="success">{success}</Alert>}
+      {/* <CardList cardList={cardList}></CardList> */}
+
       <StripeContainer></StripeContainer>
     </div>
   );

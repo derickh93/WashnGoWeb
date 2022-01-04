@@ -5,8 +5,8 @@ import "../App.css";
 import { format } from "date-fns";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Alert } from "react-bootstrap";
-import animation from "../Assets/890-loading-animation.gif";
+import { Alert, InputGroup, FormControl, Button } from "react-bootstrap";
+import animation from "../Assets/loading.gif";
 
 require("dotenv").config();
 
@@ -67,7 +67,6 @@ export default function PaymentForm() {
           });
 
           if (response.data.success) {
-            console.log("Successful payment");
             setSuccess(true);
             sessionStorage.setItem(
               "receipt",
@@ -97,7 +96,6 @@ export default function PaymentForm() {
             history.push("/thankyou");
           } else {
             setError(response.data.message);
-            console.log(response.data.message);
           }
         } catch (error) {
           console.log("Error", error);
@@ -148,6 +146,7 @@ export default function PaymentForm() {
           console.log("Error", error);
         }
         console.log(error.message);
+        setError(error.message);
       }
     }
     setLoading(false);
@@ -162,7 +161,7 @@ export default function PaymentForm() {
       ) : null}
       {error && <Alert variant="danger">{error}</Alert>}
       {!success ? (
-        <div>
+        <div style={{ paddingTop: "10px" }}>
           <form onSubmit={handleSubmit}>
             <fieldset className="FormGroup">
               <div className="FormRow">
@@ -172,7 +171,7 @@ export default function PaymentForm() {
 
             <div className="formbtn">
               {" "}
-              <button>Pay</button>
+              <button style={{ margin: "0px" }}>Pay</button>
             </div>
           </form>
         </div>

@@ -21,8 +21,6 @@ export default function Login() {
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value)
         .then(() => {
-          console.log("checking val");
-          //getCustomer();
           history.push("/time");
         })
         .catch((err) => {
@@ -77,7 +75,12 @@ export default function Login() {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button
+              style={{ margin: "0px" }}
+              disabled={loading}
+              className="w-100"
+              type="submit"
+            >
               Log In
             </Button>
           </Form>

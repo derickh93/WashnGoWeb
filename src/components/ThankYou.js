@@ -35,7 +35,6 @@ export default function Confirmation() {
 
     try {
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {
@@ -48,7 +47,6 @@ export default function Confirmation() {
     setError("");
 
     try {
-      console.log(receipt);
       window.location = receipt;
     } catch (err) {
       setError("Failed open portal");

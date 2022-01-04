@@ -62,7 +62,6 @@ export default function Products() {
 
     try {
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {
@@ -74,7 +73,6 @@ export default function Products() {
   async function nextPage() {
     try {
       if (localBags <= 0 && localPieces <= 0) {
-        console.log("select options");
         setError("Select an option");
       } else if (localBags === 0) {
         sessionStorage.setItem("bags", JSON.stringify(0));
@@ -89,13 +87,11 @@ export default function Products() {
 
   function getBags(val) {
     setLocalBags(val);
-    console.log(val);
     sessionStorage.setItem("bags", JSON.stringify(val));
   }
 
   function getPieces(val) {
     setLocalPieces(val);
-    console.log(val);
     sessionStorage.setItem("pieces", JSON.stringify(val));
   }
 

@@ -35,12 +35,10 @@ export default function Dashboard() {
 
     try {
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {
       setError("Failed open portal");
-      console.log(currentStripeInstance);
       console.log(err.message);
     }
   }

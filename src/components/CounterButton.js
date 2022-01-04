@@ -19,7 +19,6 @@ export default class CounterButton extends Component {
 
   decrementCount = () => {
     if (this.state.count <= 0) {
-      console.log("Cannot reduce count further");
     } else {
       this.setState({
         count: this.state.count - 1,

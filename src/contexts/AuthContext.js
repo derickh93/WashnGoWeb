@@ -38,7 +38,6 @@ export function AuthProvider({ children }) {
   const domain = process.env.REACT_APP_DOMAIN;
 
   const addNewProfile = async (authID, custID) => {
-    console.log("add new profile function");
     const user_profileRef = data.ref("user_profile");
     const user_profile = {
       authID,
@@ -67,7 +66,6 @@ export function AuthProvider({ children }) {
         throw new Error(error.message);
       })
       .then((result) => {
-        console.log(result.user.uid);
         const uid = result.user.uid;
         createCustomer(uid, stripeUser);
       });
@@ -76,7 +74,6 @@ export function AuthProvider({ children }) {
 
   const createCustomer = async (uid, stripeUser) => {
     try {
-      console.log("creating customer");
       const response = await axios.post(`${domain}create`, {
         firstName: stripeUser.firstName,
         lastName: stripeUser.lastName,
@@ -85,7 +82,6 @@ export function AuthProvider({ children }) {
       });
 
       if (response.data.success) {
-        console.log("created stripe id");
         //setCurrentStripeUser(response.data.stripeCust.id);
         setCurrentStripeInstance(response.data.stripeCust);
         sessionStorage.setItem(
@@ -105,6 +101,7 @@ export function AuthProvider({ children }) {
         cid: userData,
       })
       .catch((error) => {
+        console.log(error);
         throw new Error(error.message);
       });
 
@@ -150,7 +147,6 @@ export function AuthProvider({ children }) {
   //////////////////////////////////////////////////////////////////
 
   const login = async (email, password) => {
-    console.log(`get-customer`);
     const authObj = await auth
       .signInWithEmailAndPassword(email, password)
       .catch((error) => {
@@ -224,6 +220,7 @@ export function AuthProvider({ children }) {
     try {
       const response = await axios.post(`${domain}create-invoice`, {
         custID: cid,
+        promoID: JSON.parse(sessionStorage.getItem("promoCode")),
         md: {
           day: JSON.parse(sessionStorage.getItem("pickupDay")),
           time: JSON.parse(sessionStorage.getItem("pickupTime")),
@@ -239,10 +236,32 @@ export function AuthProvider({ children }) {
       });
 
       if (response.data.success) {
-        console.log("Successfully created invoice");
       }
     } catch (error) {
       console.log("Error", error);
+    }
+  };
+  ///////////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////////
+  const getPromos = async (promo) => {
+    try {
+      const response = await axios.post(`${domain}get-promos`, {
+        pCode: promo,
+      });
+
+      if (response.data.success) {
+        sessionStorage.setItem(
+          "promoCode",
+          JSON.stringify(response.data.result)
+        );
+        return true;
+      } else {
+        sessionStorage.setItem("promoCode", JSON.stringify("null"));
+        return false;
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
   ///////////////////////////////////////////////////////////////////
@@ -301,6 +320,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    getPromos,
     addNewProfile,
     detergent,
     setDetergent,

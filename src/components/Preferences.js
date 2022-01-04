@@ -56,7 +56,6 @@ export default function Preferences() {
 
     try {
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {

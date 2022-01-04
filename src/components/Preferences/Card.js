@@ -15,7 +15,7 @@ export const Card = ({
 
   const Button = styled.button`
     width: 100%;
-    height: 40px;
+    height: 100%;
     border: none;
     color: white;
     text-align: center;
@@ -39,7 +39,7 @@ export const Card = ({
 
   return (
     <Button
-      style={{}}
+      style={{ margin: "0px" }}
       onClick={() => {
         onClick();
       }}

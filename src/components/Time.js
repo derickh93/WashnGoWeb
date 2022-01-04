@@ -64,7 +64,6 @@ export default function Time() {
     try {
       setLoading(true);
       customerPortal(userData.id).then((url) => {
-        console.log(url);
         window.location = url;
       });
     } catch (err) {
@@ -85,7 +84,6 @@ export default function Time() {
   };
 
   const handleClick = (val) => {
-    console.log(val);
     setPickupTime(val);
     //setClicked((oldVal) => true);
     sessionStorage.setItem("pickupTime", JSON.stringify(val));

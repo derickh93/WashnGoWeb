@@ -46,14 +46,15 @@ export default class CardList extends Component {
   render() {
     var rows = [];
 
-    this.state.cards.map((card) =>
+    this.state.cards.map((card) => {
+      <li key={card.card.id}></li>;
       rows.push(
         <RadioButton
           iconSize={20}
           iconInnerSize={10}
           rootColor="#336daf"
           pointColor="#61b258"
-          value={"dryerChoiceThree"}
+          value={card.id}
         >
           <Card
             brand={card.card.brand}
@@ -63,20 +64,19 @@ export default class CardList extends Component {
             last4={card.card.last4}
             funding={card.card.funding}
             onClick={() => {
-              console.log(card.id);
-              sessionStorage.setItem("cardID", JSON.stringify(card.id));
+              console.log("changed card");
             }}
           ></Card>
         </RadioButton>
-      )
-    );
+      );
+    });
     return this.state.cards ? (
-      <div style={{ padding: "10px" }}>
+      <div style={{ padding: "5px" }}>
         {this.state.cards.length > 0 ? <div>Choose a saved card</div> : ""}
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: "5px" }}>
           <RadioGroup
-            onChange={() => {
-              console.log("changed");
+            onChange={(val) => {
+              sessionStorage.setItem("cardID", JSON.stringify(val));
             }}
             value={"test"}
           >

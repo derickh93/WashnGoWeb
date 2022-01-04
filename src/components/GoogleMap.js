@@ -37,12 +37,10 @@ export class MapContainer extends Component {
           results[0].address_components
         );
 
-        console.log(results[0].address_components);
         return results[0].formatted_address;
         //getLatLng(results[0]);
       })
       .then((fullAddr) => {
-        console.log(fullAddr);
 
         // update center state
         this.setState({ mapCenter: fullAddr });
@@ -59,17 +57,14 @@ export class MapContainer extends Component {
       comps[4].long_name === "Queens County" ||
       comps[5].long_name === "Queens County"
     ) {
-      console.log("In Zone");
       zoneCheck = "In";
     } else {
-      console.log("Out of Zone");
       zoneCheck = "Out";
     }
 
     const results = { address: addr, zone: zoneCheck };
     //////////////////////////////////
     this.props.parentCallback(results);
-    console.log(addr);
     this.setState({ address: addr });
   };
 
