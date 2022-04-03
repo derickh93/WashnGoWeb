@@ -41,7 +41,6 @@ export class MapContainer extends Component {
         //getLatLng(results[0]);
       })
       .then((fullAddr) => {
-
         // update center state
         this.setState({ mapCenter: fullAddr });
       })
@@ -120,5 +119,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyD7Rmnw2HErKMUvQjOifVFaF2bxnposZDQ",
+  apiKey: "AIzaSyBF8DyH9rlRyQ_3rWiOJ6NdkR7D79D6S6A",
 })(MapContainer);

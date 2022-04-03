@@ -278,7 +278,7 @@ export default function Confirmation() {
       </div>
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
-      {/* <CardList cardList={cardList}></CardList> */}
+      <CardList cardList={cardList}></CardList>
 
       <StripeContainer></StripeContainer>
     </div>
