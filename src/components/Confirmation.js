@@ -206,7 +206,7 @@ export default function Confirmation() {
           backgroundColor: "lightblue",
         }}
       >
-        To schedule your pickup, we require a $22 deposit. This amount will be
+        To schedule your pickup, we require a $25 deposit. This amount will be
         deducted from your final total.
       </Card>
       <div

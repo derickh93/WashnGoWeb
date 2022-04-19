@@ -87,7 +87,7 @@ export default function PaymentForm() {
                   sendMessage(
                     `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}`,
                     process.env.REACT_APP_TWILIO_TO,
-                    stripeData.metadata.Text
+                    "true"
                   ).catch((error) => {
                     console.log(error);
                   });
@@ -134,7 +134,7 @@ export default function PaymentForm() {
                   sendMessage(
                     `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}`,
                     process.env.REACT_APP_TWILIO_TO,
-                    stripeData.metadata.Text
+                    "true"
                   ).catch((error) => {
                     console.log(error);
                   });
