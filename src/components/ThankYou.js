@@ -136,7 +136,7 @@ export default function Confirmation() {
         <span style={{ fontWeight: "bold" }}> {stripeData.email}</span>
       </div>
       <div style={{ padding: "10px" }}>
-        <span>Order No. ###PlaceHolder###</span>
+        {/* <span>Order No. ###PlaceHolder###</span> */}
       </div>
       <div style={{ backgroundColor: "#f5f9fc", padding: "10px" }}>
         <span>
@@ -152,7 +152,7 @@ export default function Confirmation() {
         Summary of Charges
       </span>
       <div style={{ display: "flex" }}>
-        $22 minimum
+        $25 minimum
         <Button
           style={{
             width: "20%",

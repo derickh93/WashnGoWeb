@@ -23,6 +23,8 @@ export default function Time() {
   const [firstTimeSlot, setFirstTimeSlot] = useState("9am - 12pm");
   const [secondTimeSlot, setSecondTimeSlot] = useState("12pm - 3pm");
   const [thirdTimeSlot, setThirdTimeSlot] = useState("3pm - 6pm");
+  const [fourthTimeSlot, setFourthTimeSlot] = useState("5pm - 9pm");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   //const [clicked, setClicked] = useState(false);
@@ -36,7 +38,7 @@ export default function Time() {
 
   const timeData = sessionStorage.getItem("pickupTime");
   if (!timeData) {
-    sessionStorage.setItem("pickupTime", JSON.stringify(firstTimeSlot));
+    sessionStorage.setItem("pickupTime", JSON.stringify(fourthTimeSlot));
   }
 
   async function handleLogout() {
@@ -158,11 +160,11 @@ export default function Time() {
           color={"#61b258"}
         />
         <div style={{ padding: "10px" }}>
-          <RadioGroup
+          {/* <RadioGroup
             onChange={handleClick}
             value={JSON.parse(sessionStorage.getItem("pickupTime"))}
-          >
-            <RadioButton
+          > */}
+          {/* <RadioButton
               iconSize={20}
               iconInnerSize={10}
               rootColor="#336daf"
@@ -188,8 +190,18 @@ export default function Time() {
               value={thirdTimeSlot}
             >
               {thirdTimeSlot}
-            </RadioButton>
-          </RadioGroup>
+            </RadioButton> */}
+
+          {/* <RadioButton
+              iconSize={20}
+              iconInnerSize={10}
+              rootColor="#336daf"
+              pointColor="green"
+              value={fourthTimeSlot}
+            > */}
+          {fourthTimeSlot}
+          {/* </RadioButton>
+          </RadioGroup> */}
 
           <PUTimePicker onClick={nextPage}>Next</PUTimePicker>
         </div>
