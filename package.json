@@ -22,6 +22,7 @@
     "date-fns": "^2.23.0",
     "firebase": "^8.7.1",
     "google-maps-react": "^2.0.6",
+    "netlify": "^11.0.1",
     "radar-sdk-js": "^3.0.1",
     "rc-slider": "^9.7.2",
     "react": "^17.0.2",
