@@ -32,6 +32,36 @@ const CARD_OPTIONS = {
   },
 };
 
+async function postOrder(
+  name,
+  address,
+  bagCount,
+  dryCount,
+  prefs,
+  puTime,
+  puDate
+) {
+  const data = new FormData();
+  data.append(
+    "data",
+    JSON.stringify({
+      customer_Name: name,
+      pickup_Address: address,
+      laundryBag_Count: bagCount,
+      dryClean_Count: dryCount,
+      preferences: prefs,
+      pickup_Time: puTime,
+      pickup_Date: puDate,
+    })
+  );
+  const returnVal = await axios
+    .post("http://54.162.191.178:1337/api/Orders", data)
+    .then((res) => {
+      console.log(res);
+    });
+  return returnVal;
+}
+
 export default function PaymentForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -92,6 +122,27 @@ export default function PaymentForm() {
                     console.log(error);
                   });
                 })
+                .then(() => {
+                  postOrder(
+                    stripeData.name,
+                    JSON.stringify(stripeData.shipping.address),
+                    JSON.parse(sessionStorage.getItem("bags")),
+                    JSON.parse(sessionStorage.getItem("pieces")),
+                    JSON.parse(sessionStorage.getItem("softener")) +
+                      JSON.parse(sessionStorage.getItem("detergent")) +
+                      JSON.parse(sessionStorage.getItem("dryer")) +
+                      JSON.parse(sessionStorage.getItem("whites")) +
+                      JSON.parse(sessionStorage.getItem("additional")),
+                    JSON.parse(sessionStorage.getItem("pickupTime")),
+                    JSON.parse(sessionStorage.getItem("pickupDay"))
+                  )
+                    .then((val) => {
+                      console.log(val);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                })
             );
             history.push("/thankyou");
           } else {
@@ -138,6 +189,27 @@ export default function PaymentForm() {
                   ).catch((error) => {
                     console.log(error);
                   });
+                })
+                .then(() => {
+                  postOrder(
+                    stripeData.name,
+                    JSON.stringify(stripeData.shipping.address),
+                    JSON.parse(sessionStorage.getItem("bags")),
+                    JSON.parse(sessionStorage.getItem("pieces")),
+                    JSON.parse(sessionStorage.getItem("softener")) +
+                      JSON.parse(sessionStorage.getItem("detergent")) +
+                      JSON.parse(sessionStorage.getItem("dryer")) +
+                      JSON.parse(sessionStorage.getItem("whites")) +
+                      JSON.parse(sessionStorage.getItem("additional")),
+                    JSON.parse(sessionStorage.getItem("pickupTime")),
+                    JSON.parse(sessionStorage.getItem("pickupDay"))
+                  )
+                    .then((val) => {
+                      console.log(val);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
                 })
             );
             history.push("/thankyou");

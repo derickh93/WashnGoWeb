@@ -276,7 +276,11 @@ export default function Confirmation() {
           </div>
         </Collapse>
       </div>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && (
+        <Alert variant="danger" style={{ marginTop: "10px" }}>
+          {error}
+        </Alert>
+      )}
       {success && <Alert variant="success">{success}</Alert>}
       <CardList cardList={cardList}></CardList>
 
