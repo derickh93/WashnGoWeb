@@ -8,6 +8,8 @@ import UpdateProfile from "./UpdateProfile";
 import Address from "./Address";
 import Time from "./Time";
 import Products from "./Products";
+import logo from "../Assets/logo.PNG";
+
 
 import { Container } from "react-bootstrap";
 import { AuthProvider } from "../contexts/AuthContext";
@@ -44,6 +46,9 @@ function App() {
       style={{ minHeight: "97vh" }}
     >
       <div className="w-100" style={{ maxWidth: "400px" }}>
+      <div className="homepage">
+        <img className="logo" src={logo} alt="washngo" />
+      </div>
         <Router>
           <AuthProvider>
             <Switch>

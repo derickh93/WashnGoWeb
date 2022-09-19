@@ -44,7 +44,7 @@ export default function Signup() {
       signup(emailRef.current.value, passwordRef.current.value, stripeUser)
         .then(() =>
           sendMessage(
-            `Welcome to Wash & Go ${firstNameRef.current.value}.`,
+            `Welcome to Laundry Pickup NYC  ${firstNameRef.current.value}.`,
             phone
           )
             .catch((error) => {

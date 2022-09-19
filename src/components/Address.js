@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import GoogleMap from "./GoogleMap";
-import washngo from "../Assets/washngo.png";
 import "../App.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
@@ -99,7 +98,6 @@ export default function Address() {
   return (
     <div>
       <div className="homepage">
-        <img className="logo" src={washngo} alt="washngo" />
         {error && <Alert variant="danger">{error}</Alert>}
         <div style={{ fontWeight: "bold" }}>Let's start with your address</div>
       </div>

@@ -7,8 +7,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import washngo from "../Assets/washngo.png";
-
 export default function Preferences() {
   const [error, setError] = useState("");
 
@@ -159,9 +157,6 @@ export default function Preferences() {
 
   return (
     <>
-      <div className="homepage">
-        <img className="logo" src={washngo} alt="washngo" />
-      </div>
       <div
         style={{
           display: "flex",
