@@ -4,10 +4,8 @@ import ConfirmDetails from "../components/Preferences/ConfirmDetails";
 import { format } from "date-fns";
 import StripeContainer from "./StripeContainer";
 import CardList from "./Preferences/CardList";
-import washngo from "../Assets/washngo.png";
 import { Button, Card, Form, Collapse, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import animation from "../Assets/success.gif";
 
 import { useHistory } from "react-router-dom";
 
@@ -143,7 +141,6 @@ export default function Confirmation() {
   return (
     <div>
       <div className="homepage">
-        <img className="logo" src={washngo} alt="washngo" />
       </div>
       <div
         style={{

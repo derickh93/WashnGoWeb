@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
-import washngo from "../Assets/washngo.png";
 import laundryBasket from "../Assets/laundry_basket.png";
 import dryClean from "../Assets/dryclean.png";
 import CounterButton from "./CounterButton";
@@ -106,7 +105,6 @@ export default function Products() {
   return (
     <>
       <div className="homepage">
-        <img className="logo" src={washngo} alt="washngo" />
         {error && <Alert variant="danger">{error}</Alert>}
       </div>
       <div

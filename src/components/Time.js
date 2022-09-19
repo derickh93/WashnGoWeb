@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import washngo from "../Assets/washngo.png";
 import styled from "styled-components";
 import DatePicker from "react-horizontal-datepicker";
 import { TimePicker } from "./SchedulePage/TimePicker";
@@ -111,9 +110,6 @@ export default function Time() {
           <img src={animation} alt="loading..." />
         </div>
       ) : null}
-      <div className="homepage">
-        <img className="logo" src={washngo} alt="washngo" />
-      </div>
       <div
         style={{
           display: "flex",

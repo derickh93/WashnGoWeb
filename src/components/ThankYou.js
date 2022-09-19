@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
-import washngo from "../Assets/washngo.png";
 import MyButton from "./Button";
 import { Button } from "react-bootstrap";
 import CardModal from "./CardModal";
@@ -80,13 +79,6 @@ export default function Confirmation() {
 
   return (
     <div>
-      <div className="homepage">
-        <img
-          style={{ width: "100px", height: "100px" }}
-          src={washngo}
-          alt="washngo"
-        />
-      </div>
       <div
         style={{
           display: "flex",
