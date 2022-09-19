@@ -266,6 +266,23 @@ export function AuthProvider({ children }) {
   };
   ///////////////////////////////////////////////////////////////////
 
+  //////////////////////////////////////////////////////////////////
+  const checkoutSession = async (cidP) => {
+    const response = await axios
+      .post(`${domain}create-checkout-session`, {
+        cid: cidP,
+      })
+      .catch((error) => {
+        console.log(error);
+        throw new Error(error.message);
+      });
+
+    if (response.data.success) {
+    }
+    return response.data.result;
+  };
+  //////////////////////////////////////////////////////////////////
+
   function logout() {
     setCurrentStripeInstance(null);
     return auth.signOut();
@@ -346,6 +363,7 @@ export function AuthProvider({ children }) {
     setText,
     sendMessage,
     handleInvoice,
+    checkoutSession,
   };
 
   return (

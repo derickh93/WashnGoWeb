@@ -18,6 +18,8 @@ export default function Time() {
     readProfile,
     currentUser,
     customerPortal,
+    currentStripeUser,
+    checkoutSession,
   } = useAuth();
 
   const [firstTimeSlot, setFirstTimeSlot] = useState("9am - 12pm");
@@ -65,7 +67,7 @@ export default function Time() {
 
     try {
       setLoading(true);
-      customerPortal(userData.id).then((url) => {
+      checkoutSession(userData.id).then((url) => {
         window.location = url;
       });
     } catch (err) {
