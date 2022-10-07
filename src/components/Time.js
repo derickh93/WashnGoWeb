@@ -3,7 +3,6 @@ import styled from "styled-components";
 import DatePicker from "react-horizontal-datepicker";
 import { TimePicker } from "./SchedulePage/TimePicker";
 import { useHistory } from "react-router-dom";
-import { RadioGroup, RadioButton } from "react-radio-buttons";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Alert } from "react-bootstrap";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
@@ -17,13 +16,8 @@ export default function Time() {
     readProfile,
     currentUser,
     customerPortal,
-    currentStripeUser,
-    checkoutSession,
   } = useAuth();
 
-  const [firstTimeSlot, setFirstTimeSlot] = useState("9am - 12pm");
-  const [secondTimeSlot, setSecondTimeSlot] = useState("12pm - 3pm");
-  const [thirdTimeSlot, setThirdTimeSlot] = useState("3pm - 6pm");
   const [fourthTimeSlot, setFourthTimeSlot] = useState("5pm - 9pm");
 
   const [error, setError] = useState("");
@@ -66,7 +60,7 @@ export default function Time() {
 
     try {
       setLoading(true);
-      checkoutSession(userData.id).then((url) => {
+      customerPortal(userData.id,'time').then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -84,12 +78,6 @@ export default function Time() {
   const selectedDay = (val) => {
     setPickupDate(val);
     sessionStorage.setItem("pickupDay", JSON.stringify(val));
-  };
-
-  const handleClick = (val) => {
-    setPickupTime(val);
-    //setClicked((oldVal) => true);
-    sessionStorage.setItem("pickupTime", JSON.stringify(val));
   };
 
   async function nextPage() {
@@ -158,48 +146,8 @@ export default function Time() {
           color={"#61b258"}
         />
         <div style={{ padding: "10px" }}>
-          {/* <RadioGroup
-            onChange={handleClick}
-            value={JSON.parse(sessionStorage.getItem("pickupTime"))}
-          > */}
-          {/* <RadioButton
-              iconSize={20}
-              iconInnerSize={10}
-              rootColor="#336daf"
-              pointColor="green"
-              value={firstTimeSlot}
-            >
-              {firstTimeSlot}
-            </RadioButton>
-            <RadioButton
-              iconSize={20}
-              iconInnerSize={10}
-              rootColor="#336daf"
-              pointColor="green"
-              value={secondTimeSlot}
-            >
-              {secondTimeSlot}
-            </RadioButton>
-            <RadioButton
-              iconSize={20}
-              iconInnerSize={10}
-              rootColor="#336daf"
-              pointColor="green"
-              value={thirdTimeSlot}
-            >
-              {thirdTimeSlot}
-            </RadioButton> */}
-
-          {/* <RadioButton
-              iconSize={20}
-              iconInnerSize={10}
-              rootColor="#336daf"
-              pointColor="green"
-              value={fourthTimeSlot}
-            > */}
           {fourthTimeSlot}
-          {/* </RadioButton>
-          </RadioGroup> */}
+
 
           <PUTimePicker onClick={nextPage}>Next</PUTimePicker>
         </div>

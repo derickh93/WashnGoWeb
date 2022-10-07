@@ -5,7 +5,7 @@ import "../App.css";
 import { format } from "date-fns";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Alert, InputGroup, FormControl, Button } from "react-bootstrap";
+import { Alert} from "react-bootstrap";
 import animation from "../Assets/loading.gif";
 
 require("dotenv").config();

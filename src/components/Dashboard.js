@@ -9,7 +9,6 @@ export default function Dashboard() {
     currentUser,
     logout,
     customerPortal,
-    currentStripeInstance,
     readProfile,
   } = useAuth();
   const history = useHistory();

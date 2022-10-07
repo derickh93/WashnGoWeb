@@ -2,21 +2,19 @@ import React, { useState, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
 import { format } from "date-fns";
-import StripeContainer from "./StripeContainer";
-import CardList from "./Preferences/CardList";
-import { Button, Card, Form, Collapse, Alert } from "react-bootstrap";
+import { Button, Form, Collapse, Alert } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useHistory } from "react-router-dom";
 
 export default function Confirmation() {
   const {
-    pickupDate,
     logout,
     readProfile,
     currentUser,
     customerPortal,
     getPromos,
+    checkoutSession
   } = useAuth();
 
   const history = useHistory();
@@ -33,12 +31,27 @@ export default function Confirmation() {
     readProfile(currentUser.uid);
   }
 
+  async function handlePayment() {
+    setError("");
+
+    try {
+      setLoading(true);
+      checkoutSession(userData.id,addition,mixed,seperate,shirt,slacks,jacket).then((url) => {
+        window.location = url;
+      });
+    } catch (err) {
+      setError("Failed open checkout session");
+      console.log(err.message);
+    }
+    setLoading(false);
+  }
+
   async function handlePortal() {
     setError("");
 
     try {
       setLoading(true);
-      customerPortal(userData.id).then((url) => {
+      customerPortal(userData.id,'confirmation').then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -81,10 +94,13 @@ export default function Confirmation() {
     var softener = JSON.parse(sessionStorage.getItem("softener"));
     var additional = JSON.parse(sessionStorage.getItem("additional"));
 
-    var bags = JSON.parse(sessionStorage.getItem("bags"));
-    var pieces = JSON.parse(sessionStorage.getItem("pieces"));
+    var seperate = JSON.parse(sessionStorage.getItem("seperate"));
+    var mixed = JSON.parse(sessionStorage.getItem("mixed"));
+    var addition = JSON.parse(sessionStorage.getItem("addition"));
 
-    cardList = data.id;
+    var shirt = JSON.parse(sessionStorage.getItem("shirt"));
+    var slacks = JSON.parse(sessionStorage.getItem("slacks"));
+    var jacket = JSON.parse(sessionStorage.getItem("jacket"));
 
     var address;
     if (data.shipping) {
@@ -97,14 +113,18 @@ export default function Confirmation() {
       puDate: format(day, "MMMM do, yyyy"),
       puTime: time,
       address: address,
-      bagsNo: bags,
-      piecesNo: pieces,
+      mixed: mixed,
+      seperate: seperate,
+      addition: addition,
       dayOfWeek: format(day, "EEEE"),
       det: detergent,
       dry: dryer,
       soft: softener,
       addit: additional,
       whi: whites,
+      shirt:shirt,
+      slacks:slacks,
+      jacket:jacket
     };
   } catch (err) {
     console.log(err);
@@ -114,7 +134,7 @@ export default function Confirmation() {
   function goBack() {
     try {
       setLoading(true);
-      history.push("/products");
+      history.push("/preferences");
     } catch (err) {
       console.log(err.message);
     }
@@ -195,7 +215,7 @@ export default function Confirmation() {
         </Button>
       </div>
       <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
-      <Card
+      {/* <Card
         style={{
           padding: "10px",
           color: "black",
@@ -205,7 +225,7 @@ export default function Confirmation() {
       >
         To schedule your pickup, we require a $25 deposit. This amount will be
         deducted from your final total.
-      </Card>
+      </Card> */}
       <div
         style={{
           display: "flex",
@@ -256,7 +276,7 @@ export default function Confirmation() {
             )}
           </div>
         </Button>
-        <Collapse in={open}>
+        { <Collapse in={open}>
           <div id="example-collapse-text">
             <Form>
               <Form.Group id="coupon">
@@ -271,7 +291,7 @@ export default function Confirmation() {
               </Button>
             </Form>
           </div>
-        </Collapse>
+        </Collapse> }
       </div>
       {error && (
         <Alert variant="danger" style={{ marginTop: "10px" }}>
@@ -279,9 +299,10 @@ export default function Confirmation() {
         </Alert>
       )}
       {success && <Alert variant="success">{success}</Alert>}
-      <CardList cardList={cardList}></CardList>
+      {/* <CardList cardList={cardList}></CardList>
 
-      <StripeContainer></StripeContainer>
+      <StripeContainer></StripeContainer> */}
+      <Button className="mt-2" onClick={() =>{handlePayment()}}>PAY</Button>
     </div>
   );
 }

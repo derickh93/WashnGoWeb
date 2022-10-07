@@ -11,8 +11,9 @@ export default class ConfirmDetails extends Component {
       address: this.props.commonProps.address,
       puDate: this.props.commonProps.puDate,
       puTime: this.props.commonProps.puTime,
-      bagsNo: this.props.commonProps.bagsNo,
-      piecesNo: this.props.commonProps.piecesNo,
+      mixed: this.props.commonProps.mixed,
+      seperate: this.props.commonProps.seperate,
+      addition: this.props.commonProps.addition,
       dayOfWeek: this.props.commonProps.dayOfWeek,
       detergent: this.props.commonProps.det,
 
@@ -20,6 +21,11 @@ export default class ConfirmDetails extends Component {
       softener: this.props.commonProps.soft,
       additional: this.props.commonProps.addit,
       whites: this.props.commonProps.whi,
+
+      shirt: this.props.commonProps.shirt,
+      slacks: this.props.commonProps.slacks,
+      jacket: this.props.commonProps.jacket,
+
     };
     //binding in constuctor
     this.handleNameChange.bind(this);
@@ -31,14 +37,19 @@ export default class ConfirmDetails extends Component {
       address: e.target.value,
       puDate: e.target.value,
       puTime: e.target.value,
-      bagsNo: e.target.value,
-      piecesNo: e.target.value,
+      mixed: e.target.value,
+      seperate: e.target.value,
+      addition: e.target.value,
       dayOfWeek: e.target.value,
       detergent: e.target.value,
       dryer: e.target.value,
       softener: e.target.value,
       additional: e.target.value,
       whites: e.target.value,
+      shirt: e.target.value,
+      slacks: e.target.value,
+      jacket: e.target.value,
+
     };
     this.setState({ course });
   }
@@ -93,10 +104,22 @@ export default class ConfirmDetails extends Component {
           <div>
             <span className="prefTitle">Pickup Amount</span>
             <div className="prefDetails" onChange={this.handlechange}>
-              No. Bags: {this.state.bagsNo}
+              No. Mixed: {this.state.mixed}
             </div>
             <div className="prefDetails" onChange={this.handlechange}>
-              No. Pieces: {this.state.piecesNo}
+              No. Seperate: {this.state.seperate}
+            </div>
+            <div className="prefDetails" onChange={this.handlechange}>
+              No. Additional: {this.state.addition}
+            </div>
+            <div className="prefDetails" onChange={this.handlechange}>
+              No. Shirts: {this.state.shirt}
+            </div>
+            <div className="prefDetails" onChange={this.handlechange}>
+              No. Slacks: {this.state.slacks}
+            </div>
+            <div className="prefDetails" onChange={this.handlechange}>
+              No. Jackets: {this.state.jacket}
             </div>
           </div>
           <div style={{ marginLeft: "auto" }}>

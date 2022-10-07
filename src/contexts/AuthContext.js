@@ -95,10 +95,11 @@ export function AuthProvider({ children }) {
     }
   };
   //////////////////////////////////////////////////////////////////
-  const customerPortal = async (userData) => {
+  const customerPortal = async (userData,path) => {
     const response = await axios
       .post(`${domain}create-customer-portal-session`, {
         cid: userData,
+        pth:path
       })
       .catch((error) => {
         console.log(error);
@@ -267,10 +268,16 @@ export function AuthProvider({ children }) {
   ///////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////
-  const checkoutSession = async (cidP) => {
+  const checkoutSession = async (cidP,add,mix,sep,shirt,slacks,jacket) => {
     const response = await axios
       .post(`${domain}create-checkout-session`, {
         cid: cidP,
+        add,
+        mix,
+        sep,
+        shirt,
+        slacks,
+        jacket
       })
       .catch((error) => {
         console.log(error);
