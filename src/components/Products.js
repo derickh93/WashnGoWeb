@@ -1,42 +1,42 @@
-import React, { useState} from "react";
-import { Alert,Collapse } from "react-bootstrap";
+import React, { useState } from "react";
+import { Alert, Collapse,Button} from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
-import CounterButton from "./CounterButton";
 import { TimePicker } from "./SchedulePage/TimePicker";
-import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
-import dryCleanProds from "./product-data/products.json"
-import washProds from "./product-data/product-wash.json"
-import {useSelector,useDispatch} from "react-redux"
-import {increment,decrement} from "../redux/dry-clean-qty"
+import dryCleanProds from "./product-data/products.json";
+import washProds from "./product-data/product-wash.json";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../redux/dry-clean-qty";
+import {incrementWash,decrementWash} from "../redux/wash-qty"
 
 export default function Products() {
   const {
-
     logout,
     customerPortal,
     readProfile,
     currentUser,
     getPrices,
-    getProducts
+    getProducts,
   } = useAuth();
   const [error, setError] = useState("");
 
-  const {arr} = useSelector((state) => state.dryClean);
+  const { arr } = useSelector((state) => state.dryClean);
+  const { arrWash } = useSelector((state) => state.wash);
 
-  const[openDC,setOpenDC] = React.useState(false);
-  const[openWash,setOpenWash] = React.useState(true);
+
+  const [openDC, setOpenDC] = React.useState(false);
+  const [openWash, setOpenWash] = React.useState(true);
 
   const history = useHistory();
   const dispatch = useDispatch();
 
-  getPrices().then((res)  =>{
-    console.log(res)
+  getPrices().then((res) => {
+    console.log(res);
   });
 
-  getProducts().then((res)  =>{
-    console.log(res)
+  getProducts().then((res) => {
+    console.log(res);
   });
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
@@ -65,7 +65,7 @@ export default function Products() {
     setError("");
 
     try {
-      customerPortal(userData.id,'products').then((url) => {
+      customerPortal(userData.id, "products").then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -76,8 +76,7 @@ export default function Products() {
 
   async function nextPage() {
     try {
-
-        history.push("/preferences");
+      history.push("/preferences");
     } catch (err) {
       console.log(err.message);
     }
@@ -149,64 +148,96 @@ export default function Products() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
+        {!openWash && (
+          <Button
+            style={{ backgroundColor: "#1C2F74" }}
+            onClick={() => {
+              setOpenWash(!openWash);
+              setOpenDC(!openDC);
+            }}
+            aria-controls="example-collapse-text"
+            aria-expanded={openWash}
+          >
+            Wash
+          </Button>
+        )}
+        <Collapse in={openWash}>
+          <div id="example-collapse-text">
+          {washProds.map((item, idx) => (
+              <div>
+                <div className="productRow">
+                  <h6>{item.description}:</h6>
+                  <h6>{item.price}:</h6>
+                </div>
+                <div className="products">
+                  <Button
+                                      style={{backgroundColor:"#1C2F74"}}
 
-{!openWash &&
-      <Button
-      style={{backgroundColor:"#1C2F74"}}
-        onClick={() => {
-          setOpenWash(!openWash)
-          setOpenDC(!openDC)
-        }}
-        aria-controls="example-collapse-text"
-        aria-expanded={openWash}
-      >
-        Wash
-      </Button>
-}
-      <Collapse in={openWash}>
+                    className="buttonEffects"
+                    onClick={() => {
+                      dispatch(decrementWash(idx));
+                    }}
+                    >-</Button>
+                    <h1 style={{ padding: "10px" }}>{arrWash[idx]}</h1>
 
-        <div id="example-collapse-text">
-        {washProds.map((item) => (
+                  <Button
+                                      style={{backgroundColor:"#1C2F74"}}
 
+                    className="buttonEffects"
+                    onClick={() => {
+                      dispatch(incrementWash(idx));
+                    }}
+                  >+</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Collapse>
 
-          <CounterButton
-          description={item.description}
-          price={item.price}
-        ></CounterButton>
-        ))}
-        </div>
-      </Collapse>
+        {!openDC && (
+          <Button
+            style={{ backgroundColor: "#1C2F74" }}
+            onClick={() => {
+              setOpenDC(!openDC);
+              setOpenWash(!openWash);
+            }}
+            aria-controls="example-collapse-text"
+            aria-expanded={openDC}
+          >
+            Dry Clean
+          </Button>
+        )}
+        <Collapse in={openDC}>
+          <div id="example-collapse-text">
+            {dryCleanProds.map((item, idx) => (
+              <div>
+                <div className="productRow">
+                  <h6>{item.description}:</h6>
+                  <h6>{item.price}:</h6>
+                </div>
+                <div className="products">
+                  <Button
+                    className="buttonEffects"
+                    style={{backgroundColor:"#1C2F74"}}
+                    onClick={() => {
+                      dispatch(decrement(idx));
+                    }}
+                    >-</Button>
+                    <h1 style={{ padding: "10px"}}>{arr[idx]}</h1>
 
+                  <Button
+                    className="buttonEffects"
+                    style={{backgroundColor:"#1C2F74"}}
 
-      {!openDC &&
-      <Button style={{backgroundColor:'#1C2F74'}}
-        onClick={() => 
-          {
-            setOpenDC(!openDC)
-            setOpenWash(!openWash)
-          }
-      }
-        aria-controls="example-collapse-text"
-        aria-expanded={openDC}
-      >
-        Dry Clean
-      </Button>}
-      <Collapse in={openDC}>
-        <div id="example-collapse-text">
-        {dryCleanProds.map((item,idx) => (
-
-          <CounterButton 
-          count={arr[idx]}
-          increment={dispatch(increment(0))}
-          decrement={dispatch(decrement(0))}
-          description={item.description}
-          price={item.price}
-        ></CounterButton>
-        )
-      )}
-        </div>
-      </Collapse>
-
+                    onClick={() => {
+                      dispatch(increment(idx));
+                    }}
+                  >+</Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Collapse>
 
         <TimePicker onClick={nextPage}>Next</TimePicker>
       </div>

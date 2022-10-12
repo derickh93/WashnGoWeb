@@ -2,18 +2,18 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const washSlice = createSlice({
     name: "wash",
-    initialState: {arr: new Array(20).fill(90)},
+    initialState: {arrWash: new Array(3).fill(0)},
     reducers:{
-        increment: (state,idx) => {
-            state.arr[idx] += 1;
+        incrementWash: (state,{payload}) => {
+            state.arrWash[payload] += 1;
         }
         ,
-        decrement: (state,idx) =>{
-            state.arr[idx] -= 1;
+        decrementWash: (state,{payload}) =>{
+            state.arrWash[payload] -= 1;
         }
     }
 });
 
-export const {increment,decrement} = washSlice.actions;
+export const {incrementWash,decrementWash} = washSlice.actions;
 
 export default washSlice.reducer;

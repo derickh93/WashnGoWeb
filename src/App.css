@@ -115,6 +115,7 @@ h3 {
 }
 
 .buttonEffects {
+  background-color: #1C2F74;
   width: 50px;
   height: 25px;
   border: none;
@@ -126,7 +127,6 @@ h3 {
   font-size: 16px;
   transition: 0.5s all ease-out;
   outline: invert;
-  background-color: #1C2F74;
 }
 
 .buttonEffects:hover {

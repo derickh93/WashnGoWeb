@@ -2,14 +2,14 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const dryCleanSlice = createSlice({
     name: "dryClean",
-    initialState: {arr: new Array(20).fill(90)},
+    initialState: {arr: new Array(20).fill(0)},
     reducers:{
-        increment: (state,idx) => {
-            state.arr[idx] += 1;
+        increment: (state,{payload}) => {
+            state.arr[payload] += 1;
         }
         ,
-        decrement: (state,idx) =>{
-            state.arr[idx] -= 1;
+        decrement: (state,{payload}) =>{
+            state.arr[payload] -= 1;
         }
     }
 });
