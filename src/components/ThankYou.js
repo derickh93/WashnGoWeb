@@ -1,22 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
 import MyButton from "./Button";
 import { Button } from "react-bootstrap";
-import CardModal from "./CardModal";
 
 import { useHistory } from "react-router-dom";
 
 import "../App.css";
 
 export default function Confirmation() {
-  const [error, setError] = useState("");
 
   const { logout, readProfile, currentUser, customerPortal } = useAuth();
 
   const pickupTime = JSON.parse(sessionStorage.getItem("pickupTime"));
   const pickupDate = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
-  const receipt = JSON.parse(sessionStorage.getItem("receipt"));
 
   const history = useHistory();
 
@@ -30,31 +27,17 @@ export default function Confirmation() {
   const firstName = stripeData.name.split(" ")[0];
 
   async function handlePortal() {
-    setError("");
 
     try {
-      customerPortal(userData.id).then((url) => {
+      customerPortal(userData.id,'thankyou').then((url) => {
         window.location = url;
       });
     } catch (err) {
-      setError("Failed open portal");
-      console.log(err.message);
-    }
-  }
-
-  async function handleReceipt() {
-    setError("");
-
-    try {
-      window.location = receipt;
-    } catch (err) {
-      setError("Failed open portal");
       console.log(err.message);
     }
   }
 
   async function handleLogout() {
-    setError("");
 
     try {
       await logout()
@@ -66,7 +49,6 @@ export default function Confirmation() {
         });
     } catch (err) {
       console.log(err.message);
-      setError("Failed to log out");
     }
   }
 
@@ -128,7 +110,6 @@ export default function Confirmation() {
         <span style={{ fontWeight: "bold" }}> {stripeData.email}</span>
       </div>
       <div style={{ padding: "10px" }}>
-        {/* <span>Order No. ###PlaceHolder###</span> */}
       </div>
       <div style={{ backgroundColor: "#f5f9fc", padding: "10px" }}>
         <span>
@@ -139,26 +120,6 @@ export default function Confirmation() {
         <div className="prefDetails">{stripeData.shipping.city}</div>
         <div className="prefDetails">{stripeData.shipping.state}</div>
         <div className="prefDetails">{stripeData.shipping.postal_code}</div>
-      </div>
-      <span style={{ fontWeight: "bold", textDecorationLine: "underline" }}>
-        Summary of Charges
-      </span>
-      <div style={{ display: "flex" }}>
-        $25 minimum
-        <Button
-          style={{
-            width: "20%",
-            height: "20%",
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            marginLeft: "auto",
-          }}
-          variant="link"
-          onClick={handleReceipt}
-        >
-          <u>Receipt</u>
-        </Button>
       </div>
       <div
         style={{
@@ -176,22 +137,22 @@ export default function Confirmation() {
           }}
         />
         <div style={{ padding: "10px" }}>
-          <CardModal
-            styles={{
-              fontSize: "12px",
-              backgroundColor: "transparent",
-              boxShadow: "none",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            btnTitle="Contact Us"
-            header="Contact Us"
-            text="Text or Call: (718) 479-2249 (Texting is FAST!)"
-            email="Email: waglaundry@gmail.com"
-            closeButton="Got it"
-            onClick={true}
-          ></CardModal>
+        <Button
+          style={{
+            width: "20%",
+            height: "20%",
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={(event) => {
+            event.preventDefault();
+            window.Tawk_API.toggle();
+          }}
+        >
+          <u>Contact Us</u>
+        </Button>
         </div>
       </div>
     </div>

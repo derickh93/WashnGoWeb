@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 export const TimePicker = ({ children, onClick }) => {
 
-  const [bgColor, setBGColor] = useState("#336daf");
+  const bgColor = "#1C2F74";
   const Button = styled.button`
     width: 200px;
     height: 40px;
@@ -16,10 +16,10 @@ export const TimePicker = ({ children, onClick }) => {
     font-size: 16px;
     transition: 0.5s all ease-out;
     outline: invert;
-    background-color: #336daf;
+    background-color: #1C2F74;
 
     &:hover {
-      background-color: #61b258;
+      background-color: #1C2F74;
       color: white;
       opacity: 0.9;
       transform: scale(1.2);

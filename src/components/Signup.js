@@ -127,7 +127,7 @@ export default function Signup() {
                 placeholder="Confirm Password"
               />
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button style={{backgroundColor:'#1C2F74'}} disabled={loading} className="w-100" type="submit">
               Sign Up
             </Button>
           </Form>

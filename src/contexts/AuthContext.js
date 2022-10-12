@@ -48,8 +48,6 @@ export function AuthProvider({ children }) {
   };
 
   const readProfile = async (uid) => {
-    // Find all dinosaurs whose names come before Pterodactyl lexicographically.
-    // Include Pterodactyl in the result.
     var ref = firebase.database().ref("user_profile");
     const result = await ref
       .orderByChild("authID")
@@ -57,6 +55,7 @@ export function AuthProvider({ children }) {
       .on("child_added", (snapshot) => {
         getCustomer(snapshot.child("custID").val());
       });
+      console.log(result);
   };
 
   const signup = async (email, password, stripeUser) => {
@@ -158,6 +157,17 @@ export function AuthProvider({ children }) {
       });
     return authObj;
   };
+
+  const getProducts = async () => {
+    const response = await axios
+    .post(`${domain}listProducts`, {})
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+    console.log(response);
+  }
+
+
   ///////////////////////////////////////////////////////////////////
   const getCustomer = async (cst) => {
     //setCurrentStripeUser((prevuser) => cst);
@@ -277,7 +287,19 @@ export function AuthProvider({ children }) {
         sep,
         shirt,
         slacks,
-        jacket
+        jacket,
+        md: {
+          day: JSON.parse(sessionStorage.getItem("pickupDay")),
+          time: JSON.parse(sessionStorage.getItem("pickupTime")),
+          bags: JSON.parse(sessionStorage.getItem("bags")),
+          pieces: JSON.parse(sessionStorage.getItem("pieces")),
+
+          dryer: JSON.parse(sessionStorage.getItem("dryer")),
+          detergent: JSON.parse(sessionStorage.getItem("detergent")),
+          whites: JSON.parse(sessionStorage.getItem("whites")),
+          softener: JSON.parse(sessionStorage.getItem("softener")),
+          additional: JSON.parse(sessionStorage.getItem("additional")),
+        },
       })
       .catch((error) => {
         console.log(error);
@@ -371,6 +393,7 @@ export function AuthProvider({ children }) {
     sendMessage,
     handleInvoice,
     checkoutSession,
+    getProducts
   };
 
   return (

@@ -3,7 +3,7 @@ import GoogleMap from "./GoogleMap";
 import "../App.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert,Button} from "react-bootstrap";
 
 export default function Address() {
   const [error, setError] = useState("");
@@ -22,6 +22,7 @@ export default function Address() {
     setPhone,
     text,
     setText,
+    customerPortal,logout,readProfile,currentUser
   } = useAuth();
   const history = useHistory();
   const aptRef = useRef();
@@ -29,6 +30,11 @@ export default function Address() {
 
 
   const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
+
+  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
+  if (!userData) {
+    readProfile(currentUser.uid);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -95,11 +101,80 @@ export default function Address() {
       setError("Out of Zone, We currently do not serve your area.");
     }
   };
+
+  async function handleLogout() {
+    setError("");
+
+    try {
+      setLoading(true);
+      await logout()
+        .then(() => {
+          sessionStorage.clear();
+        })
+        .then(() => {
+          history.push("/login");
+        });
+    } catch (err) {
+      console.log(err.message);
+      setError("Failed to log out");
+    }
+    setLoading(false);
+  }
+
+  async function handlePortal() {
+    setError("");
+
+    try {
+      setLoading(true);
+      customerPortal(userData.id,'time').then((url) => {
+        window.location = url;
+      });
+    } catch (err) {
+      setError("Failed open portal");
+      console.log(err.message);
+    }
+    setLoading(false);
+  }
   return (
     <div>
       <div className="homepage">
         {error && <Alert variant="danger">{error}</Alert>}
         <div style={{ fontWeight: "bold" }}>Let's start with your address</div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          style={{
+            width: "20%",
+            height: "20%",
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={handlePortal}
+        >
+          <u>Manage Account</u>
+        </Button>
+        <Button
+          style={{
+            width: "20%",
+            height: "20%",
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={handleLogout}
+        >
+          <u>Log Out</u>
+        </Button>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <GoogleMap parentCallback={handleCallback} />

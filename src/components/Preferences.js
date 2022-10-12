@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
 import { RadioGroup, RadioButton } from "react-radio-buttons";
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { TimePicker } from "./SchedulePage/TimePicker";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
@@ -10,30 +10,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Preferences() {
   const [error, setError] = useState("");
 
-  const [detergentChoice, setDetergentChoice] = useState("All free and clear");
-  const [detergentChoiceTwo, setDetergentChoiceTwo] =
-    useState("Tide simply clean");
+  const detergentChoice = "All free and clear";
+  const detergentChoiceTwo = "Tide simply clean";
 
-  const [whiteChoice, setWhitesChoice] = useState("Bleach");
-  const [whiteChoiceTwo, setWhitesChoiceTwo] = useState("No Bleach");
+  const whiteChoice = "Bleach";
+  const whiteChoiceTwo = "No Bleach";
 
-  const [softenerChoice, setSoftenerChoice] = useState(
-    "Suavitel and Dry Sheets"
-  );
-  const [softenerChoiceTwo, setSoftenerChoiceTwo] = useState("No Softener");
+  const softenerChoice = "Suavitel and Dry Sheets";
+  const softenerChoiceTwo = "No Softener";
 
-  const [dryerChoice, setDryerChoice] = useState("High");
-  const [dryerChoiceTwo, setDryerChoiceTwo] = useState("Medium");
-  const [dryerChoiceThree, setDryerChoiceThree] = useState("Low");
+  const dryerChoice = "High";
+  const dryerChoiceTwo= "Medium";
+  const dryerChoiceThree = "Low";
 
   const {
-    detergent,
     setDetergent,
-    softener,
     setSoftener,
-    dryer,
     setDryer,
-    whites,
     setWhites,
     setAdditional,
     logout,
@@ -53,7 +46,7 @@ export default function Preferences() {
     setError("");
 
     try {
-      customerPortal(userData.id).then((url) => {
+      customerPortal(userData.id,'preferences').then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -82,9 +75,8 @@ export default function Preferences() {
     sessionStorage.setItem("softener", JSON.stringify(softenerChoice));
   }
 
-  const [additionalData, setAdditionalData] = useState(
-    JSON.parse(sessionStorage.getItem("additional"))
-  );
+  const additionalData =
+    JSON.parse(sessionStorage.getItem("additional"));
 
   async function handleLogout() {
     setError("");
@@ -100,16 +92,6 @@ export default function Preferences() {
     } catch (err) {
       console.log(err.message);
       setError("Failed to log out");
-    }
-  }
-
-  async function handleAccount() {
-    setError("");
-
-    try {
-      history.push("/dashboard");
-    } catch {
-      setError("Failed to go to account");
     }
   }
 
@@ -179,7 +161,7 @@ export default function Preferences() {
           <FontAwesomeIcon
             icon="chevron-circle-left"
             size="lg"
-            color="#336daf"
+            color="#1C2F74"
           />
         </Button>{" "}
         <Button
@@ -221,8 +203,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={detergentChoice}
               >
                 All Free & Clear
@@ -230,8 +212,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={detergentChoiceTwo}
               >
                 Tide
@@ -249,8 +231,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={whiteChoice}
               >
                 Bleach
@@ -258,8 +240,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={whiteChoiceTwo}
               >
                 No Bleach
@@ -278,8 +260,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={softenerChoice}
               >
                 Suavitel and Dry Sheets
@@ -287,8 +269,8 @@ export default function Preferences() {
               <RadioButton
                 iconSize={20}
                 iconInnerSize={10}
-                rootColor="#336daf"
-                pointColor="#61b258"
+                rootColor="#1C2F74"
+                pointColor="#1C2F74"
                 value={softenerChoiceTwo}
               >
                 No Softener
@@ -306,8 +288,8 @@ export default function Preferences() {
                 <RadioButton
                   iconSize={20}
                   iconInnerSize={10}
-                  rootColor="#336daf"
-                  pointColor="#61b258"
+                  rootColor="#1C2F74"
+                  pointColor="#1C2F74"
                   value={dryerChoice}
                 >
                   High
@@ -315,8 +297,8 @@ export default function Preferences() {
                 <RadioButton
                   iconSize={20}
                   iconInnerSize={10}
-                  rootColor="#336daf"
-                  pointColor="#61b258"
+                  rootColor="#1C2F74"
+                  pointColor="#1C2F74"
                   value={dryerChoiceTwo}
                 >
                   Medium
@@ -324,8 +306,8 @@ export default function Preferences() {
                 <RadioButton
                   iconSize={20}
                   iconInnerSize={10}
-                  rootColor="#336daf"
-                  pointColor="#61b258"
+                  rootColor="#1C2F74"
+                  pointColor="#1C2F74"
                   value={dryerChoiceThree}
                 >
                   Low

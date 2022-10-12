@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../../App.css";
-import { Button, Alert } from "react-bootstrap";
+import {  Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default class ConfirmDetails extends Component {
@@ -128,7 +128,6 @@ export default class ConfirmDetails extends Component {
             </Link>
           </div>
         </div>
-        {this.state.bagsNo > 0 ? (
           <div style={{ display: "flex" }}>
             <div>
               <span className="prefTitle">Preferences</span>
@@ -154,9 +153,6 @@ export default class ConfirmDetails extends Component {
               </Link>
             </div>
           </div>
-        ) : (
-          ""
-        )}
       </div>
     );
   }

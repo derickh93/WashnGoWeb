@@ -1,9 +1,11 @@
-import React, { useState, useRef } from "react";
+import React,{useState} from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
 import { format } from "date-fns";
-import { Button, Form, Collapse, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import animation from "../Assets/8166-laundry-illustration-animation.gif";
+
 
 import { useHistory } from "react-router-dom";
 
@@ -13,57 +15,43 @@ export default function Confirmation() {
     readProfile,
     currentUser,
     customerPortal,
-    getPromos,
     checkoutSession
   } = useAuth();
 
   const history = useHistory();
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-
-  const couponCode = useRef();
-  const [open, setOpen] = useState(false);
-
   const [loading, setLoading] = useState(false);
+
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
     readProfile(currentUser.uid);
   }
 
-  async function handlePayment() {
-    setError("");
-
+  async function handlePayment(e) {
+    e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
       checkoutSession(userData.id,addition,mixed,seperate,shirt,slacks,jacket).then((url) => {
         window.location = url;
       });
     } catch (err) {
-      setError("Failed open checkout session");
       console.log(err.message);
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   async function handlePortal() {
-    setError("");
 
     try {
-      setLoading(true);
       customerPortal(userData.id,'confirmation').then((url) => {
         window.location = url;
       });
     } catch (err) {
-      setError("Failed open portal");
       console.log(err.message);
     }
-    setLoading(false);
   }
 
   async function handleLogout() {
-    setError("");
-    setLoading(true);
 
     try {
       await logout()
@@ -75,13 +63,10 @@ export default function Confirmation() {
         });
     } catch (err) {
       console.log(err.message);
-      setError("Failed to log out");
     }
-    setLoading(false);
   }
 
   let commonProps;
-  let cardList;
 
   try {
     const data = JSON.parse(sessionStorage.getItem("stripeInstance"));
@@ -128,38 +113,23 @@ export default function Confirmation() {
     };
   } catch (err) {
     console.log(err);
-    setError("Failed to log out");
   }
 
   function goBack() {
     try {
-      setLoading(true);
       history.push("/preferences");
     } catch (err) {
       console.log(err.message);
-    }
-    setLoading(false);
-  }
-
-  function applyCoupon() {
-    try {
-      getPromos(couponCode.current.value).then((coupon) => {
-        if (coupon) {
-          setSuccess("Coupon Applied");
-          setError("");
-        } else {
-          setError("Coupon not valid");
-          setSuccess("");
-        }
-      });
-    } catch (err) {
-      console.log(err.message);
-      setError(err.message);
     }
   }
 
   return (
     <div>
+      {loading ?     
+      <div className="homepage">
+          <img src={animation} alt="loading..." />
+        </div> : <div>
+
       <div className="homepage">
       </div>
       <div
@@ -184,7 +154,7 @@ export default function Confirmation() {
           <FontAwesomeIcon
             icon="chevron-circle-left"
             size="lg"
-            color="#336daf"
+            color="#1C2F74"
           />
         </Button>{" "}
         <Button
@@ -215,94 +185,9 @@ export default function Confirmation() {
         </Button>
       </div>
       <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
-      {/* <Card
-        style={{
-          padding: "10px",
-          color: "black",
-          fontWeight: "bold",
-          backgroundColor: "lightblue",
-        }}
-      >
-        To schedule your pickup, we require a $25 deposit. This amount will be
-        deducted from your final total.
-      </Card> */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingTop: "5px",
-        }}
-      >
-        <Button
-          style={{
-            margin: "0px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-            border: "none",
-          }}
-          onClick={() => {
-            setOpen(!open);
-            setError("");
-          }}
-          aria-controls="example-collapse-text"
-          aria-expanded={open}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {open ? (
-              <FontAwesomeIcon icon="minus-circle" size="md" color="#336daf" />
-            ) : (
-              <div>
-                <p
-                  style={{
-                    color: "black",
-                    fontSize: "12px",
-                    margin: "0px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Add Promo Code
-                </p>
-                <FontAwesomeIcon icon="plus-circle" size="md" color="#336daf" />
-              </div>
-            )}
-          </div>
-        </Button>
-        { <Collapse in={open}>
-          <div id="example-collapse-text">
-            <Form>
-              <Form.Group id="coupon">
-                <Form.Control ref={couponCode} placeholder="Promo Code" />
-              </Form.Group>
-              <Button
-                style={{ margin: "0px" }}
-                className="w-100"
-                onClick={applyCoupon}
-              >
-                Apply
-              </Button>
-            </Form>
-          </div>
-        </Collapse> }
+        {commonProps.address !== "N/A" &&
+      <Button className="mt-2" style={{backgroundColor:'#1C2F74'}} onClick={(e) =>{handlePayment(e)}}>PAY</Button>}
+      </div>}
       </div>
-      {error && (
-        <Alert variant="danger" style={{ marginTop: "10px" }}>
-          {error}
-        </Alert>
-      )}
-      {success && <Alert variant="success">{success}</Alert>}
-      {/* <CardList cardList={cardList}></CardList>
-
-      <StripeContainer></StripeContainer> */}
-      <Button className="mt-2" onClick={() =>{handlePayment()}}>PAY</Button>
-    </div>
   );
 }

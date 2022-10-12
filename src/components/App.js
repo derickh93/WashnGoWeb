@@ -4,7 +4,6 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
-import UpdateProfile from "./UpdateProfile";
 import Address from "./Address";
 import Time from "./Time";
 import Products from "./Products";
@@ -14,7 +13,6 @@ import logo from "../Assets/logo.PNG";
 import { Container } from "react-bootstrap";
 import { AuthProvider } from "../contexts/AuthContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import StripeContainer from "./StripeContainer";
 import Preferences from "./Preferences";
 import Confirmation from "./Confirmation";
 import ThankYou from "./ThankYou";
@@ -53,12 +51,10 @@ function App() {
           <AuthProvider>
             <Switch>
               <PrivateRoute exact path="/" component={Time} />
-              <PrivateRoute path="/update-profile" component={UpdateProfile} />
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/payment" component={StripeContainer} />
               <PrivateRoute path="/address" component={Address} />
               <PrivateRoute path="/time" component={Time} />
               <PrivateRoute path="/products" component={Products} />

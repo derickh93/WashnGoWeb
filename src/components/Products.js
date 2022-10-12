@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from "react";
+import React, { useState} from "react";
 import { Alert,Collapse } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import laundryBasket from "../Assets/laundry_basket.png";
@@ -7,9 +7,7 @@ import CounterButton from "./CounterButton";
 import { TimePicker } from "./SchedulePage/TimePicker";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { useHistory } from "react-router-dom";
-import { locales } from "validator/lib/isIBAN";
 
 export default function Products() {
   const {
@@ -21,7 +19,6 @@ export default function Products() {
   } = useAuth();
   const [error, setError] = useState("");
 
-  console.log(sessionStorage.getItem("seperate"));
   const [localSeperate, setLocalSeperate] = React.useState(sessionStorage.getItem("seperate") == null ? 0:JSON.parse(sessionStorage.getItem("seperate")));
   const [localMixed, setLocalMixed] = React.useState(sessionStorage.getItem("mixed") == null ? 0:JSON.parse(sessionStorage.getItem("mixed")));
   const [localAdditional, setLocalAdditional] = React.useState(sessionStorage.getItem("addition") == null ? 0:JSON.parse(sessionStorage.getItem("addition")));
@@ -53,16 +50,6 @@ export default function Products() {
     } catch (err) {
       console.log(err.message);
       setError("Failed to log out");
-    }
-  }
-
-  async function handleAccount() {
-    setError("");
-
-    try {
-      history.push("/dashboard");
-    } catch {
-      setError("Failed to go to account");
     }
   }
 
@@ -174,7 +161,7 @@ export default function Products() {
           <FontAwesomeIcon
             icon="chevron-circle-left"
             size="lg"
-            color="#336daf"
+            color="#1C2F74"
           />
         </Button>{" "}
         <Button
@@ -208,6 +195,7 @@ export default function Products() {
 
 {!openWash &&
       <Button
+      style={{backgroundColor:"#1C2F74"}}
         onClick={() => {
           setOpenWash(!openWash)
           setOpenDC(!openDC)
@@ -250,7 +238,7 @@ export default function Products() {
 
 
       {!openDC &&
-<Button
+<Button style={{backgroundColor:'#1C2F74'}}
         onClick={() => 
           {
             setOpenDC(!openDC)

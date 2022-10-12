@@ -11,18 +11,16 @@ export default function Time() {
   const {
     pickupDate,
     setPickupDate,
-    setPickupTime,
     logout,
     readProfile,
     currentUser,
     customerPortal,
   } = useAuth();
 
-  const [fourthTimeSlot, setFourthTimeSlot] = useState("5pm - 9pm");
+  const fourthTimeSlot = "5pm - 9pm";
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  //const [clicked, setClicked] = useState(false);
 
   const history = useHistory();
 
@@ -143,7 +141,7 @@ export default function Time() {
           endDate={100}
           selectDate={pickupDate}
           labelFormat={"MMMM"}
-          color={"#61b258"}
+          color={"#1C2F74"}
         />
         <div style={{ padding: "10px" }}>
           {fourthTimeSlot}
