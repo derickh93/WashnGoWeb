@@ -167,6 +167,15 @@ export function AuthProvider({ children }) {
     console.log(response);
   }
 
+  const getPrices = async () => {
+    const response = await axios
+    .post(`${domain}listPrices`, {})
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+    console.log(response);
+  }
+
 
   ///////////////////////////////////////////////////////////////////
   const getCustomer = async (cst) => {
@@ -393,7 +402,8 @@ export function AuthProvider({ children }) {
     sendMessage,
     handleInvoice,
     checkoutSession,
-    getProducts
+    getProducts,
+    getPrices
   };
 
   return (

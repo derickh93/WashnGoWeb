@@ -1,13 +1,15 @@
 import React, { useState} from "react";
 import { Alert,Collapse } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
-import laundryBasket from "../Assets/laundry_basket.png";
-import dryClean from "../Assets/dryclean.png";
 import CounterButton from "./CounterButton";
 import { TimePicker } from "./SchedulePage/TimePicker";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
+import dryCleanProds from "./product-data/products.json"
+import washProds from "./product-data/product-wash.json"
+import {useSelector,useDispatch} from "react-redux"
+import {increment,decrement} from "../redux/dry-clean-qty"
 
 export default function Products() {
   const {
@@ -16,21 +18,27 @@ export default function Products() {
     customerPortal,
     readProfile,
     currentUser,
+    getPrices,
+    getProducts
   } = useAuth();
   const [error, setError] = useState("");
 
-  const [localSeperate, setLocalSeperate] = React.useState(sessionStorage.getItem("seperate") == null ? 0:JSON.parse(sessionStorage.getItem("seperate")));
-  const [localMixed, setLocalMixed] = React.useState(sessionStorage.getItem("mixed") == null ? 0:JSON.parse(sessionStorage.getItem("mixed")));
-  const [localAdditional, setLocalAdditional] = React.useState(sessionStorage.getItem("addition") == null ? 0:JSON.parse(sessionStorage.getItem("addition")));
-
-  const [localShirt, setLocalShirt] = React.useState(sessionStorage.getItem("shirt") == null ? 0:JSON.parse(sessionStorage.getItem("shirt")));
-  const [localSlacks, setLocalSlacks] = React.useState(sessionStorage.getItem("slacks") == null ? 0:JSON.parse(sessionStorage.getItem("slacks")));
-  const [localJacket, setLocalJacket] = React.useState(sessionStorage.getItem("jacket") == null ? 0:JSON.parse(sessionStorage.getItem("seperate")));
+  const {arr} = useSelector((state) => state.dryClean);
 
   const[openDC,setOpenDC] = React.useState(false);
   const[openWash,setOpenWash] = React.useState(true);
 
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  getPrices().then((res)  =>{
+    console.log(res)
+  });
+
+  getProducts().then((res)  =>{
+    console.log(res)
+  });
+
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
     readProfile(currentUser.uid);
@@ -68,62 +76,11 @@ export default function Products() {
 
   async function nextPage() {
     try {
-      if (localAdditional <= 0 && localMixed <= 0 && localSeperate <= 0 && localShirt <= 0 && localSlacks <= 0 && localJacket <= 0) {
-        setError("Select an option");
-      } else {
-        if(localAdditional === 0){
-          sessionStorage.setItem("addition", JSON.stringify(0));
-        }
-        if(localMixed === 0){
-          sessionStorage.setItem("mixed", JSON.stringify(0));
-        }
-        if(localSeperate === 0){
-          sessionStorage.setItem("seperate", JSON.stringify(0));
-        }
-        if(localShirt === 0){
-          sessionStorage.setItem("shirt", JSON.stringify(0));
-        }
-        if(localSlacks === 0){
-          sessionStorage.setItem("slacks", JSON.stringify(0));
-        }
-        if(localJacket === 0){
-          sessionStorage.setItem("jacket", JSON.stringify(0));
-        }
+
         history.push("/preferences");
-      }
     } catch (err) {
       console.log(err.message);
     }
-  }
-
-  function getSeperate(val) {
-    setLocalSeperate(val);
-    sessionStorage.setItem("seperate", JSON.stringify(val));
-  }
-
-  function getMixed(val) {
-    setLocalMixed(val);
-    sessionStorage.setItem("mixed", JSON.stringify(val));
-  }
-
-  function getAdditional(val) {
-    setLocalAdditional(val);
-    sessionStorage.setItem("addition", JSON.stringify(val));
-  }
-
-  function getShirt(val) {
-    setLocalShirt(val);
-    sessionStorage.setItem("shirt", JSON.stringify(val));
-  }
-
-  function getSlacks(val) {
-    setLocalSlacks(val);
-    sessionStorage.setItem("slacks", JSON.stringify(val));
-  }
-
-  function getJacket(val) {
-    setLocalJacket(val);
-    sessionStorage.setItem("jacket", JSON.stringify(val));
   }
 
   function goBack() {
@@ -207,38 +164,22 @@ export default function Products() {
       </Button>
 }
       <Collapse in={openWash}>
+
         <div id="example-collapse-text">
+        {washProds.map((item) => (
 
 
-        <CounterButton
-          imageSrc={laundryBasket}
-          imageAlt="Mixed Washes"
-          sendData={getMixed}
-          count={localMixed}
-          label="Mixed Wash"
+          <CounterButton
+          description={item.description}
+          price={item.price}
         ></CounterButton>
-
-        <CounterButton
-          imageSrc={dryClean}
-          imageAlt="Seperate Washes"
-          sendData={getSeperate}
-          count={localSeperate}
-          label="Seperate Wash"
-        ></CounterButton>
-
-    <CounterButton
-          imageSrc={dryClean}
-          imageAlt="Additional Washes"
-          sendData={getAdditional}
-          count={localAdditional}
-          label="Additional Washes"
-        ></CounterButton>
+        ))}
         </div>
       </Collapse>
 
 
       {!openDC &&
-<Button style={{backgroundColor:'#1C2F74'}}
+      <Button style={{backgroundColor:'#1C2F74'}}
         onClick={() => 
           {
             setOpenDC(!openDC)
@@ -252,30 +193,17 @@ export default function Products() {
       </Button>}
       <Collapse in={openDC}>
         <div id="example-collapse-text">
+        {dryCleanProds.map((item,idx) => (
 
-
-<CounterButton
-          imageSrc={dryClean}
-          imageAlt="Shirt"
-          sendData={getShirt}
-          count={localShirt}
-          label="Shirt"
+          <CounterButton 
+          count={arr[idx]}
+          increment={dispatch(increment(0))}
+          decrement={dispatch(decrement(0))}
+          description={item.description}
+          price={item.price}
         ></CounterButton>
-
-<CounterButton
-          imageSrc={dryClean}
-          imageAlt="Slack"
-          sendData={getSlacks}
-          count={localSlacks}
-          label="Slacks"
-        ></CounterButton>
-        <CounterButton
-          imageSrc={dryClean}
-          imageAlt="Jacket"
-          sendData={getJacket}
-          count={localJacket}
-          label="Jacket"
-        ></CounterButton>
+        )
+      )}
         </div>
       </Collapse>
 

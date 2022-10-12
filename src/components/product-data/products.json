@@ -1,0 +1,122 @@
+[
+    {
+      "id": 0,
+      "price": "$10.95",
+      "description": "Sweater",
+      "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+    },
+    {
+        "id": 1,
+        "price": "$6.95",
+        "description": "Dress Shirt - Dry Clean",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 2,
+        "price": "$7.95",
+        "description": "Blouse",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 3,
+        "price": "$3.49",
+        "description": "Dress Shirt - Wash + Press(Hanger)",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 4,
+        "price": "$5.95",
+        "description": "Scarf",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 5,
+        "price": "$5.95",
+        "description": "Tie",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 6,
+        "price": "$14.95",
+        "description": "Outer Jacket",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 7,
+        "price": "$8.95",
+        "description": "Vest",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 8,
+        "price": "$18.95",
+        "description": "Coat",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 9,
+        "price": "$14.95",
+        "description": "Jumpsuit",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 10,
+        "price": "$22.90",
+        "description": "Dress - Delicate",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 11,
+        "price": "$24.90",
+        "description": "Evening Gown / Dress",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 12,
+        "price": "$17.79",
+        "description": "Dress",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 13,
+        "price": "$8.95",
+        "description": "Skirt",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 14,
+        "price": "$8.95",
+        "description": "Shorts",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 15,
+        "price": "$8.95",
+        "description": "Jeans / Khakis",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 16,
+        "price": "$30.85",
+        "description": "3-Piece Suit",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 17,
+        "price": "$21.90",
+        "description": "2-Piece Suit",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 18,
+        "price": "$10.95",
+        "description": "Dress Pants",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      },
+      {
+        "id": 19,
+        "price": "$10.95",
+        "description": "Jacket / Blazer",
+        "price_id": "price_1LrnjrEkFqXnuEeNPiAbdxkq"
+      }
+  ]
