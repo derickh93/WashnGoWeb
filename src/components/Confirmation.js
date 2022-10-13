@@ -5,6 +5,10 @@ import { format } from "date-fns";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
+import { useSelector } from "react-redux";
+import dryCleanProds from "./product-data/products.json";
+import washProds from "./product-data/product-wash.json";
+
 
 
 import { useHistory } from "react-router-dom";
@@ -18,10 +22,32 @@ export default function Confirmation() {
     checkoutSession
   } = useAuth();
 
+  const { arr } = useSelector((state) => state.dryClean);
+  const { arrWash } = useSelector((state) => state.wash);
+
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  //////////////////////////////////////////////////////////////////////
+  const line_items = [];
+  for(let i = 0; i < arr.length;i++) {
+    if(arr[i] > 0){
+      line_items.push(     {
+        price: dryCleanProds[i].price_id,
+        quantity: arr[i],
+      });    }
+  }
 
 
+  for(let i = 0; i < arrWash.length;i++) {
+    if(arrWash[i] > 0){
+      line_items.push(     {
+        price: washProds[i].price_id,
+        quantity: arrWash[i],
+      });    }
+  }
+
+  console.log(line_items)
+  /////////////////////////////////////////////////////////////////////
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
     readProfile(currentUser.uid);
@@ -31,7 +57,7 @@ export default function Confirmation() {
     e.preventDefault();
     setLoading(true);
     try {
-      checkoutSession(userData.id,addition,mixed,seperate,shirt,slacks,jacket).then((url) => {
+      checkoutSession(userData.id,line_items).then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -79,14 +105,6 @@ export default function Confirmation() {
     var softener = JSON.parse(sessionStorage.getItem("softener"));
     var additional = JSON.parse(sessionStorage.getItem("additional"));
 
-    var seperate = JSON.parse(sessionStorage.getItem("seperate"));
-    var mixed = JSON.parse(sessionStorage.getItem("mixed"));
-    var addition = JSON.parse(sessionStorage.getItem("addition"));
-
-    var shirt = JSON.parse(sessionStorage.getItem("shirt"));
-    var slacks = JSON.parse(sessionStorage.getItem("slacks"));
-    var jacket = JSON.parse(sessionStorage.getItem("jacket"));
-
     var address;
     if (data.shipping) {
       address = data.shipping.address;
@@ -98,18 +116,12 @@ export default function Confirmation() {
       puDate: format(day, "MMMM do, yyyy"),
       puTime: time,
       address: address,
-      mixed: mixed,
-      seperate: seperate,
-      addition: addition,
       dayOfWeek: format(day, "EEEE"),
       det: detergent,
       dry: dryer,
       soft: softener,
       addit: additional,
       whi: whites,
-      shirt:shirt,
-      slacks:slacks,
-      jacket:jacket
     };
   } catch (err) {
     console.log(err);

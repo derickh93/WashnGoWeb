@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../App.css";
 import {  Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import ProductConfirmation from "../ProductConfirmation";
 
 export default class ConfirmDetails extends Component {
   constructor(props) {
@@ -11,20 +12,14 @@ export default class ConfirmDetails extends Component {
       address: this.props.commonProps.address,
       puDate: this.props.commonProps.puDate,
       puTime: this.props.commonProps.puTime,
-      mixed: this.props.commonProps.mixed,
-      seperate: this.props.commonProps.seperate,
-      addition: this.props.commonProps.addition,
+
       dayOfWeek: this.props.commonProps.dayOfWeek,
       detergent: this.props.commonProps.det,
 
       dryer: this.props.commonProps.dry,
       softener: this.props.commonProps.soft,
       additional: this.props.commonProps.addit,
-      whites: this.props.commonProps.whi,
-
-      shirt: this.props.commonProps.shirt,
-      slacks: this.props.commonProps.slacks,
-      jacket: this.props.commonProps.jacket,
+      whites: this.props.commonProps.whi
 
     };
     //binding in constuctor
@@ -37,18 +32,12 @@ export default class ConfirmDetails extends Component {
       address: e.target.value,
       puDate: e.target.value,
       puTime: e.target.value,
-      mixed: e.target.value,
-      seperate: e.target.value,
-      addition: e.target.value,
       dayOfWeek: e.target.value,
       detergent: e.target.value,
       dryer: e.target.value,
       softener: e.target.value,
       additional: e.target.value,
       whites: e.target.value,
-      shirt: e.target.value,
-      slacks: e.target.value,
-      jacket: e.target.value,
 
     };
     this.setState({ course });
@@ -100,34 +89,7 @@ export default class ConfirmDetails extends Component {
             </Link>
           </div>
         </div>
-        <div style={{ display: "flex" }}>
-          <div>
-            <span className="prefTitle">Pickup Amount</span>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Mixed: {this.state.mixed}
-            </div>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Seperate: {this.state.seperate}
-            </div>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Additional: {this.state.addition}
-            </div>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Shirts: {this.state.shirt}
-            </div>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Slacks: {this.state.slacks}
-            </div>
-            <div className="prefDetails" onChange={this.handlechange}>
-              No. Jackets: {this.state.jacket}
-            </div>
-          </div>
-          <div style={{ marginLeft: "auto" }}>
-            <Link to="/products" className="EditLink">
-              Edit
-            </Link>
-          </div>
-        </div>
+        <ProductConfirmation/>
           <div style={{ display: "flex" }}>
             <div>
               <span className="prefTitle">Preferences</span>

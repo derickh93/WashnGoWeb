@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, Collapse,Button} from "react-bootstrap";
+import { Alert, Collapse, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { TimePicker } from "./SchedulePage/TimePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,36 +8,22 @@ import dryCleanProds from "./product-data/products.json";
 import washProds from "./product-data/product-wash.json";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../redux/dry-clean-qty";
-import {incrementWash,decrementWash} from "../redux/wash-qty"
+import { incrementWash, decrementWash } from "../redux/wash-qty";
+import washingMachine from "../Assets/washing-machine.png";
+import dryClean from "../Assets/dry-cleaning.png";
 
 export default function Products() {
-  const {
-    logout,
-    customerPortal,
-    readProfile,
-    currentUser,
-    getPrices,
-    getProducts,
-  } = useAuth();
+  const { logout, customerPortal, readProfile, currentUser } = useAuth();
   const [error, setError] = useState("");
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
-
 
   const [openDC, setOpenDC] = React.useState(false);
   const [openWash, setOpenWash] = React.useState(true);
 
   const history = useHistory();
   const dispatch = useDispatch();
-
-  getPrices().then((res) => {
-    console.log(res);
-  });
-
-  getProducts().then((res) => {
-    console.log(res);
-  });
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
@@ -76,7 +62,16 @@ export default function Products() {
 
   async function nextPage() {
     try {
-      history.push("/preferences");
+      const sumArr = arr.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);
+
+      const sumArrWash = arrWash.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);
+      if (sumArr === 0 && sumArrWash === 0) {
+        setError("Select an option");
+      } else history.push("/preferences");
     } catch (err) {
       console.log(err.message);
     }
@@ -148,6 +143,11 @@ export default function Products() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
+        <img
+          src={washingMachine}
+          alt="washing machine"
+          style={{ height: 50, width: 50, padding: 5 }}
+        />
         {!openWash && (
           <Button
             style={{ backgroundColor: "#1C2F74" }}
@@ -163,76 +163,88 @@ export default function Products() {
         )}
         <Collapse in={openWash}>
           <div id="example-collapse-text">
-          {washProds.map((item, idx) => (
+            {washProds.map((item, idx) => (
               <div>
-                <div className="productRow">
-                  <h6>{item.description}:</h6>
-                  <h6>{item.price}:</h6>
-                </div>
-                <div className="products">
-                  <Button
-                                      style={{backgroundColor:"#1C2F74"}}
+                <div className="row d-flex align-items-center">
+                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-2">{item.price}</h6>
+                  <div className=" col-6 d-flex flex-row align-items-center">
+                    <Button
+                      style={{ backgroundColor: "#1C2F74",padding:0}}
+                      className="buttonEffects"
+                      onClick={() => {
+                        dispatch(decrementWash(idx));
+                      }}
+                    >
+                      -
+                    </Button>
+                    <h1 style={{ padding: "5px",fontSize:30}}>{arrWash[idx]}</h1>
 
-                    className="buttonEffects"
-                    onClick={() => {
-                      dispatch(decrementWash(idx));
-                    }}
-                    >-</Button>
-                    <h1 style={{ padding: "10px" }}>{arrWash[idx]}</h1>
-
-                  <Button
-                                      style={{backgroundColor:"#1C2F74"}}
-
-                    className="buttonEffects"
-                    onClick={() => {
-                      dispatch(incrementWash(idx));
-                    }}
-                  >+</Button>
+                    <Button
+                      style={{ backgroundColor: "#1C2F74" ,padding:0}}
+                      className="buttonEffects"
+                      onClick={() => {
+                        dispatch(incrementWash(idx));
+                      }}
+                    >
+                      +
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </Collapse>
-
         {!openDC && (
-          <Button
-            style={{ backgroundColor: "#1C2F74" }}
-            onClick={() => {
-              setOpenDC(!openDC);
-              setOpenWash(!openWash);
-            }}
-            aria-controls="example-collapse-text"
-            aria-expanded={openDC}
-          >
-            Dry Clean
-          </Button>
+          <div>
+            <img
+              src={dryClean}
+              alt="dry clean"
+              style={{ height: 50, width: 50, padding: 5 }}
+            />
+
+            <Button
+              style={{ backgroundColor: "#1C2F74" }}
+              onClick={() => {
+                setOpenDC(!openDC);
+                setOpenWash(!openWash);
+              }}
+              aria-controls="example-collapse-text"
+              aria-expanded={openDC}
+            >
+              Dry Clean
+            </Button>
+          </div>
         )}
         <Collapse in={openDC}>
           <div id="example-collapse-text">
             {dryCleanProds.map((item, idx) => (
               <div>
-                <div className="productRow">
-                  <h6>{item.description}:</h6>
-                  <h6>{item.price}:</h6>
-                </div>
-                <div className="products">
+                <div className="row d-flex align-items-center">
+                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-2">{item.price}</h6>
+                  <div className=" col-6 d-flex flex-row align-items-center">
                   <Button
                     className="buttonEffects"
-                    style={{backgroundColor:"#1C2F74"}}
+                    style={{ backgroundColor: "#1C2F74", padding:0}}
                     onClick={() => {
                       dispatch(decrement(idx));
                     }}
-                    >-</Button>
-                    <h1 style={{ padding: "10px"}}>{arr[idx]}</h1>
+                  >
+                    -
+                  </Button>
+                  <h1 style={{ padding: "10px" }}>{arr[idx]}</h1>
 
                   <Button
                     className="buttonEffects"
-                    style={{backgroundColor:"#1C2F74"}}
-
+                    style={{ backgroundColor: "#1C2F74", padding:0}}
                     onClick={() => {
                       dispatch(increment(idx));
                     }}
-                  >+</Button>
+                  >
+                    +
+                  </Button>
+                  </div>
                 </div>
               </div>
             ))}

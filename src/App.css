@@ -84,12 +84,6 @@ h3 {
   padding: 5px;
 }
 
-.products {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
 .thankBtn {
   width: 200px;
   height: 35px;
@@ -116,7 +110,7 @@ h3 {
 
 .buttonEffects {
   background-color: #1C2F74;
-  width: 50px;
+  width: 40px;
   height: 25px;
   border: none;
   border-radius: 40px;

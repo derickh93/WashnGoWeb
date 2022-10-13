@@ -287,22 +287,14 @@ export function AuthProvider({ children }) {
   ///////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////
-  const checkoutSession = async (cidP,add,mix,sep,shirt,slacks,jacket) => {
+  const checkoutSession = async (cidP,line_items) => {
     const response = await axios
       .post(`${domain}create-checkout-session`, {
         cid: cidP,
-        add,
-        mix,
-        sep,
-        shirt,
-        slacks,
-        jacket,
+        line_items,
         md: {
           day: JSON.parse(sessionStorage.getItem("pickupDay")),
           time: JSON.parse(sessionStorage.getItem("pickupTime")),
-          bags: JSON.parse(sessionStorage.getItem("bags")),
-          pieces: JSON.parse(sessionStorage.getItem("pieces")),
-
           dryer: JSON.parse(sessionStorage.getItem("dryer")),
           detergent: JSON.parse(sessionStorage.getItem("detergent")),
           whites: JSON.parse(sessionStorage.getItem("whites")),
