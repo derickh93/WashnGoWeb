@@ -17,6 +17,7 @@ export const TimePicker = ({ children, onClick }) => {
     transition: 0.5s all ease-out;
     outline: invert;
     background-color: #1C2F74;
+    margin: 5px
 
     &:hover {
       background-color: #1C2F74;

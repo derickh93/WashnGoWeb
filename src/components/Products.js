@@ -143,14 +143,10 @@ export default function Products() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
-        <img
-          src={washingMachine}
-          alt="washing machine"
-          style={{ height: 50, width: 50, padding: 5 }}
-        />
+
         {!openWash && (
           <Button
-            style={{ backgroundColor: "#1C2F74" }}
+            style={{ backgroundColor: "#1C2F74",margin:5}}
             onClick={() => {
               setOpenWash(!openWash);
               setOpenDC(!openDC);
@@ -163,9 +159,14 @@ export default function Products() {
         )}
         <Collapse in={openWash}>
           <div id="example-collapse-text">
+          <img
+          src={washingMachine}
+          alt="washing machine"
+          style={{ height: 50, width: 50, padding: 5 }}
+        />
             {washProds.map((item, idx) => (
-              <div>
-                <div className="row d-flex align-items-center">
+              <div style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
+              <div className="row d-flex align-items-center">
                   <h6 className="col-4">{item.description}</h6>
                   <h6 className="col-2">{item.price}</h6>
                   <div className=" col-6 d-flex flex-row align-items-center">
@@ -197,14 +198,9 @@ export default function Products() {
         </Collapse>
         {!openDC && (
           <div>
-            <img
-              src={dryClean}
-              alt="dry clean"
-              style={{ height: 50, width: 50, padding: 5 }}
-            />
 
             <Button
-              style={{ backgroundColor: "#1C2F74" }}
+              style={{ backgroundColor: "#1C2F74", margin:5}}
               onClick={() => {
                 setOpenDC(!openDC);
                 setOpenWash(!openWash);
@@ -217,9 +213,15 @@ export default function Products() {
           </div>
         )}
         <Collapse in={openDC}>
+  
           <div id="example-collapse-text">
+          <img
+              src={dryClean}
+              alt="dry clean"
+              style={{ height: 50, width: 50, padding: 5 }}
+            />
             {dryCleanProds.map((item, idx) => (
-              <div>
+              <div style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
                 <div className="row d-flex align-items-center">
                   <h6 className="col-4">{item.description}</h6>
                   <h6 className="col-2">{item.price}</h6>

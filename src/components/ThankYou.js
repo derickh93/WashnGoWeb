@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
 import MyButton from "./Button";
 import { Button } from "react-bootstrap";
+import {useSelector} from "react-redux"
+
 
 import { useHistory } from "react-router-dom";
 
@@ -10,12 +12,28 @@ import "../App.css";
 
 export default function Confirmation() {
 
-  const { logout, readProfile, currentUser, customerPortal } = useAuth();
+  const { logout, readProfile, currentUser, customerPortal, sendMessage} = useAuth();
 
   const pickupTime = JSON.parse(sessionStorage.getItem("pickupTime"));
   const pickupDate = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
 
+  const puTime = JSON.parse(sessionStorage.getItem("pickupTime"));
+  const rawDay = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
+  const puDay = format(rawDay, "MMMM do, yyyy");
+
   const history = useHistory();
+
+  var gsDayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+  
+  var dayName = gsDayNames[rawDay.getDay()];
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
@@ -58,6 +76,39 @@ export default function Confirmation() {
       history.push("/time");
     } catch (err) {}
   }
+
+  const address = JSON.parse(sessionStorage.getItem("stripeInstance")).shipping.address;
+
+  const { arr } = useSelector((state) => state.dryClean);
+  const sumArr = arr.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
+  const { arrWash } = useSelector((state) => state.wash);
+  const sumArrWash= arrWash.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
+  useEffect(()=>{
+    console.log(address);
+    sendMessage(
+      `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${dayName}, ${puDay} between ${puTime}.`,
+      stripeData.phone,
+      stripeData.metadata.Text
+    )
+      .catch((error) => {
+        console.log(error);
+      })
+      .then(() => {
+        sendMessage(
+          `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}.
+          \nAddress: ${address.line1}\n${address.city}\n${address.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`,
+          process.env.REACT_APP_TWILIO_TO,
+          "true"
+        ).catch((error) => {
+          console.log(error);
+        });
+      });}, [puDay,puTime,sendMessage,stripeData,dayName,sumArr,sumArrWash,address]) // <-- empty dependency array
 
   return (
     <div>

@@ -33,6 +33,11 @@ export default function Confirmation() {
     if(arr[i] > 0){
       line_items.push(     {
         price: dryCleanProds[i].price_id,
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 99
+        },
         quantity: arr[i],
       });    }
   }
@@ -42,6 +47,11 @@ export default function Confirmation() {
     if(arrWash[i] > 0){
       line_items.push(     {
         price: washProds[i].price_id,
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 99
+        },
         quantity: arrWash[i],
       });    }
   }
@@ -100,9 +110,9 @@ export default function Confirmation() {
     var time = JSON.parse(sessionStorage.getItem("pickupTime"));
 
     var detergent = JSON.parse(sessionStorage.getItem("detergent"));
-    var dryer = JSON.parse(sessionStorage.getItem("dryer"));
-    var whites = JSON.parse(sessionStorage.getItem("whites"));
-    var softener = JSON.parse(sessionStorage.getItem("softener"));
+    // var dryer = JSON.parse(sessionStorage.getItem("dryer"));
+    // var whites = JSON.parse(sessionStorage.getItem("whites"));
+    // var softener = JSON.parse(sessionStorage.getItem("softener"));
     var additional = JSON.parse(sessionStorage.getItem("additional"));
 
     var address;
@@ -118,10 +128,10 @@ export default function Confirmation() {
       address: address,
       dayOfWeek: format(day, "EEEE"),
       det: detergent,
-      dry: dryer,
-      soft: softener,
+      // dry: dryer,
+      // soft: softener,
       addit: additional,
-      whi: whites,
+      // whi: whites,
     };
   } catch (err) {
     console.log(err);

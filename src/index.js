@@ -5,12 +5,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ErrorBoundary from "./components/ErrorBoundary";
 import store from "./redux/store"
 import {Provider} from "react-redux"
+import {PersistGate} from "redux-persist/integration/react";
+import persistStore from "redux-persist/es/persistStore";
 
+let persistor = persistStore(store)
 ReactDOM.render(
   <React.StrictMode>
     <ErrorBoundary>
       <Provider store={store}>
-      <App />
+        <PersistGate persistor={persistor}>      <App />
+</PersistGate>
       </Provider>
     </ErrorBoundary>
   </React.StrictMode>,

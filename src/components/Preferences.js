@@ -10,24 +10,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function Preferences() {
   const [error, setError] = useState("");
 
-  const detergentChoice = "All free and clear";
-  const detergentChoiceTwo = "Tide simply clean";
+  const detergentChoice = "Scented";
+  const detergentChoiceTwo = "Non-Scented";
 
-  const whiteChoice = "Bleach";
-  const whiteChoiceTwo = "No Bleach";
+  // const whiteChoice = "Bleach";
+  // const whiteChoiceTwo = "No Bleach";
 
-  const softenerChoice = "Suavitel and Dry Sheets";
-  const softenerChoiceTwo = "No Softener";
+  // const softenerChoice = "Suavitel and Dry Sheets";
+  // const softenerChoiceTwo = "No Softener";
 
-  const dryerChoice = "High";
-  const dryerChoiceTwo= "Medium";
-  const dryerChoiceThree = "Low";
+  // const dryerChoice = "High";
+  // const dryerChoiceTwo= "Medium";
+  // const dryerChoiceThree = "Low";
 
   const {
     setDetergent,
-    setSoftener,
-    setDryer,
-    setWhites,
+    // setSoftener,
+    // setDryer,
+    // setWhites,
     setAdditional,
     logout,
     customerPortal,
@@ -60,20 +60,20 @@ export default function Preferences() {
     sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
   }
 
-  const whitesData = JSON.parse(sessionStorage.getItem("whites"));
-  if (!whitesData) {
-    sessionStorage.setItem("whites", JSON.stringify(whiteChoice));
-  }
+  // const whitesData = JSON.parse(sessionStorage.getItem("whites"));
+  // if (!whitesData) {
+  //   sessionStorage.setItem("whites", JSON.stringify(whiteChoice));
+  // }
 
-  const dryerData = JSON.parse(sessionStorage.getItem("dryer"));
-  if (!dryerData) {
-    sessionStorage.setItem("dryer", JSON.stringify(dryerChoice));
-  }
+  // const dryerData = JSON.parse(sessionStorage.getItem("dryer"));
+  // if (!dryerData) {
+  //   sessionStorage.setItem("dryer", JSON.stringify(dryerChoice));
+  // }
 
-  const softenerData = JSON.parse(sessionStorage.getItem("softener"));
-  if (!softenerData) {
-    sessionStorage.setItem("softener", JSON.stringify(softenerChoice));
-  }
+  // const softenerData = JSON.parse(sessionStorage.getItem("softener"));
+  // if (!softenerData) {
+  //   sessionStorage.setItem("softener", JSON.stringify(softenerChoice));
+  // }
 
   const additionalData =
     JSON.parse(sessionStorage.getItem("additional"));
@@ -100,20 +100,20 @@ export default function Preferences() {
     sessionStorage.setItem("detergent", JSON.stringify(val));
   };
 
-  const handleDryer = (val) => {
-    setDryer(val);
-    sessionStorage.setItem("dryer", JSON.stringify(val));
-  };
+  // const handleDryer = (val) => {
+  //   setDryer(val);
+  //   sessionStorage.setItem("dryer", JSON.stringify(val));
+  // };
 
-  const handleWhites = (val) => {
-    setWhites(val);
-    sessionStorage.setItem("whites", JSON.stringify(val));
-  };
+  // const handleWhites = (val) => {
+  //   setWhites(val);
+  //   sessionStorage.setItem("whites", JSON.stringify(val));
+  // };
 
-  const handleSoftener = (val) => {
-    setSoftener(val);
-    sessionStorage.setItem("softener", JSON.stringify(val));
-  };
+  // const handleSoftener = (val) => {
+  //   setSoftener(val);
+  //   sessionStorage.setItem("softener", JSON.stringify(val));
+  // };
 
   async function nextPage() {
     try {
@@ -207,7 +207,7 @@ export default function Preferences() {
                 pointColor="#1C2F74"
                 value={detergentChoice}
               >
-                All Free & Clear
+                {detergentChoice}
               </RadioButton>
               <RadioButton
                 iconSize={20}
@@ -216,12 +216,12 @@ export default function Preferences() {
                 pointColor="#1C2F74"
                 value={detergentChoiceTwo}
               >
-                Tide
+                {detergentChoiceTwo}
               </RadioButton>
             </RadioGroup>
           </div>
 
-          <div style={{ padding: "10px" }}>
+          {/* <div style={{ padding: "10px" }}>
             <span>Whites</span>
             <RadioGroup
               horizontal
@@ -247,8 +247,8 @@ export default function Preferences() {
                 No Bleach
               </RadioButton>
             </RadioGroup>
-          </div>
-
+          </div> */}
+{/* 
           <span>Softener</span>
 
           <div style={{ padding: "10px" }}>
@@ -314,7 +314,7 @@ export default function Preferences() {
                 </RadioButton>
               </RadioGroup>
             </div>
-          </div>
+          </div> */}
           {error && <Alert variant="danger">{error}</Alert>}
         </div>
       </div>
