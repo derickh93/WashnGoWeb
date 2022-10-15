@@ -6,7 +6,6 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import store from "./redux/store"
 import {Provider} from "react-redux"
 import {PersistGate} from "redux-persist/integration/react";
-import {PersistStore} from "redux-persist";
 import persistStore from "redux-persist/es/persistStore";
 
 let persistor = persistStore(store)

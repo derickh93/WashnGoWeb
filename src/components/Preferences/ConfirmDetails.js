@@ -16,10 +16,10 @@ export default class ConfirmDetails extends Component {
       dayOfWeek: this.props.commonProps.dayOfWeek,
       detergent: this.props.commonProps.det,
 
-      dryer: this.props.commonProps.dry,
-      softener: this.props.commonProps.soft,
+      // dryer: this.props.commonProps.dry,
+      // softener: this.props.commonProps.soft,
       additional: this.props.commonProps.addit,
-      whites: this.props.commonProps.whi
+      // whites: this.props.commonProps.whi
 
     };
     //binding in constuctor
@@ -34,10 +34,10 @@ export default class ConfirmDetails extends Component {
       puTime: e.target.value,
       dayOfWeek: e.target.value,
       detergent: e.target.value,
-      dryer: e.target.value,
-      softener: e.target.value,
+      // dryer: e.target.value,
+      // softener: e.target.value,
       additional: e.target.value,
-      whites: e.target.value,
+      // whites: e.target.value,
 
     };
     this.setState({ course });
@@ -96,7 +96,7 @@ export default class ConfirmDetails extends Component {
               <div className="prefDetails" onChange={this.handlechange}>
                 Detergent: {this.state.detergent}
               </div>
-              <div className="prefDetails" onChange={this.handlechange}>
+              {/* <div className="prefDetails" onChange={this.handlechange}>
                 Softener: {this.state.softener}
               </div>
               <div className="prefDetails" onChange={this.handlechange}>
@@ -104,7 +104,7 @@ export default class ConfirmDetails extends Component {
               </div>
               <div className="prefDetails" onChange={this.handlechange}>
                 Dryer: {this.state.dryer}
-              </div>
+              </div> */}
               <div className="prefDetails" onChange={this.handlechange}>
                 Additional Preferences: {this.state.additional}
               </div>
