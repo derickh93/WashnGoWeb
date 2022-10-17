@@ -79,6 +79,7 @@ export default function Time() {
   };
 
   async function nextPage() {
+    if(error === ""){
     try {
       setLoading(true);
       history.push("/products");
@@ -87,6 +88,7 @@ export default function Time() {
       console.log(err.message);
     }
     setLoading(false);
+  }
   }
 
   return (
@@ -133,12 +135,20 @@ export default function Time() {
       </div>
       <div className="w-100 text-center mt-3">
         {error && <Alert variant="danger">{error}</Alert>}
-
         <DatePicker
           getSelectedDay={(val) => {
+            const currentTime = new Date();
+            console.log(currentTime)
+            console.log(new Date(val).getDate())
+            if(currentTime.getHours() >= 17 && new Date(val).getDate() === currentTime.getDate() && new Date(val).getMonth() === currentTime.getMonth()){
+              setError("Please select next available date");
+            }
+            else{
+              setError("");
             selectedDay(val);
+            }
           }}
-          endDate={100}
+          endDate={31}
           selectDate={pickupDate}
           labelFormat={"MMMM"}
           color={"#1C2F74"}

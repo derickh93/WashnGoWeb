@@ -3,6 +3,8 @@ import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
+import eyeShow from "../Assets/eye-regular.svg"
+import eyeHide from "../Assets/eye-slash-regular.svg"
 
 export default function Login() {
   const emailRef = useRef();
@@ -11,6 +13,12 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  const [type,setType] = useState('password');
+
+  function showHide (e) {
+  setType(type === 'text' ? 'password' : 'text');
+}
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -70,7 +78,11 @@ export default function Login() {
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <div className="d-flex align-items-center justify-content-center">
+
+              <Form.Control type={type} ref={passwordRef} required />
+              <img style={{height:25,width:25,padding: 2}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
+</div>
             </Form.Group>
             <Button
               style={{ margin: "0px",backgroundColor:'#1C2F74'}}

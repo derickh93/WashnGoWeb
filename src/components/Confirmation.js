@@ -25,6 +25,10 @@ export default function Confirmation() {
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
 
+  let arrWashSum = arrWash.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   let validSum = 0;
@@ -149,6 +153,7 @@ export default function Confirmation() {
       // dry: dryer,
       // soft: softener,
       addit: additional,
+      arrWashSum : arrWashSum
       // whi: whites,
     };
   } catch (err) {

@@ -33,15 +33,14 @@ export function AuthProvider({ children }) {
   const [hotel, setHotel] = useState(false);
   const [code, setCode] = useState("");
   const [email, setEmail] = useState(false);
-  const [phone, setPhone] = useState(false);
-  const [text, setText] = useState(false);
   const domain = process.env.REACT_APP_DOMAIN;
 
-  const addNewProfile = async (authID, custID) => {
+  const addNewProfile = async (authID, custID,phoneNumber) => {
     const user_profileRef = data.ref("user_profile");
     const user_profile = {
       authID,
       custID,
+      phoneNumber
     };
     const result = await user_profileRef.push(user_profile);
     return result;
@@ -58,7 +57,18 @@ export function AuthProvider({ children }) {
       console.log(result);
   };
 
-  const signup = async (email, password, stripeUser) => {
+  // const checkPhoneNumber = async (uid,) => {
+  //   var ref = firebase.database().ref("user_profile");
+  //   const result = await ref
+  //     .orderByChild("authID")
+  //     .equalTo(uid)
+  //     .on("child_added", (snapshot) => {
+  //       getCustomer(snapshot.child("phoneNumber").val());
+  //     });
+  //     console.log(result);
+  // };
+
+  const signup = async (email, password, stripeUser,phoneNumber) => {
     const authObj = await auth
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {
@@ -66,12 +76,12 @@ export function AuthProvider({ children }) {
       })
       .then((result) => {
         const uid = result.user.uid;
-        createCustomer(uid, stripeUser);
+        createCustomer(uid, stripeUser,phoneNumber);
       });
     return authObj;
   };
 
-  const createCustomer = async (uid, stripeUser) => {
+  const createCustomer = async (uid, stripeUser,phoneNumber) => {
     try {
       const response = await axios.post(`${domain}create`, {
         firstName: stripeUser.firstName,
@@ -81,13 +91,12 @@ export function AuthProvider({ children }) {
       });
 
       if (response.data.success) {
-        //setCurrentStripeUser(response.data.stripeCust.id);
         setCurrentStripeInstance(response.data.stripeCust);
         sessionStorage.setItem(
           "stripeInstance",
           JSON.stringify(response.data.stripeCust)
         );
-        addNewProfile(uid, response.data.stripeCust.id);
+        addNewProfile(uid, response.data.stripeCust.id,phoneNumber);
       }
     } catch (error) {
       console.log("Error", error);
@@ -377,8 +386,6 @@ export function AuthProvider({ children }) {
     setSoftener,
     dryer,
     setDryer,
-    phone,
-    setPhone,
     additional,
     setAdditional,
     doorman,
@@ -389,8 +396,6 @@ export function AuthProvider({ children }) {
     setCode,
     email,
     setEmail,
-    text,
-    setText,
     sendMessage,
     handleInvoice,
     checkoutSession,

@@ -3,7 +3,7 @@ import GoogleMap from "./GoogleMap";
 import "../App.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { Alert,Button} from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 
 export default function Address() {
   const [error, setError] = useState("");
@@ -18,16 +18,14 @@ export default function Address() {
     setHotel,
     code,
     setCode,
-    phone,
-    setPhone,
-    text,
-    setText,
-    customerPortal,logout,readProfile,currentUser
+    customerPortal,
+    logout,
+    readProfile,
+    currentUser,
   } = useAuth();
   const history = useHistory();
   const aptRef = useRef();
   const codeRef = useRef();
-
 
   const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
@@ -71,8 +69,8 @@ export default function Address() {
         Doorman: doorman,
         Hotel: hotel,
         Door_Gate_Code: codeVal,
-        Phone: phone,
-        Text: text,
+        Contact: document.querySelector('input[name="contact"]:checked').value
+        ,
       };
       addAddress(
         stripeData.id,
@@ -126,7 +124,7 @@ export default function Address() {
 
     try {
       setLoading(true);
-      customerPortal(userData.id,'time').then((url) => {
+      customerPortal(userData.id, "time").then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -139,8 +137,17 @@ export default function Address() {
     <div>
       <div className="homepage">
         {error && <Alert variant="danger">{error}</Alert>}
-        <div style={{ fontWeight: "bold" }}>Let's start with your address</div>
       </div>
+      <span
+        style={{
+          fontWeight: "bold",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        Let's start with your address
+      </span>
+
       <div
         style={{
           display: "flex",
@@ -266,32 +273,15 @@ export default function Address() {
       >
         Contact Preferences
       </div>
-      <div>
-        <div>
-          <input
-            type="checkbox"
-            id="phone"
-            name="phone"
-            value={phone}
-            onChange={() => {
-              setPhone(!phone);
-              console.log("Phone: " + !phone);
-            }}
-          />
-          Call
+      <div className="d-flex flex-column">
+        <div style={{ padding: 5 }}>
+          {" "}
+          <input type="radio" value="Call" name="contact" checked/> Call
         </div>
-        <div>
-          <input
-            type="checkbox"
-            id="text"
-            name="text"
-            value={text}
-            onChange={() => {
-              setText(!text);
-              console.log("Text: " + !text);
-            }}
-          />
-          Text
+
+        <div style={{ padding: 5 }}>
+          {" "}
+          <input type="radio" value="Text" name="contact" /> Text
         </div>
       </div>
       <div className="address">

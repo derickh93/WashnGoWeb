@@ -6,12 +6,16 @@ import { TimePicker } from "./SchedulePage/TimePicker";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector, useDispatch } from "react-redux";
+
 
 export default function Preferences() {
   const [error, setError] = useState("");
 
   const detergentChoice = "Scented";
   const detergentChoiceTwo = "Non-Scented";
+
+  const { arrWash } = useSelector((state) => state.wash);
 
   // const whiteChoice = "Bleach";
   // const whiteChoiceTwo = "No Bleach";
@@ -38,6 +42,11 @@ export default function Preferences() {
 
   const history = useHistory();
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
+
+  let sumArrWash = arrWash.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
   if (!userData) {
     readProfile(currentUser.uid);
   }
@@ -192,6 +201,7 @@ export default function Preferences() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
+        {sumArrWash > 0 &&
         <div style={{ padding: "10px" }}>
           <span>Detergent Scent</span>
           <div style={{ padding: "10px" }}>
@@ -214,8 +224,7 @@ export default function Preferences() {
                 iconInnerSize={10}
                 rootColor="#1C2F74"
                 pointColor="#1C2F74"
-                value={detergentChoiceTwo}
-              >
+                value={detergentChoiceTwo}>
                 {detergentChoiceTwo}
               </RadioButton>
             </RadioGroup>
@@ -315,8 +324,8 @@ export default function Preferences() {
               </RadioGroup>
             </div>
           </div> */}
-          {error && <Alert variant="danger">{error}</Alert>}
-        </div>
+        </div>}
+        {error && <Alert variant="danger">{error}</Alert>}
       </div>
       <span
         style={{

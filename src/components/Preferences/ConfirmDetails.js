@@ -4,6 +4,7 @@ import {  Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProductConfirmation from "../ProductConfirmation";
 
+
 export default class ConfirmDetails extends Component {
   constructor(props) {
     super(props);
@@ -19,12 +20,14 @@ export default class ConfirmDetails extends Component {
       // dryer: this.props.commonProps.dry,
       // softener: this.props.commonProps.soft,
       additional: this.props.commonProps.addit,
+      arrWashSum : this.props.commonProps.arrWashSum
       // whites: this.props.commonProps.whi
 
     };
     //binding in constuctor
     this.handleNameChange.bind(this);
   }
+  
 
   handleNameChange(e) {
     const course = {
@@ -92,10 +95,11 @@ export default class ConfirmDetails extends Component {
         <ProductConfirmation/>
           <div style={{ display: "flex" }}>
             <div>
-              <span className="prefTitle">Preferences</span>
+            <span className="prefTitle">Preferences</span>
+              {this.state.arrWashSum > 0 && <div>
               <div className="prefDetails" onChange={this.handlechange}>
                 Detergent: {this.state.detergent}
-              </div>
+              </div></div>}
               {/* <div className="prefDetails" onChange={this.handlechange}>
                 Softener: {this.state.softener}
               </div>
@@ -106,7 +110,7 @@ export default class ConfirmDetails extends Component {
                 Dryer: {this.state.dryer}
               </div> */}
               <div className="prefDetails" onChange={this.handlechange}>
-                Additional Preferences: {this.state.additional}
+                {this.state.arrWashSum > 0 ? 'Additional Instructions:' : 'Instructions: '} {this.state.additional === "" ? "": this.state.additional}
               </div>
             </div>
             <div style={{ marginLeft: "auto" }}>
