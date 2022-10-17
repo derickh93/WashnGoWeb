@@ -3,7 +3,10 @@ import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
 import MyButton from "./Button";
 import { Button } from "react-bootstrap";
-import {useSelector} from "react-redux"
+import {useSelector,useDispatch} from "react-redux"
+import { resetDry } from "../redux/dry-clean-qty";
+import { resetWash } from "../redux/wash-qty";
+
 
 
 import { useHistory } from "react-router-dom";
@@ -44,7 +47,11 @@ export default function Confirmation() {
 
   const firstName = stripeData.name.split(" ")[0];
 
+  const dispatch = useDispatch();
+
+
   async function handlePortal() {
+
 
     try {
       customerPortal(userData.id,'thankyou').then((url) => {
@@ -90,9 +97,11 @@ export default function Confirmation() {
   }, 0);
 
   useEffect(()=>{
-    console.log(address);
-    sendMessage(
-      `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${dayName}, ${puDay} between ${puTime}.`,
+    const customerMSG = `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${dayName}, ${puDay} between ${puTime}.`;
+    const adminMSG = `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}.
+    \nAddress: ${address.line1}\n${address.city}\n${address.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`;
+    sendMessage(customerMSG
+      ,
       stripeData.phone,
       stripeData.metadata.Text
     )
@@ -101,14 +110,18 @@ export default function Confirmation() {
       })
       .then(() => {
         sendMessage(
-          `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}.
-          \nAddress: ${address.line1}\n${address.city}\n${address.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`,
+          adminMSG,
           process.env.REACT_APP_TWILIO_TO,
           "true"
         ).catch((error) => {
           console.log(error);
         });
-      });}, [puDay,puTime,sendMessage,stripeData,dayName,sumArr,sumArrWash,address]) // <-- empty dependency array
+      });
+    
+      dispatch(resetWash());
+      dispatch(resetDry());
+    // eslint-disable-next-line
+    },[]) // <-- empty dependency array
 
   return (
     <div>

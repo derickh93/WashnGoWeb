@@ -9,11 +9,17 @@ export const dryCleanSlice = createSlice({
         }
         ,
         decrement: (state,{payload}) =>{
-            state.arr[payload] -= 1;
+            if(state.arr[payload] > 0){
+                state.arr[payload] -= 1;
+            }
+        }
+        ,
+        resetDry: (state) =>{
+            state.arr = new Array(20).fill(0);
         }
     }
 });
 
-export const {increment,decrement} = dryCleanSlice.actions;
+export const {increment,decrement,resetDry} = dryCleanSlice.actions;
 
 export default dryCleanSlice.reducer;

@@ -295,10 +295,10 @@ export function AuthProvider({ children }) {
         md: {
           day: JSON.parse(sessionStorage.getItem("pickupDay")),
           time: JSON.parse(sessionStorage.getItem("pickupTime")),
-          dryer: JSON.parse(sessionStorage.getItem("dryer")),
+          // dryer: JSON.parse(sessionStorage.getItem("dryer")),
           detergent: JSON.parse(sessionStorage.getItem("detergent")),
-          whites: JSON.parse(sessionStorage.getItem("whites")),
-          softener: JSON.parse(sessionStorage.getItem("softener")),
+          // whites: JSON.parse(sessionStorage.getItem("whites")),
+          // softener: JSON.parse(sessionStorage.getItem("softener")),
           additional: JSON.parse(sessionStorage.getItem("additional")),
         },
       })

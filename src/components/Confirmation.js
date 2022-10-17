@@ -27,10 +27,12 @@ export default function Confirmation() {
 
   const history = useHistory();
   const [loading, setLoading] = useState(false);
+  let validSum = 0;
   //////////////////////////////////////////////////////////////////////
   const line_items = [];
   for(let i = 0; i < arr.length;i++) {
     if(arr[i] > 0){
+      validSum += parseFloat(dryCleanProds[i].price.substring(1));
       line_items.push(     {
         price: dryCleanProds[i].price_id,
         adjustable_quantity: {
@@ -44,7 +46,9 @@ export default function Confirmation() {
 
 
   for(let i = 0; i < arrWash.length;i++) {
+
     if(arrWash[i] > 0){
+      validSum += parseFloat(washProds[i].price.substring(1));
       line_items.push(     {
         price: washProds[i].price_id,
         adjustable_quantity: {
@@ -56,7 +60,21 @@ export default function Confirmation() {
       });    }
   }
 
-  console.log(line_items)
+  if(validSum < 30){
+    const finalSum = 3000-(validSum*100)
+    line_items.push({
+        price_data: {
+          currency: 'usd',
+          unit_amount: finalSum,
+          product_data: {
+            name: 'Minimum',
+            description: '$30 minimum',
+            images: ['https://example.com/t-shirt.png'],
+          },
+        },
+        quantity: 1
+    })
+  }
   /////////////////////////////////////////////////////////////////////
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
