@@ -4,6 +4,9 @@ import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import InputMask from "react-input-mask";
 import validator from "validator";
+import eyeShow from "../Assets/eye-regular.svg"
+import eyeHide from "../Assets/eye-slash-regular.svg"
+
 
 export default function Signup() {
   const emailRef = useRef();
@@ -18,6 +21,11 @@ export default function Signup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const [type,setType] = useState('password');
+
+  function showHide (e) {
+  setType(type === 'text' ? 'password' : 'text');
+}
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -41,7 +49,7 @@ export default function Signup() {
         email: emailRef.current.value,
       };
 
-      signup(emailRef.current.value, passwordRef.current.value, stripeUser)
+      signup(emailRef.current.value, passwordRef.current.value, stripeUser,phone)
         .then(() =>
           sendMessage(
             `Welcome to Laundry Pickup NYC  ${firstNameRef.current.value}.`,
@@ -111,21 +119,28 @@ export default function Signup() {
             </Form.Group>
 
             <Form.Group id="password">
+              <div className="d-flex align-items-center justify-content-center">
               <Form.Control
-                type="password"
+                type={type}
                 ref={passwordRef}
                 required
                 placeholder="Password"
               />
+                                <img style={{height:25,width:25,padding: 2}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
+
+                          </div>
             </Form.Group>
 
             <Form.Group id="password-confirm">
+            <div className="d-flex align-items-center justify-content-center">
+
               <Form.Control
-                type="password"
+                type={type}
                 ref={passwordConfirmRef}
                 required
                 placeholder="Confirm Password"
               />
+              </div>
             </Form.Group>
             <Button style={{backgroundColor:'#1C2F74'}} disabled={loading} className="w-100" type="submit">
               Sign Up
