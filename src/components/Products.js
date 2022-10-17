@@ -7,8 +7,8 @@ import { useHistory } from "react-router-dom";
 import dryCleanProds from "./product-data/products.json";
 import washProds from "./product-data/product-wash.json";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../redux/dry-clean-qty";
-import { incrementWash, decrementWash } from "../redux/wash-qty";
+import { increment, decrement, resetDry } from "../redux/dry-clean-qty";
+import { incrementWash, decrementWash, resetWash } from "../redux/wash-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
 
@@ -24,6 +24,16 @@ export default function Products() {
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+  let sumArr = arr.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
+  let sumArrDry = arrWash.reduce((accumulator, value) => {
+    return accumulator + value;
+  }, 0);
+
+  let arrCount = sumArr + sumArrDry;
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
@@ -114,7 +124,32 @@ export default function Products() {
             size="lg"
             color="#1C2F74"
           />
-        </Button>{" "}
+        </Button>
+
+          {arrCount > 0 &&
+        <Button
+          style={{
+            width: "20%",
+            height: "20%",
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={() =>{
+            dispatch(resetDry());
+            dispatch(resetWash());
+          }}
+        >
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            {arrCount}
+          <FontAwesomeIcon icon="cart-arrow-down" />
+          <u>Clear</u>
+          </div>
+        </Button>}
+
+
+
         <Button
           style={{
             width: "20%",
@@ -128,6 +163,7 @@ export default function Products() {
         >
           <u>Manage Account</u>
         </Button>
+
         <Button
           style={{
             width: "20%",

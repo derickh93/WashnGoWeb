@@ -9,11 +9,17 @@ export const washSlice = createSlice({
         }
         ,
         decrementWash: (state,{payload}) =>{
-            state.arrWash[payload] -= 1;
+            if(state.arrWash[payload] > 0){
+                state.arrWash[payload] -= 1;
+            }
+        }
+        ,
+        resetWash: (state) =>{
+            state.arrWash = new Array(3).fill(0);
         }
     }
 });
 
-export const {incrementWash,decrementWash} = washSlice.actions;
+export const {incrementWash,decrementWash,resetWash} = washSlice.actions;
 
 export default washSlice.reducer;
