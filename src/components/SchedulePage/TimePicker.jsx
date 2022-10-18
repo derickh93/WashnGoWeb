@@ -29,7 +29,7 @@ export const TimePicker = ({ children, onClick }) => {
   useEffect(() => {}, [bgColor]);
 
   return (
-    <div style={{ padding: "10px" }}>
+    <div style={{ padding: "10px", display:"flex",alignItems:"center", justifyContent:"center"}}>
       <Button type="submit" onClick={onClick}>{children}</Button>
     </div>
   );
