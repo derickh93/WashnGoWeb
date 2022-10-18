@@ -6,7 +6,7 @@ import { TimePicker } from "./SchedulePage/TimePicker";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 
 export default function Preferences() {
@@ -124,15 +124,17 @@ export default function Preferences() {
   //   sessionStorage.setItem("softener", JSON.stringify(val));
   // };
 
-  async function nextPage() {
+  async function nextPage(e) {
+    e.preventDefault();
+
     try {
       setError("");
-      history.push("/confirmation");
       setAdditional(additionalRef.current.value);
       sessionStorage.setItem(
         "additional",
         JSON.stringify(additionalRef.current.value)
       );
+      history.push("/confirmation");
     } catch (err) {
       console.log(err.message);
     }
