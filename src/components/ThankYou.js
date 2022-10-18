@@ -163,7 +163,7 @@ export default function Confirmation() {
       <h4>Hey, {firstName}!</h4>
 
       <p style={{ padding: "5", fontWeight: "bold" }}>
-        Now that you've scheduled you can cross laundry off your to do list{" "}
+        Now that you've scheduled, you can cross laundry off your to do list.{" "}
       </p>
 
       <div style={{ backgroundColor: "#f5f9fc", padding: "10px" }}>
