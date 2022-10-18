@@ -30,7 +30,7 @@ export const TimePicker = ({ children, onClick }) => {
 
   return (
     <div style={{ padding: "10px" }}>
-      <Button onClick={onClick}>{children}</Button>
+      <Button type="submit" onClick={onClick}>{children}</Button>
     </div>
   );
 };

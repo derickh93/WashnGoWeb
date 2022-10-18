@@ -2,11 +2,13 @@ import React, { useState, useRef } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
 import { RadioGroup, RadioButton } from "react-radio-buttons";
 import { useHistory } from "react-router-dom";
-import { TimePicker } from "./SchedulePage/TimePicker";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+import { TimePicker } from "./SchedulePage/TimePicker";
+
 
 
 export default function Preferences() {
@@ -16,6 +18,11 @@ export default function Preferences() {
   const detergentChoiceTwo = "Non-Scented";
 
   const { arrWash } = useSelector((state) => state.wash);
+
+  const PUTimePicker = styled(TimePicker)`
+  font-weight: bold;
+  cursor: pointer;
+`;
 
   // const whiteChoice = "Bleach";
   // const whiteChoiceTwo = "No Bleach";
@@ -340,7 +347,7 @@ export default function Preferences() {
       </span>
       <Card>
         <Card.Body>
-          <Form>
+        <Form onSubmit={nextPage}>
             <Form.Group id="additional">
               <Form.Control
                 type="text"
@@ -348,20 +355,10 @@ export default function Preferences() {
                 value={additionalData}
               />
             </Form.Group>
+            <PUTimePicker>Next</PUTimePicker>
           </Form>
-          <div className="w-100 text-center mt-3"></div>
         </Card.Body>
       </Card>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {" "}
-        <TimePicker onClick={nextPage}>Next</TimePicker>
-      </div>
     </>
   );
 }
