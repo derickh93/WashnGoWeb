@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import {useSelector,useDispatch} from "react-redux"
 import { resetDry } from "../redux/dry-clean-qty";
 import { resetWash } from "../redux/wash-qty";
+import {clearAdditional} from "../redux/preference"
 
 
 
@@ -121,6 +122,7 @@ export default function Confirmation() {
     
       dispatch(resetWash());
       dispatch(resetDry());
+      dispatch(clearAdditional());
     // eslint-disable-next-line
     },[]) // <-- empty dependency array
 
