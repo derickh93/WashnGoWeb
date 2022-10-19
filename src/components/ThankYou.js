@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 import {useSelector,useDispatch} from "react-redux"
 import { resetDry } from "../redux/dry-clean-qty";
 import { resetWash } from "../redux/wash-qty";
-import {clearAdditional} from "../redux/preference"
+import {clearAdditional, clearDetergentScent} from "../redux/preference"
 
 
 
@@ -12,6 +12,7 @@ import {clearAdditional} from "../redux/preference"
 import { useHistory } from "react-router-dom";
 
 import "../App.css";
+import { clearPickupDate, clearPickupTime } from "../redux/pickup";
 
 export default function Confirmation() {
 
@@ -108,6 +109,9 @@ export default function Confirmation() {
       dispatch(resetWash());
       dispatch(resetDry());
       dispatch(clearAdditional());
+      dispatch(clearDetergentScent());
+      dispatch(clearPickupDate());
+      dispatch(clearPickupTime());
     // eslint-disable-next-line
     },[]) // <-- empty dependency array
 

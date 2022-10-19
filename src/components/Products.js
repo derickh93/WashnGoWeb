@@ -10,6 +10,9 @@ import { increment, decrement, resetDry } from "../redux/dry-clean-qty";
 import { incrementWash, decrementWash, resetWash } from "../redux/wash-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
+import { clearAdditional,clearDetergentScent } from "../redsux/preference";
+import { clearPickupDate,clearPickupTime } from "../redux/pickup";
+
 
 export default function Products() {
   const { logout, 
@@ -141,8 +144,12 @@ export default function Products() {
           }}
           variant="link"
           onClick={() =>{
-            dispatch(resetDry());
             dispatch(resetWash());
+            dispatch(resetDry());
+            dispatch(clearAdditional());
+            dispatch(clearDetergentScent());
+            dispatch(clearPickupDate());
+            dispatch(clearPickupTime());
           }}
         >
           <div className="d-flex flex-column justify-content-center align-items-center">
