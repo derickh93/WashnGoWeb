@@ -126,7 +126,7 @@ export default function Signup() {
                 required
                 placeholder="Password"
               />
-                                <img style={{height:25,width:25,padding: 2}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
+                                <img style={{height:25,width:25,padding: 5}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
 
                           </div>
             </Form.Group>

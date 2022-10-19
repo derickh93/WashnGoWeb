@@ -1,54 +1,44 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Form, Card, Alert } from "react-bootstrap";
-import { RadioGroup, RadioButton } from "react-radio-buttons";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { TimePicker } from "./SchedulePage/TimePicker";
-
-
+import { useSelector,useDispatch} from "react-redux";
+import { setAdditional } from "../redux/preference";
 
 export default function Preferences() {
   const [error, setError] = useState("");
-
   const detergentChoice = "Scented";
   const detergentChoiceTwo = "Non-Scented";
 
+  const { additional} = useSelector((state) => state.preference);
+
+const dispatch = useDispatch();
+
+const handleMessageChange = event => {
+  // 👇️ update textarea value
+  dispatch(setAdditional(event.target.value));
+  console.log(event.target.value);
+};
+
   const { arrWash } = useSelector((state) => state.wash);
-
-  const PUTimePicker = styled(TimePicker)`
-  font-weight: bold;
-  cursor: pointer;
-`;
-
-  // const whiteChoice = "Bleach";
-  // const whiteChoiceTwo = "No Bleach";
-
-  // const softenerChoice = "Suavitel and Dry Sheets";
-  // const softenerChoiceTwo = "No Softener";
-
-  // const dryerChoice = "High";
-  // const dryerChoiceTwo= "Medium";
-  // const dryerChoiceThree = "Low";
 
   const {
     setDetergent,
-    // setSoftener,
-    // setDryer,
-    // setWhites,
-    setAdditional,
     logout,
-    customerPortal,
+    //customerPortal,
     readProfile,
     currentUser,
   } = useAuth();
-  const additionalRef = useRef();
 
   const history = useHistory();
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
+
+    const detergentData = JSON.parse(sessionStorage.getItem("detergent"));
+  if (!detergentData) {
+    sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
+  }
 
   let sumArrWash = arrWash.reduce((accumulator, value) => {
     return accumulator + value;
@@ -58,41 +48,18 @@ export default function Preferences() {
     readProfile(currentUser.uid);
   }
 
-  async function handlePortal() {
-    setError("");
+  // async function handlePortal() {
+  //   setError("");
 
-    try {
-      customerPortal(userData.id,'preferences').then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      setError("Failed open portal");
-      console.log(err.message);
-    }
-  }
-
-  const detergentData = JSON.parse(sessionStorage.getItem("detergent"));
-  if (!detergentData) {
-    sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
-  }
-
-  // const whitesData = JSON.parse(sessionStorage.getItem("whites"));
-  // if (!whitesData) {
-  //   sessionStorage.setItem("whites", JSON.stringify(whiteChoice));
+  //   try {
+  //     customerPortal(userData.id, "preferences").then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     setError("Failed open portal");
+  //     console.log(err.message);
+  //   }
   // }
-
-  // const dryerData = JSON.parse(sessionStorage.getItem("dryer"));
-  // if (!dryerData) {
-  //   sessionStorage.setItem("dryer", JSON.stringify(dryerChoice));
-  // }
-
-  // const softenerData = JSON.parse(sessionStorage.getItem("softener"));
-  // if (!softenerData) {
-  //   sessionStorage.setItem("softener", JSON.stringify(softenerChoice));
-  // }
-
-  const additionalData =
-    JSON.parse(sessionStorage.getItem("additional"));
 
   async function handleLogout() {
     setError("");
@@ -111,36 +78,17 @@ export default function Preferences() {
     }
   }
 
-  const handleDetergent = (val) => {
+  const handleDetergent = () => {
+    const val = document.querySelector('input[name="detergentScent"]:checked').value
     setDetergent(val);
     sessionStorage.setItem("detergent", JSON.stringify(val));
   };
-
-  // const handleDryer = (val) => {
-  //   setDryer(val);
-  //   sessionStorage.setItem("dryer", JSON.stringify(val));
-  // };
-
-  // const handleWhites = (val) => {
-  //   setWhites(val);
-  //   sessionStorage.setItem("whites", JSON.stringify(val));
-  // };
-
-  // const handleSoftener = (val) => {
-  //   setSoftener(val);
-  //   sessionStorage.setItem("softener", JSON.stringify(val));
-  // };
 
   async function nextPage(e) {
     e.preventDefault();
 
     try {
       setError("");
-      setAdditional(additionalRef.current.value);
-      sessionStorage.setItem(
-        "additional",
-        JSON.stringify(additionalRef.current.value)
-      );
       history.push("/confirmation");
     } catch (err) {
       console.log(err.message);
@@ -182,7 +130,7 @@ export default function Preferences() {
             color="#1C2F74"
           />
         </Button>{" "}
-        <Button
+        {/* <Button
           style={{
             width: "20%",
             height: "20%",
@@ -194,7 +142,7 @@ export default function Preferences() {
           onClick={handlePortal}
         >
           <u>Manage Account</u>
-        </Button>
+        </Button> */}
         <Button
           style={{
             width: "20%",
@@ -210,130 +158,69 @@ export default function Preferences() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
-        {sumArrWash > 0 &&
-        <div style={{ padding: "10px" }}>
-          <span>Detergent Scent</span>
+
+
+        {sumArrWash > 0 && (
           <div style={{ padding: "10px" }}>
-            <RadioGroup
-              horizontal
-              onChange={handleDetergent}
-              value={JSON.parse(sessionStorage.getItem("detergent"))}
-            >
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={detergentChoice}
-              >
-                {detergentChoice}
-              </RadioButton>
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={detergentChoiceTwo}>
-                {detergentChoiceTwo}
-              </RadioButton>
-            </RadioGroup>
-          </div>
-
-          {/* <div style={{ padding: "10px" }}>
-            <span>Whites</span>
-            <RadioGroup
-              horizontal
-              onChange={handleWhites}
-              value={JSON.parse(sessionStorage.getItem("whites"))}
-            >
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={whiteChoice}
-              >
-                Bleach
-              </RadioButton>
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={whiteChoiceTwo}
-              >
-                No Bleach
-              </RadioButton>
-            </RadioGroup>
-          </div> */}
-{/* 
-          <span>Softener</span>
-
-          <div style={{ padding: "10px" }}>
-            <RadioGroup
-              horizontal
-              onChange={handleSoftener}
-              value={JSON.parse(sessionStorage.getItem("softener"))}
-            >
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={softenerChoice}
-              >
-                Suavitel and Dry Sheets
-              </RadioButton>
-              <RadioButton
-                iconSize={20}
-                iconInnerSize={10}
-                rootColor="#1C2F74"
-                pointColor="#1C2F74"
-                value={softenerChoiceTwo}
-              >
-                No Softener
-              </RadioButton>
-            </RadioGroup>
-
-            <span>Dryer Setting</span>
-
+            <span>Detergent Scent</span>
             <div style={{ padding: "10px" }}>
-              <RadioGroup
-                horizontal
-                onChange={handleDryer}
-                value={JSON.parse(sessionStorage.getItem("dryer"))}
-              >
-                <RadioButton
-                  iconSize={20}
-                  iconInnerSize={10}
-                  rootColor="#1C2F74"
-                  pointColor="#1C2F74"
-                  value={dryerChoice}
-                >
-                  High
-                </RadioButton>
-                <RadioButton
-                  iconSize={20}
-                  iconInnerSize={10}
-                  rootColor="#1C2F74"
-                  pointColor="#1C2F74"
-                  value={dryerChoiceTwo}
-                >
-                  Medium
-                </RadioButton>
-                <RadioButton
-                  iconSize={20}
-                  iconInnerSize={10}
-                  rootColor="#1C2F74"
-                  pointColor="#1C2F74"
-                  value={dryerChoiceThree}
-                >
-                  Low
-                </RadioButton>
-              </RadioGroup>
+              <div className="d-flex flex-column">
+                <div style={{ padding: 5 }}>
+                  {" "}
+
+                  {
+                  detergentData === 'Scented'?
+                  <input
+                    type="radio"
+                    value={detergentChoice}
+                    name="detergentScent"
+                    defaultChecked
+                    onChange={() =>{
+                      handleDetergent()
+                    }}
+                  />
+:
+
+
+                  <input
+                    type="radio"
+                    value={detergentChoice}
+                    name="detergentScent"
+                    onChange={() =>{
+                      handleDetergent()
+                    }}
+                  />
+}
+                  Scented
+                </div>
+
+                <div style={{ padding: 5 }}>
+                  {" "}
+                  {
+                  detergentData === 'Non-Scented'?
+                  <input
+                    type="radio"
+                    value={detergentChoiceTwo}
+                    name="detergentScent"
+                    defaultChecked
+                    onChange={() =>{
+                      handleDetergent()
+                    }}
+                  />:
+                  <input
+                  type="radio"
+                  value={detergentChoiceTwo}
+                  name="detergentScent"
+                  onChange={() =>{
+                    handleDetergent()
+                  }}
+                />}
+                  Non-Scented
+                </div>
+              </div>
             </div>
-          </div> */}
-        </div>}
+          </div>
+        )}
         {error && <Alert variant="danger">{error}</Alert>}
       </div>
       <span
@@ -343,19 +230,25 @@ export default function Preferences() {
           display: "flex",
         }}
       >
-        Additional Instructions
+        Additional Instructions                               
       </span>
       <Card>
         <Card.Body>
-        <Form onSubmit={nextPage}>
+          <Form onSubmit={nextPage}>
             <Form.Group id="additional">
               <Form.Control
-                type="text"
-                ref={additionalRef}
-                value={additionalData}
+                as="textarea"
+                rows={3}
+                value={additional}
+                onChange={handleMessageChange}
               />
             </Form.Group>
-            <PUTimePicker>Next</PUTimePicker>
+            <div className="d-flex align-items-center justify-content-center">
+              {" "}
+              <button className="nextBtn" type="submit">
+                Next
+              </button>
+            </div>
           </Form>
         </Card.Body>
       </Card>

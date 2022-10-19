@@ -95,22 +95,14 @@ export default class ConfirmDetails extends Component {
         <ProductConfirmation/>
           <div style={{ display: "flex" }}>
             <div>
-            <span className="prefTitle">Preferences</span>
+              {(this.state.arrWashSum > 0 || this.state.additional !== "" )&&
+            <span className="prefTitle">Preferences</span>}
               {this.state.arrWashSum > 0 && <div>
               <div className="prefDetails" onChange={this.handlechange}>
                 Detergent: {this.state.detergent}
               </div></div>}
-              {/* <div className="prefDetails" onChange={this.handlechange}>
-                Softener: {this.state.softener}
-              </div>
-              <div className="prefDetails" onChange={this.handlechange}>
-                Whites: {this.state.whites}
-              </div>
-              <div className="prefDetails" onChange={this.handlechange}>
-                Dryer: {this.state.dryer}
-              </div> */}
-              <div className="prefDetails" onChange={this.handlechange}>
-                {this.state.arrWashSum > 0 ? 'Additional Instructions:' : 'Instructions: '} {this.state.additional === "" ? "": this.state.additional}
+              <div className="prefDetails" onChange={this.handlechange} >
+                {this.state.additional === "" ? "": 'Instructions: ' + this.state.additional}
               </div>
             </div>
             <div style={{ marginLeft: "auto" }}>

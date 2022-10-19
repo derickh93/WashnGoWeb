@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { format } from "date-fns";
-import MyButton from "./Button";
 import { Button } from "react-bootstrap";
 import {useSelector,useDispatch} from "react-redux"
 import { resetDry } from "../redux/dry-clean-qty";
@@ -15,7 +14,9 @@ import "../App.css";
 
 export default function Confirmation() {
 
-  const { logout, readProfile, currentUser, customerPortal, sendMessage} = useAuth();
+  const { logout, readProfile, currentUser, 
+    //customerPortal, 
+    sendMessage} = useAuth();
 
   const pickupTime = JSON.parse(sessionStorage.getItem("pickupTime"));
   const pickupDate = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
@@ -50,17 +51,17 @@ export default function Confirmation() {
   const dispatch = useDispatch();
 
 
-  async function handlePortal() {
+  // async function handlePortal() {
 
 
-    try {
-      customerPortal(userData.id,'thankyou').then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+  //   try {
+  //     customerPortal(userData.id,'thankyou').then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // }
 
   async function handleLogout() {
 
@@ -133,7 +134,7 @@ export default function Confirmation() {
           justifyContent: "flex-end",
         }}
       >
-        <Button
+        {/* <Button
           style={{
             width: "20%",
             height: "20%",
@@ -145,7 +146,7 @@ export default function Confirmation() {
           onClick={handlePortal}
         >
           <u>Manage Account</u>
-        </Button>
+        </Button> */}
         <Button
           style={{
             width: "20%",
@@ -193,19 +194,18 @@ export default function Confirmation() {
           padding: "10px",
         }}
       >
-        <MyButton
-          cusClass="thankBtn"
-          title={"Schedule another order"}
-          action={() => {
-            schedule();
-          }}
-        />
-        <div style={{ padding: "10px" }}>
+
+
+
+<button className="nextBtn" onClick={() =>{
+            schedule()
+          }}>Schedule Another Order</button>
+        <div style={{ padding: "8px" }}>
         <Button
           style={{
             width: "20%",
             height: "20%",
-            fontSize: "12px",
+            fontSize: "11px",
             backgroundColor: "transparent",
             boxShadow: "none",
           }}

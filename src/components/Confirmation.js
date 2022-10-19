@@ -12,11 +12,15 @@ import washProds from "./product-data/product-wash.json";
 import { useHistory } from "react-router-dom";
 
 export default function Confirmation() {
-  const { logout, readProfile, currentUser, customerPortal, checkoutSession } =
+  const { logout, readProfile, currentUser, 
+    //customerPortal, 
+    checkoutSession } =
     useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
+  const { additional} = useSelector((state) => state.preference);
+
 
   let arrWashSum = arrWash.reduce((accumulator, value) => {
     return accumulator + value;
@@ -91,15 +95,15 @@ export default function Confirmation() {
     }
   }
 
-  async function handlePortal() {
-    try {
-      customerPortal(userData.id, "confirmation").then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+  // async function handlePortal() {
+  //   try {
+  //     customerPortal(userData.id, "confirmation").then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // }
 
   async function handleLogout() {
     try {
@@ -126,7 +130,6 @@ export default function Confirmation() {
     // var dryer = JSON.parse(sessionStorage.getItem("dryer"));
     // var whites = JSON.parse(sessionStorage.getItem("whites"));
     // var softener = JSON.parse(sessionStorage.getItem("softener"));
-    var additional = JSON.parse(sessionStorage.getItem("additional"));
 
     var address;
     if (data.shipping) {
@@ -193,7 +196,7 @@ export default function Confirmation() {
                 color="#1C2F74"
               />
             </Button>{" "}
-            <Button
+            {/* <Button
               style={{
                 width: "20%",
                 height: "20%",
@@ -205,7 +208,7 @@ export default function Confirmation() {
               onClick={handlePortal}
             >
               <u>Manage Account</u>
-            </Button>
+            </Button> */}
             <Button
               style={{
                 width: "20%",

@@ -27,15 +27,6 @@
   box-shadow: "none";
 }
 
-.StripeElement--webkit-autofill {
-  background: transparent !important;
-}
-
-.StripeElement {
-  width: 100%;
-  padding: 11px 15px 11px 0;
-}
-
 button {
   display: block;
   font-size: 16px;
@@ -102,6 +93,29 @@ h3 {
   box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 #61b258;
   background-color: #336daf;
+  color: white;
+  opacity: 0.9;
+  transform: scale(1.2);
+}
+
+.nextBtn{
+  width: 200px;
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: 0.5s all ease-out;
+  outline: invert;
+  background-color: #1C2F74;
+  margin: 5px
+}
+
+.nextBtn:hover {
+  background-color: #1C2F74;
   color: white;
   opacity: 0.9;
   transform: scale(1.2);

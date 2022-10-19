@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Alert, Collapse, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
-import { TimePicker } from "./SchedulePage/TimePicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import dryCleanProds from "./product-data/products.json";
@@ -13,7 +12,9 @@ import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
 
 export default function Products() {
-  const { logout, customerPortal, readProfile, currentUser } = useAuth();
+  const { logout, 
+    //customerPortal, 
+    readProfile, currentUser } = useAuth();
   const [error, setError] = useState("");
 
   const { arr } = useSelector((state) => state.dryClean);
@@ -57,18 +58,18 @@ export default function Products() {
     }
   }
 
-  async function handlePortal() {
-    setError("");
+  // async function handlePortal() {
+  //   setError("");
 
-    try {
-      customerPortal(userData.id, "products").then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      setError("Failed open portal");
-      console.log(err.message);
-    }
-  }
+  //   try {
+  //     customerPortal(userData.id, "products").then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     setError("Failed open portal");
+  //     console.log(err.message);
+  //   }
+  // }
 
   async function nextPage() {
     try {
@@ -80,7 +81,10 @@ export default function Products() {
         return accumulator + value;
       }, 0);
       if (sumArr === 0 && sumArrWash === 0) {
+        window.scrollTo(0, 0)
+
         setError("Select an option");
+
       } else history.push("/preferences");
     } catch (err) {
       console.log(err.message);
@@ -150,7 +154,7 @@ export default function Products() {
 
 
 
-        <Button
+        {/* <Button
           style={{
             width: "20%",
             height: "20%",
@@ -162,7 +166,7 @@ export default function Products() {
           onClick={handlePortal}
         >
           <u>Manage Account</u>
-        </Button>
+        </Button> */}
 
         <Button
           style={{
@@ -201,7 +205,7 @@ export default function Products() {
           style={{ height: 50, width: 50, padding: 5 }}
         />
             {washProds.map((item, idx) => (
-              <div style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
+              <div key={idx+100} style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
               <div className="row d-flex align-items-center">
                   <h6 className="col-4">{item.description}</h6>
                   <h6 className="col-2">{item.price}</h6>
@@ -236,7 +240,7 @@ export default function Products() {
           <div>
 
             <Button
-              style={{ backgroundColor: "#1C2F74", margin:5}}
+              style={{ backgroundColor: "#1C2F74", margin:20}}
               onClick={() => {
                 setOpenDC(!openDC);
                 setOpenWash(!openWash);
@@ -257,7 +261,7 @@ export default function Products() {
               style={{ height: 50, width: 50, padding: 5 }}
             />
             {dryCleanProds.map((item, idx) => (
-              <div style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
+              <div key={idx} style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
                 <div className="row d-flex align-items-center">
                   <h6 className="col-4">{item.description}</h6>
                   <h6 className="col-2">{item.price}</h6>
@@ -289,8 +293,11 @@ export default function Products() {
           </div>
         </Collapse>
 
-        <TimePicker onClick={nextPage}>Next</TimePicker>
-      </div>
+
+        <button className="nextBtn" onClick={() =>{
+
+            nextPage()
+          }}>Next</button>      </div>
     </>
   );
 }

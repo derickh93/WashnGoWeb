@@ -80,8 +80,8 @@ export default function Login() {
               <Form.Label>Password</Form.Label>
               <div className="d-flex align-items-center justify-content-center">
 
-              <Form.Control type={type} ref={passwordRef} required />
-              <img style={{height:25,width:25,padding: 2}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
+              <Form.Control type={type} ref={passwordRef} required autoComplete="on" />
+              <img style={{height:25,width:25,padding: 5}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
 </div>
             </Form.Group>
             <Button

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import DatePicker from "react-horizontal-datepicker";
-import { TimePicker } from "./SchedulePage/TimePicker";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Alert } from "react-bootstrap";
@@ -14,7 +12,7 @@ export default function Time() {
     logout,
     readProfile,
     currentUser,
-    customerPortal,
+    //customerPortal,
   } = useAuth();
 
   const fourthTimeSlot = "5pm - 9pm";
@@ -53,25 +51,20 @@ export default function Time() {
     setLoading(false);
   }
 
-  async function handlePortal() {
-    setError("");
+  // async function handlePortal() {
+  //   setError("");
 
-    try {
-      setLoading(true);
-      customerPortal(userData.id,'time').then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      setError("Failed open portal");
-      console.log(err.message);
-    }
-    setLoading(false);
-  }
-
-  const PUTimePicker = styled(TimePicker)`
-    font-weight: bold;
-    cursor: pointer;
-  `;
+  //   try {
+  //     setLoading(true);
+  //     customerPortal(userData.id,'time').then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     setError("Failed open portal");
+  //     console.log(err.message);
+  //   }
+  //   setLoading(false);
+  // }
 
   const selectedDay = (val) => {
     setPickupDate(val);
@@ -106,7 +99,7 @@ export default function Time() {
           justifyContent: "flex-end",
         }}
       >
-        <Button
+        {/* <Button
           style={{
             width: "20%",
             height: "20%",
@@ -118,7 +111,7 @@ export default function Time() {
           onClick={handlePortal}
         >
           <u>Manage Account</u>
-        </Button>
+        </Button> */}
         <Button
           style={{
             width: "20%",
@@ -138,8 +131,6 @@ export default function Time() {
         <DatePicker
           getSelectedDay={(val) => {
             const currentTime = new Date();
-            console.log(currentTime)
-            console.log(new Date(val).getDate())
             if(currentTime.getHours() >= 17 && new Date(val).getDate() === currentTime.getDate() && new Date(val).getMonth() === currentTime.getMonth()){
               setError("Please select next available date");
             }
@@ -153,11 +144,13 @@ export default function Time() {
           labelFormat={"MMMM"}
           color={"#1C2F74"}
         />
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: "10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
           {fourthTimeSlot}
 
 
-          <PUTimePicker onClick={nextPage}>Next</PUTimePicker>
+          <button className="nextBtn" onClick={() =>{
+            nextPage()
+          }}>Next</button>
         </div>
       </div>
     </>

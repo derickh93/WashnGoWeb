@@ -18,7 +18,7 @@ export default function Address() {
     setHotel,
     code,
     setCode,
-    customerPortal,
+    //customerPortal,
     logout,
     readProfile,
     currentUser,
@@ -119,20 +119,20 @@ export default function Address() {
     setLoading(false);
   }
 
-  async function handlePortal() {
-    setError("");
+  // async function handlePortal() {
+  //   setError("");
 
-    try {
-      setLoading(true);
-      customerPortal(userData.id, "time").then((url) => {
-        window.location = url;
-      });
-    } catch (err) {
-      setError("Failed open portal");
-      console.log(err.message);
-    }
-    setLoading(false);
-  }
+  //   try {
+  //     setLoading(true);
+  //     customerPortal(userData.id, "time").then((url) => {
+  //       window.location = url;
+  //     });
+  //   } catch (err) {
+  //     setError("Failed open portal");
+  //     console.log(err.message);
+  //   }
+  //   setLoading(false);
+  // }
   return (
     <div>
       <div className="homepage">
@@ -156,7 +156,7 @@ export default function Address() {
           justifyContent: "flex-end",
         }}
       >
-        <Button
+        {/* <Button
           style={{
             width: "20%",
             height: "20%",
@@ -168,7 +168,7 @@ export default function Address() {
           onClick={handlePortal}
         >
           <u>Manage Account</u>
-        </Button>
+        </Button> */}
         <Button
           style={{
             width: "20%",
@@ -271,7 +271,7 @@ export default function Address() {
           padding: "5px",
         }}
       >
-        Contact Preferences
+        Contact Preference
       </div>
       <div className="d-flex flex-column">
         <div style={{ padding: 5 }}>

@@ -48,13 +48,14 @@ export function AuthProvider({ children }) {
 
   const readProfile = async (uid) => {
     var ref = firebase.database().ref("user_profile");
-    const result = await ref
+    //const result = 
+    await ref
       .orderByChild("authID")
       .equalTo(uid)
       .on("child_added", (snapshot) => {
         getCustomer(snapshot.child("custID").val());
       });
-      console.log(result);
+      //console.log(result);
   };
 
   // const checkPhoneNumber = async (uid,) => {
