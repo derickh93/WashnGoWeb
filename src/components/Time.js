@@ -4,22 +4,19 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Alert } from "react-bootstrap";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
+import { useSelector,useDispatch } from "react-redux";
+import { setPickupDate, setPickupTime } from "../redux/pickup";
 
 export default function Time() {
   const {
-    pickupDate,
-    setPickupDate,
     logout,
     readProfile,
     currentUser,
     //customerPortal,
   } = useAuth();
 
-  const fourthTimeSlot = "5pm - 9pm";
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const history = useHistory();
 
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
@@ -27,11 +24,14 @@ export default function Time() {
     readProfile(currentUser.uid);
   }
 
-  const timeData = sessionStorage.getItem("pickupTime");
-  if (!timeData) {
-    sessionStorage.setItem("pickupTime", JSON.stringify(fourthTimeSlot));
-  }
+  const {pickupDate,pickupTime} = useSelector((state) => state.pickup)
 
+  let date = pickupDate;
+
+
+  const dispatch = useDispatch();
+
+  dispatch(setPickupTime("5pm - 9pm"))
   async function handleLogout() {
     setError("");
 
@@ -66,15 +66,22 @@ export default function Time() {
   //   setLoading(false);
   // }
 
-  const selectedDay = (val) => {
-    setPickupDate(val);
-    sessionStorage.setItem("pickupDay", JSON.stringify(val));
-  };
+  function selectedDay(val) {
+      let currentTime = new Date();
+      if(currentTime.getHours() >= 17 && new Date(val).getDate() === currentTime.getDate() && new Date(val).getMonth() === currentTime.getMonth()){
+        setError("Please select next available date");
+      }
+      else{
+        setError("");
+        date = new Date(val).toDateString();
+      }
+    }
 
   async function nextPage() {
     if(error === ""){
     try {
       setLoading(true);
+      dispatch(setPickupDate(date));      
       history.push("/products");
       //}
     } catch (err) {
@@ -129,23 +136,16 @@ export default function Time() {
       <div className="w-100 text-center mt-3">
         {error && <Alert variant="danger">{error}</Alert>}
         <DatePicker
-          getSelectedDay={(val) => {
-            const currentTime = new Date();
-            if(currentTime.getHours() >= 17 && new Date(val).getDate() === currentTime.getDate() && new Date(val).getMonth() === currentTime.getMonth()){
-              setError("Please select next available date");
-            }
-            else{
-              setError("");
-            selectedDay(val);
-            }
+          getSelectedDay={(val) =>{
+            selectedDay(val)
           }}
           endDate={31}
-          selectDate={pickupDate}
-          labelFormat={"MMMM"}
+          selectDate={new Date(pickupDate)}
+          labelFormat={"MMM"}
           color={"#1C2F74"}
         />
         <div style={{ padding: "10px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-          {fourthTimeSlot}
+          {pickupTime}
 
 
           <button className="nextBtn" onClick={() =>{
@@ -155,4 +155,4 @@ export default function Time() {
       </div>
     </>
   );
-}
+        }

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
-import { format } from "date-fns";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
@@ -19,7 +18,9 @@ export default function Confirmation() {
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
-  const { additional} = useSelector((state) => state.preference);
+  const { additional,detergentScent} = useSelector((state) => state.preference);
+
+  const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
 
 
   let arrWashSum = arrWash.reduce((accumulator, value) => {
@@ -123,10 +124,7 @@ export default function Confirmation() {
 
   try {
     const data = JSON.parse(sessionStorage.getItem("stripeInstance"));
-    var day = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
-    var time = JSON.parse(sessionStorage.getItem("pickupTime"));
 
-    var detergent = JSON.parse(sessionStorage.getItem("detergent"));
     // var dryer = JSON.parse(sessionStorage.getItem("dryer"));
     // var whites = JSON.parse(sessionStorage.getItem("whites"));
     // var softener = JSON.parse(sessionStorage.getItem("softener"));
@@ -139,11 +137,10 @@ export default function Confirmation() {
     }
     commonProps = {
       name: data.name,
-      puDate: format(day, "MMMM do, yyyy"),
-      puTime: time,
+      puDate: pickupDate,
+      puTime: pickupTime,
       address: address,
-      dayOfWeek: format(day, "EEEE"),
-      det: detergent,
+      det: detergentScent,
       // dry: dryer,
       // soft: softener,
       addit: additional,

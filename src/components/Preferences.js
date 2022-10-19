@@ -5,27 +5,26 @@ import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector,useDispatch} from "react-redux";
-import { setAdditional } from "../redux/preference";
+import { setAdditional,setDetergentScent} from "../redux/preference";
 
 export default function Preferences() {
   const [error, setError] = useState("");
   const detergentChoice = "Scented";
   const detergentChoiceTwo = "Non-Scented";
 
-  const { additional} = useSelector((state) => state.preference);
+  const { additional,detergentScent} = useSelector((state) => state.preference);
+
 
 const dispatch = useDispatch();
 
 const handleMessageChange = event => {
   // 👇️ update textarea value
   dispatch(setAdditional(event.target.value));
-  console.log(event.target.value);
 };
 
   const { arrWash } = useSelector((state) => state.wash);
 
   const {
-    setDetergent,
     logout,
     //customerPortal,
     readProfile,
@@ -35,10 +34,10 @@ const handleMessageChange = event => {
   const history = useHistory();
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
-    const detergentData = JSON.parse(sessionStorage.getItem("detergent"));
-  if (!detergentData) {
-    sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
-  }
+  //   const detergentData = JSON.parse(sessionStorage.getItem("detergent"));
+  // if (!detergentData) {
+  //   sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
+  // }
 
   let sumArrWash = arrWash.reduce((accumulator, value) => {
     return accumulator + value;
@@ -80,8 +79,7 @@ const handleMessageChange = event => {
 
   const handleDetergent = () => {
     const val = document.querySelector('input[name="detergentScent"]:checked').value
-    setDetergent(val);
-    sessionStorage.setItem("detergent", JSON.stringify(val));
+    dispatch(setDetergentScent(val));
   };
 
   async function nextPage(e) {
@@ -169,7 +167,7 @@ const handleMessageChange = event => {
                   {" "}
 
                   {
-                  detergentData === 'Scented'?
+                  detergentScent === 'Scented'?
                   <input
                     type="radio"
                     value={detergentChoice}
@@ -197,7 +195,7 @@ const handleMessageChange = event => {
                 <div style={{ padding: 5 }}>
                   {" "}
                   {
-                  detergentData === 'Non-Scented'?
+                  detergentScent === 'Non-Scented'?
                   <input
                     type="radio"
                     value={detergentChoiceTwo}

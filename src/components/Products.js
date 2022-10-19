@@ -191,14 +191,14 @@ export default function Products() {
               setOpenWash(!openWash);
               setOpenDC(!openDC);
             }}
-            aria-controls="example-collapse-text"
+            aria-controls="example-collapse-text1"
             aria-expanded={openWash}
           >
             Wash
           </Button>
         )}
         <Collapse in={openWash}>
-          <div id="example-collapse-text">
+          <div id="example-collapse-text1">
           <img
           src={washingMachine}
           alt="washing machine"
@@ -245,7 +245,7 @@ export default function Products() {
                 setOpenDC(!openDC);
                 setOpenWash(!openWash);
               }}
-              aria-controls="example-collapse-text"
+              aria-controls="example-collapse-text2"
               aria-expanded={openDC}
             >
               Dry Clean
@@ -254,7 +254,7 @@ export default function Products() {
         )}
         <Collapse in={openDC}>
   
-          <div id="example-collapse-text">
+          <div id="example-collapse-text2">
           <img
               src={dryClean}
               alt="dry clean"

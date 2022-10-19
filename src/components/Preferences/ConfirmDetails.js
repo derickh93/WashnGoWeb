@@ -35,7 +35,6 @@ export default class ConfirmDetails extends Component {
       address: e.target.value,
       puDate: e.target.value,
       puTime: e.target.value,
-      dayOfWeek: e.target.value,
       detergent: e.target.value,
       // dryer: e.target.value,
       // softener: e.target.value,
@@ -82,7 +81,7 @@ export default class ConfirmDetails extends Component {
           <div>
             <span className="prefTitle">Pickup Date</span>
             <div className="prefDetails" onChange={this.handlechange}>
-              {this.state.dayOfWeek} {this.state.puDate} between{" "}
+              {this.state.puDate} between{" "}
               {this.state.puTime}
             </div>
           </div>

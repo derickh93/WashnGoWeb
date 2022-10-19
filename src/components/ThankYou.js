@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { format } from "date-fns";
 import { Button } from "react-bootstrap";
 import {useSelector,useDispatch} from "react-redux"
 import { resetDry } from "../redux/dry-clean-qty";
 import { resetWash } from "../redux/wash-qty";
 import {clearAdditional} from "../redux/preference"
+
 
 
 
@@ -19,27 +19,12 @@ export default function Confirmation() {
     //customerPortal, 
     sendMessage} = useAuth();
 
-  const pickupTime = JSON.parse(sessionStorage.getItem("pickupTime"));
-  const pickupDate = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
+  const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
 
-  const puTime = JSON.parse(sessionStorage.getItem("pickupTime"));
-  const rawDay = new Date(JSON.parse(sessionStorage.getItem("pickupDay")));
-  const puDay = format(rawDay, "MMMM do, yyyy");
+
 
   const history = useHistory();
-
-  var gsDayNames = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ];
   
-  var dayName = gsDayNames[rawDay.getDay()];
-
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
   if (!userData) {
     readProfile(currentUser.uid);
@@ -99,13 +84,13 @@ export default function Confirmation() {
   }, 0);
 
   useEffect(()=>{
-    const customerMSG = `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${dayName}, ${puDay} between ${puTime}.`;
-    const adminMSG = `${stripeData.name} has placed an order for pickup on ${puDay} between ${puTime}.
+    const customerMSG = `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
+    const adminMSG = `${stripeData.name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
     \nAddress: ${address.line1}\n${address.city}\n${address.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`;
     sendMessage(customerMSG
       ,
       stripeData.phone,
-      stripeData.metadata.Text
+      stripeData.metadata.Contact === 'Text'? true:false
     )
       .catch((error) => {
         console.log(error);
@@ -114,7 +99,7 @@ export default function Confirmation() {
         sendMessage(
           adminMSG,
           process.env.REACT_APP_TWILIO_TO,
-          "true"
+          true
         ).catch((error) => {
           console.log(error);
         });
@@ -180,8 +165,7 @@ export default function Confirmation() {
       </div>
       <div style={{ backgroundColor: "#f5f9fc", padding: "10px" }}>
         <span>
-          We will be seeing you {format(pickupDate, "EEEE")} -{" "}
-          {format(pickupDate, "MMMM do, yyyy")} {pickupTime}
+          We will be seeing you {pickupDate} between {pickupTime}
         </span>
         <div className="prefDetails">{stripeData.shipping.line1}</div>
         <div className="prefDetails">{stripeData.shipping.city}</div>
@@ -193,7 +177,7 @@ export default function Confirmation() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          padding: "10px",
+          margin: "10px",
         }}
       >
 

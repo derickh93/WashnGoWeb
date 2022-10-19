@@ -227,9 +227,8 @@ export function AuthProvider({ children }) {
 
   ///////////////////////////////////////////////////////////////////
   const sendMessage = async (message, number, boolSend) => {
-    var isTrueSet = boolSend === "true";
 
-    if (isTrueSet) {
+    if (boolSend) {
       const response = await axios
         .post(`${domain}twilio-message`, {
           Message: message,

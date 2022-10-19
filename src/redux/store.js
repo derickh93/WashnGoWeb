@@ -2,6 +2,7 @@ import {configureStore} from "@reduxjs/toolkit";
 import dryCleanReducer from "./dry-clean-qty"
 import washReducer from "./wash-qty"
 import preferenceReducer from "./preference"
+import pickupReducer from "./pickup"
 import storage from "redux-persist/lib/storage";
 import {
     persistReducer,
@@ -23,7 +24,8 @@ const persistConfig = {
 const reducer = combineReducers({
     dryClean: dryCleanReducer,
     wash: washReducer,
-    preference: preferenceReducer
+    preference: preferenceReducer,
+    pickup: pickupReducer
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer)
