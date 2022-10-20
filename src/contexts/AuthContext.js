@@ -16,18 +16,10 @@ export function AuthProvider({ children }) {
   const [currentStripeUser, setCurrentStripeUser] = useState();
   const [loading, setLoading] = useState(true);
   const [currentAddress, setCurrentAddress] = useState();
-  const [pickupDate, setPickupDate] = useState();
-  const [pickupTime, setPickupTime] = useState();
   const [currentStripeInstance, setCurrentStripeInstance] = useState();
   const [additional, setAdditional] = useState();
 
   const [detergent, setDetergent] = useState();
-  const [whites, setWhites] = useState();
-  const [softener, setSoftener] = useState();
-  const [dryer, setDryer] = useState();
-
-  const [bags, setBags] = useState();
-  const [pieces, setPieces] = useState();
 
   const [doorman, setDoorman] = useState(false);
   const [hotel, setHotel] = useState(false);
@@ -237,17 +229,9 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
-    bags,
-    setBags,
-    pieces,
-    setPieces,
     currentStripeInstance,
     setCurrentStripeInstance,
     currentStripeUser,
-    pickupDate,
-    pickupTime,
-    setPickupTime,
-    setPickupDate,
     setCurrentAddress,
     currentAddress,
     getCustomer,
@@ -264,12 +248,6 @@ export function AuthProvider({ children }) {
     addNewProfile,
     detergent,
     setDetergent,
-    whites,
-    setWhites,
-    softener,
-    setSoftener,
-    dryer,
-    setDryer,
     additional,
     setAdditional,
     doorman,
