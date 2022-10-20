@@ -4,6 +4,9 @@ import washReducer from "./wash-qty"
 import preferenceReducer from "./preference"
 import pickupReducer from "./pickup"
 import storage from "redux-persist/lib/storage";
+import accountPrefReducer from "./account-prefs"
+import accountReducer from "./account"
+
 import {
     persistReducer,
     FLUSH,
@@ -25,7 +28,9 @@ const reducer = combineReducers({
     dryClean: dryCleanReducer,
     wash: washReducer,
     preference: preferenceReducer,
-    pickup: pickupReducer
+    pickup: pickupReducer,
+    accountPref: accountPrefReducer,
+    account: accountReducer
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer)

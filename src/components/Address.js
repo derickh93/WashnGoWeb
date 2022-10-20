@@ -4,6 +4,9 @@ import "../App.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert, Button } from "react-bootstrap";
+import { useSelector,useDispatch } from "react-redux";
+import {changeDoorman,changeHotel,setDoorCode,changeCode} from "../redux/account-prefs"
+
 
 export default function Address() {
   const [error, setError] = useState("");
@@ -12,20 +15,19 @@ export default function Address() {
     addAddress,
     setCurrentAddress,
     currentAddress,
-    doorman,
-    setDoorman,
-    hotel,
-    setHotel,
-    code,
-    setCode,
-    //customerPortal,
     logout,
     readProfile,
     currentUser,
   } = useAuth();
   const history = useHistory();
   const aptRef = useRef();
-  const codeRef = useRef();
+  const {doorman,code,hotel,code_door} = useSelector((state) => state.accountPref)
+  const dispatch = useDispatch();
+
+  const handleDoorChange = event => {
+    dispatch(setDoorCode(event.target.value));
+    console.log(code_door)
+  };
 
   const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
@@ -43,12 +45,6 @@ export default function Address() {
       }
       setError("");
       setLoading(true);
-      var codeVal;
-      if (!codeRef.current) {
-        codeVal = "N/A";
-      } else {
-        codeVal = codeRef.current.value;
-      }
 
       var aptVal;
       if (!aptRef.current) {
@@ -68,7 +64,7 @@ export default function Address() {
       const options = {
         Doorman: doorman,
         Hotel: hotel,
-        Door_Gate_Code: codeVal,
+        Door_Gate_Code: code_door,
         Contact: document.querySelector('input[name="contact"]:checked').value
         ,
       };
@@ -213,7 +209,7 @@ export default function Address() {
             name="doorman"
             value={doorman}
             onChange={() => {
-              setDoorman(!doorman);
+              dispatch(changeDoorman());
               console.log("Doorman: " + !doorman);
             }}
           />
@@ -226,7 +222,7 @@ export default function Address() {
             name="hotel"
             value={hotel}
             onChange={() => {
-              setHotel(!hotel);
+              dispatch(changeHotel());
               console.log("Hotel: " + !hotel);
             }}
           />
@@ -241,8 +237,7 @@ export default function Address() {
             name="code"
             value={code}
             onChange={() => {
-              setCode(!code);
-              console.log("Code: " + !code);
+              dispatch(changeCode());
             }}
           ></input>
           <span style={{ padding: "5px" }}>
@@ -254,7 +249,9 @@ export default function Address() {
               id="code"
               name="code"
               placeholder="Door/Gate Code"
-              ref={codeRef}
+              value={code_door}
+              onChange={
+                handleDoorChange()}
             />
           )}
         </div>

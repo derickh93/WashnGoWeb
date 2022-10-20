@@ -18,7 +18,6 @@ export default function Preferences() {
 const dispatch = useDispatch();
 
 const handleMessageChange = event => {
-  // 👇️ update textarea value
   dispatch(setAdditional(event.target.value));
 };
 
@@ -26,18 +25,12 @@ const handleMessageChange = event => {
 
   const {
     logout,
-    //customerPortal,
     readProfile,
     currentUser,
   } = useAuth();
 
   const history = useHistory();
   const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-
-  //   const detergentData = JSON.parse(sessionStorage.getItem("detergent"));
-  // if (!detergentData) {
-  //   sessionStorage.setItem("detergent", JSON.stringify(detergentChoice));
-  // }
 
   let sumArrWash = arrWash.reduce((accumulator, value) => {
     return accumulator + value;
@@ -46,19 +39,6 @@ const handleMessageChange = event => {
   if (!userData) {
     readProfile(currentUser.uid);
   }
-
-  // async function handlePortal() {
-  //   setError("");
-
-  //   try {
-  //     customerPortal(userData.id, "preferences").then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     setError("Failed open portal");
-  //     console.log(err.message);
-  //   }
-  // }
 
   async function handleLogout() {
     setError("");

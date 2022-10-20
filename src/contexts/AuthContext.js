@@ -17,14 +17,9 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [currentAddress, setCurrentAddress] = useState();
   const [currentStripeInstance, setCurrentStripeInstance] = useState();
-  const [additional, setAdditional] = useState();
 
   const [detergent, setDetergent] = useState();
 
-  const [doorman, setDoorman] = useState(false);
-  const [hotel, setHotel] = useState(false);
-  const [code, setCode] = useState("");
-  const [email, setEmail] = useState(false);
   const domain = process.env.REACT_APP_DOMAIN;
 
   const addNewProfile = async (authID, custID,phoneNumber) => {
@@ -248,16 +243,6 @@ export function AuthProvider({ children }) {
     addNewProfile,
     detergent,
     setDetergent,
-    additional,
-    setAdditional,
-    doorman,
-    setDoorman,
-    hotel,
-    setHotel,
-    code,
-    setCode,
-    email,
-    setEmail,
     sendMessage,
     checkoutSession
   };
