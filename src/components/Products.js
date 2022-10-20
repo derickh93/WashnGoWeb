@@ -3,14 +3,14 @@ import { Alert, Collapse, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
-import dryCleanProds from "./product-data/products.json";
-import washProds from "./product-data/product-wash.json";
+import dryCleanProds from "./product-data/products-prod.json";
+import washProds from "./product-data/product-wash-prod.json";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, resetDry } from "../redux/dry-clean-qty";
 import { incrementWash, decrementWash, resetWash } from "../redux/wash-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
-import { clearAdditional,clearDetergentScent } from "../redsux/preference";
+import { clearAdditional,clearDetergentScent } from "../redux/preference";
 import { clearPickupDate,clearPickupTime } from "../redux/pickup";
 
 

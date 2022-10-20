@@ -5,8 +5,8 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
-import dryCleanProds from "./product-data/products.json";
-import washProds from "./product-data/product-wash.json";
+import dryCleanProds from "./product-data/products-prod.json";
+import washProds from "./product-data/product-wash-prod.json";
 
 import { useHistory } from "react-router-dom";
 
