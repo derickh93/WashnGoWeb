@@ -55,19 +55,18 @@ export function AuthProvider({ children }) {
       .on("child_added", (snapshot) => {
         getCustomer(snapshot.child("custID").val());
       });
-      //console.log(result);
   };
 
-  // const checkPhoneNumber = async (uid,) => {
-  //   var ref = firebase.database().ref("user_profile");
-  //   const result = await ref
-  //     .orderByChild("authID")
-  //     .equalTo(uid)
-  //     .on("child_added", (snapshot) => {
-  //       getCustomer(snapshot.child("phoneNumber").val());
-  //     });
-  //     console.log(result);
-  // };
+  const checkPhoneNumber = async (uid,) => {
+    var ref = firebase.database().ref("user_profile");
+    const result = await ref
+      .orderByChild("authID")
+      .equalTo(uid)
+      .on("child_added", (snapshot) => {
+        getCustomer(snapshot.child("phoneNumber").val());
+      });
+      console.log(result);
+  };
 
   const signup = async (email, password, stripeUser,phoneNumber) => {
     const authObj = await auth
@@ -103,25 +102,7 @@ export function AuthProvider({ children }) {
       console.log("Error", error);
     }
   };
-  //////////////////////////////////////////////////////////////////
-  const customerPortal = async (userData,path) => {
-    const response = await axios
-      .post(`${domain}create-customer-portal-session`, {
-        cid: userData,
-        pth:path
-      })
-      .catch((error) => {
-        console.log(error);
-        throw new Error(error.message);
-      });
 
-    if (response.data.success) {
-    }
-    return response.data.portalURL;
-  };
-  //////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////
   const addAddress = async (
     stripeID,
     addr,
@@ -146,7 +127,6 @@ export function AuthProvider({ children }) {
       });
 
     if (response.data.success) {
-      //setCurrentStripeInstance(response.data.result);
       sessionStorage.setItem(
         "stripeInstance",
         JSON.stringify(response.data.result)
@@ -154,7 +134,6 @@ export function AuthProvider({ children }) {
     }
     return response.data.portalURL;
   };
-  //////////////////////////////////////////////////////////////////
 
   const login = async (email, password) => {
     const authObj = await auth
@@ -168,28 +147,7 @@ export function AuthProvider({ children }) {
     return authObj;
   };
 
-  const getProducts = async () => {
-    const response = await axios
-    .post(`${domain}listProducts`, {})
-    .catch((error) => {
-      throw new Error(error.message);
-    });
-    console.log(response);
-  }
-
-  const getPrices = async () => {
-    const response = await axios
-    .post(`${domain}listPrices`, {})
-    .catch((error) => {
-      throw new Error(error.message);
-    });
-    console.log(response);
-  }
-
-
-  ///////////////////////////////////////////////////////////////////
   const getCustomer = async (cst) => {
-    //setCurrentStripeUser((prevuser) => cst);
     const response = await axios
       .post(`${domain}get-customer`, {
         custID: cst,
@@ -207,25 +165,7 @@ export function AuthProvider({ children }) {
     }
     return response.data.result;
   };
-  ///////////////////////////////////////////////////////////////////
 
-  ///////////////////////////////////////////////////////////////////
-  const getCardList = async (cst) => {
-    const response = await axios
-      .post(`${domain}get-cards`, {
-        custID: cst,
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
-
-    if (response.data.success) {
-    }
-    return response.data.result;
-  };
-  ///////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////
   const sendMessage = async (message, number, boolSend) => {
 
     if (boolSend) {
@@ -243,59 +183,7 @@ export function AuthProvider({ children }) {
       return response.data.result;
     }
   };
-  ///////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////
-  const handleInvoice = async (cid) => {
-    try {
-      const response = await axios.post(`${domain}create-invoice`, {
-        custID: cid,
-        promoID: JSON.parse(sessionStorage.getItem("promoCode")),
-        md: {
-          day: JSON.parse(sessionStorage.getItem("pickupDay")),
-          time: JSON.parse(sessionStorage.getItem("pickupTime")),
-          bags: JSON.parse(sessionStorage.getItem("bags")),
-          pieces: JSON.parse(sessionStorage.getItem("pieces")),
 
-          dryer: JSON.parse(sessionStorage.getItem("dryer")),
-          detergent: JSON.parse(sessionStorage.getItem("detergent")),
-          whites: JSON.parse(sessionStorage.getItem("whites")),
-          softener: JSON.parse(sessionStorage.getItem("softener")),
-          additional: JSON.parse(sessionStorage.getItem("additional")),
-        },
-      });
-
-      if (response.data.success) {
-      }
-    } catch (error) {
-      console.log("Error", error);
-    }
-  };
-  ///////////////////////////////////////////////////////////////////
-
-  ///////////////////////////////////////////////////////////////////
-  const getPromos = async (promo) => {
-    try {
-      const response = await axios.post(`${domain}get-promos`, {
-        pCode: promo,
-      });
-
-      if (response.data.success) {
-        sessionStorage.setItem(
-          "promoCode",
-          JSON.stringify(response.data.result)
-        );
-        return true;
-      } else {
-        sessionStorage.setItem("promoCode", JSON.stringify("null"));
-        return false;
-      }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-  ///////////////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////////////
   const checkoutSession = async (cidP,line_items) => {
     const response = await axios
       .post(`${domain}create-checkout-session`, {
@@ -320,7 +208,6 @@ export function AuthProvider({ children }) {
     }
     return response.data.result;
   };
-  //////////////////////////////////////////////////////////////////
 
   function logout() {
     setCurrentStripeInstance(null);
@@ -356,7 +243,6 @@ export function AuthProvider({ children }) {
     setPieces,
     currentStripeInstance,
     setCurrentStripeInstance,
-    getCardList,
     currentStripeUser,
     pickupDate,
     pickupTime,
@@ -366,7 +252,6 @@ export function AuthProvider({ children }) {
     currentAddress,
     getCustomer,
     addAddress,
-    customerPortal,
     createCustomer,
     setCurrentStripeUser,
     readProfile,
@@ -376,7 +261,6 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
-    getPromos,
     addNewProfile,
     detergent,
     setDetergent,
@@ -397,10 +281,7 @@ export function AuthProvider({ children }) {
     email,
     setEmail,
     sendMessage,
-    handleInvoice,
-    checkoutSession,
-    getProducts,
-    getPrices
+    checkoutSession
   };
 
   return (

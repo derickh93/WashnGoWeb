@@ -35,7 +35,6 @@ export default function Signup() {
     }
 
     try {
-      console.log("entered signup page");
       setError("");
       setLoading(true);
       if (!validator.isMobilePhone(phone)) {
