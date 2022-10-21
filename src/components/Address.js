@@ -24,17 +24,13 @@ export default function Address() {
   const {doorman,code,hotel,code_door} = useSelector((state) => state.accountPref)
   const dispatch = useDispatch();
 
+
+  let stripeData = "test"//****************************************** */
+
   const handleDoorChange = event => {
     dispatch(setDoorCode(event.target.value));
     console.log(code_door)
   };
-
-  const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();

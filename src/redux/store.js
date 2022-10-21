@@ -6,6 +6,7 @@ import pickupReducer from "./pickup"
 import storage from "redux-persist/lib/storage";
 import accountPrefReducer from "./account-prefs"
 import accountReducer from "./account"
+import userReducer from "./user"
 
 import {
     persistReducer,
@@ -30,7 +31,8 @@ const reducer = combineReducers({
     preference: preferenceReducer,
     pickup: pickupReducer,
     accountPref: accountPrefReducer,
-    account: accountReducer
+    account: accountReducer,
+    user: userReducer
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer)

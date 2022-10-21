@@ -1,7 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import firebase from "../firebase";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setEmail, setId, setName, setPhone, setShipping,setContact} from "../redux/user";
+
 require("dotenv").config();
+
 
 const AuthContext = React.createContext();
 const auth = firebase.auth();
@@ -18,9 +22,14 @@ export function AuthProvider({ children }) {
   const [currentAddress, setCurrentAddress] = useState();
   const [currentStripeInstance, setCurrentStripeInstance] = useState();
 
+  const { additional,detergentScent} = useSelector((state) => state.preference);
+
+  const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
+
   const [detergent, setDetergent] = useState();
 
   const domain = process.env.REACT_APP_DOMAIN;
+  const dispatch = useDispatch();
 
   const addNewProfile = async (authID, custID,phoneNumber) => {
     const user_profileRef = data.ref("user_profile");
@@ -36,7 +45,7 @@ export function AuthProvider({ children }) {
   const readProfile = async (uid) => {
     var ref = firebase.database().ref("user_profile");
     //const result = 
-    await ref
+     ref
       .orderByChild("authID")
       .equalTo(uid)
       .on("child_added", (snapshot) => {
@@ -79,10 +88,6 @@ export function AuthProvider({ children }) {
 
       if (response.data.success) {
         setCurrentStripeInstance(response.data.stripeCust);
-        sessionStorage.setItem(
-          "stripeInstance",
-          JSON.stringify(response.data.stripeCust)
-        );
         addNewProfile(uid, response.data.stripeCust.id,phoneNumber);
       }
     } catch (error) {
@@ -114,10 +119,10 @@ export function AuthProvider({ children }) {
       });
 
     if (response.data.success) {
-      sessionStorage.setItem(
-        "stripeInstance",
-        JSON.stringify(response.data.result)
-      );
+      // sessionStorage.setItem(
+      //   "stripeInstance",
+      //   JSON.stringify(response.data.result)
+      // );
     }
     return response.data.portalURL;
   };
@@ -125,12 +130,12 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const authObj = await auth
       .signInWithEmailAndPassword(email, password)
+      .then((result) => {
+        readProfile(result.user.uid);
+      })
       .catch((error) => {
         throw new Error(error.message);
       })
-      .then((result) => {
-        readProfile(result.user.uid);
-      });
     return authObj;
   };
 
@@ -144,11 +149,15 @@ export function AuthProvider({ children }) {
       });
 
     if (response.data.success) {
+      const res = response.data.result;
+      dispatch(setId(res.id));
+      dispatch(setName(res.name))
+      dispatch(setShipping(res.shipping))
+      dispatch(setPhone(res.phone))
+      dispatch(setEmail(res.email))
+      dispatch(setContact(res.metadata.contact))
+
       setCurrentStripeInstance(response.data.result);
-      sessionStorage.setItem(
-        "stripeInstance",
-        JSON.stringify(response.data.result)
-      );
     }
     return response.data.result;
   };
@@ -177,13 +186,10 @@ export function AuthProvider({ children }) {
         cid: cidP,
         line_items,
         md: {
-          day: JSON.parse(sessionStorage.getItem("pickupDay")),
-          time: JSON.parse(sessionStorage.getItem("pickupTime")),
-          // dryer: JSON.parse(sessionStorage.getItem("dryer")),
-          detergent: JSON.parse(sessionStorage.getItem("detergent")),
-          // whites: JSON.parse(sessionStorage.getItem("whites")),
-          // softener: JSON.parse(sessionStorage.getItem("softener")),
-          additional: JSON.parse(sessionStorage.getItem("additional")),
+          day: pickupDate,
+          time: pickupTime,
+          detergent: detergentScent,
+          additional: additional,
         },
       })
       .catch((error) => {

@@ -19,11 +19,6 @@ export default function Time() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
-
   const {pickupDate,pickupTime} = useSelector((state) => state.pickup)
 
   let date = pickupDate;

@@ -11,16 +11,15 @@ import washProds from "./product-data/product-wash-prod.json";
 import { useHistory } from "react-router-dom";
 
 export default function Confirmation() {
-  const { logout, readProfile, currentUser, 
-    //customerPortal, 
+  const { logout ,
     checkoutSession } =
     useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
   const { additional,detergentScent} = useSelector((state) => state.preference);
-
   const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
+  const {id,name,shipping} = useSelector((state) => state.user);
 
 
   let arrWashSum = arrWash.reduce((accumulator, value) => {
@@ -77,17 +76,12 @@ export default function Confirmation() {
       quantity: 1,
     });
   }
-  /////////////////////////////////////////////////////////////////////
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
 
   async function handlePayment(e) {
     e.preventDefault();
     setLoading(true);
     try {
-      checkoutSession(userData.id, line_items).then((url) => {
+      checkoutSession(id, line_items).then((url) => {
         window.location = url;
       });
     } catch (err) {
@@ -123,29 +117,21 @@ export default function Confirmation() {
   let commonProps;
 
   try {
-    const data = JSON.parse(sessionStorage.getItem("stripeInstance"));
-
-    // var dryer = JSON.parse(sessionStorage.getItem("dryer"));
-    // var whites = JSON.parse(sessionStorage.getItem("whites"));
-    // var softener = JSON.parse(sessionStorage.getItem("softener"));
 
     var address;
-    if (data.shipping) {
-      address = data.shipping.address;
+    if (shipping) {
+      address = shipping.address;
     } else {
       address = "N/A";
     }
     commonProps = {
-      name: data.name,
+      name: name,
       puDate: pickupDate,
       puTime: pickupTime,
       address: address,
       det: detergentScent,
-      // dry: dryer,
-      // soft: softener,
       addit: additional,
       arrWashSum: arrWashSum,
-      // whi: whites,
     };
   } catch (err) {
     console.log(err);

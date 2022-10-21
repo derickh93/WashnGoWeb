@@ -39,11 +39,6 @@ export default function Products() {
 
   let arrCount = sumArr + sumArrDry;
 
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
-
   async function handleLogout() {
     setError("");
 

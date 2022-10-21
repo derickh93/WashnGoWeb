@@ -16,39 +16,21 @@ import { clearPickupDate, clearPickupTime } from "../redux/pickup";
 
 export default function Confirmation() {
 
-  const { logout, readProfile, currentUser, 
-    //customerPortal, 
+  const { logout,
     sendMessage} = useAuth();
+    const {name,phone,email,shipping,contact} = useSelector((state) => state.user);
+
 
   const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
 
 
 
   const history = useHistory();
-  
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
 
-  const stripeData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
-  const firstName = stripeData.name.split(" ")[0];
+  const firstName = name.split(" ")[0];
 
   const dispatch = useDispatch();
-
-
-  // async function handlePortal() {
-
-
-  //   try {
-  //     customerPortal(userData.id,'thankyou').then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // }
 
   async function handleLogout() {
 
@@ -72,8 +54,6 @@ export default function Confirmation() {
     } catch (err) {}
   }
 
-  const address = JSON.parse(sessionStorage.getItem("stripeInstance")).shipping.address;
-
   const { arr } = useSelector((state) => state.dryClean);
   const sumArr = arr.reduce((accumulator, value) => {
     return accumulator + value;
@@ -85,13 +65,13 @@ export default function Confirmation() {
   }, 0);
 
   useEffect(()=>{
-    const customerMSG = `Thank you for your order ${stripeData.name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
-    const adminMSG = `${stripeData.name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
-    \nAddress: ${address.line1}\n${address.city}\n${address.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`;
+    const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
+    const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
+    \nAddress: ${shipping.line1}\n${shipping.city}\n${shipping.postal_code}\nBags: ${sumArrWash}\nDry Clean: ${sumArr}`;
     sendMessage(customerMSG
       ,
-      stripeData.phone,
-      stripeData.metadata.Contact === 'Text'? true:false
+      phone,
+      contact === 'Text'? true:false
     )
       .catch((error) => {
         console.log(error);
@@ -163,7 +143,7 @@ export default function Confirmation() {
           We've received your order. You can expect to receive a confirmation
           email at
         </span>
-        <span style={{ fontWeight: "bold" }}> {stripeData.email}</span>
+        <span style={{ fontWeight: "bold" }}> {email}</span>
       </div>
       <div style={{ padding: "10px" }}>
       </div>
@@ -171,10 +151,10 @@ export default function Confirmation() {
         <span>
           We will be seeing you {pickupDate} between {pickupTime}
         </span>
-        <div className="prefDetails">{stripeData.shipping.line1}</div>
-        <div className="prefDetails">{stripeData.shipping.city}</div>
-        <div className="prefDetails">{stripeData.shipping.state}</div>
-        <div className="prefDetails">{stripeData.shipping.postal_code}</div>
+        <div className="prefDetails">{shipping.line1}</div>
+        <div className="prefDetails">{shipping.city}</div>
+        <div className="prefDetails">{shipping.state}</div>
+        <div className="prefDetails">{shipping.postal_code}</div>
       </div>
       <div
         style={{
