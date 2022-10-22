@@ -44,7 +44,7 @@ export class MapContainer extends Component {
         // update center state
         this.setState({ mapCenter: fullAddr });
       })
-      .catch((error) => console.error("Error", error));
+      .catch((error) => console.error("Error"));
   };
 
   onTrigger = (addr, comps) => {

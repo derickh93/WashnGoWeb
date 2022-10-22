@@ -24,21 +24,14 @@ const handleMessageChange = event => {
   const { arrWash } = useSelector((state) => state.wash);
 
   const {
-    logout,
-    readProfile,
-    currentUser,
+    logout
   } = useAuth();
 
   const history = useHistory();
-  const userData = JSON.parse(sessionStorage.getItem("stripeInstance"));
 
   let sumArrWash = arrWash.reduce((accumulator, value) => {
     return accumulator + value;
   }, 0);
-
-  if (!userData) {
-    readProfile(currentUser.uid);
-  }
 
   async function handleLogout() {
     setError("");

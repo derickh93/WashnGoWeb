@@ -16,15 +16,10 @@ export default class ConfirmDetails extends Component {
 
       dayOfWeek: this.props.commonProps.dayOfWeek,
       detergent: this.props.commonProps.det,
-
-      // dryer: this.props.commonProps.dry,
-      // softener: this.props.commonProps.soft,
       additional: this.props.commonProps.addit,
       arrWashSum : this.props.commonProps.arrWashSum
-      // whites: this.props.commonProps.whi
 
     };
-    //binding in constuctor
     this.handleNameChange.bind(this);
   }
   
@@ -36,11 +31,7 @@ export default class ConfirmDetails extends Component {
       puDate: e.target.value,
       puTime: e.target.value,
       detergent: e.target.value,
-      // dryer: e.target.value,
-      // softener: e.target.value,
       additional: e.target.value,
-      // whites: e.target.value,
-
     };
     this.setState({ course });
   }

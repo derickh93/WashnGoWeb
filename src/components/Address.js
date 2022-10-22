@@ -16,20 +16,18 @@ export default function Address() {
     setCurrentAddress,
     currentAddress,
     logout,
-    readProfile,
-    currentUser,
   } = useAuth();
   const history = useHistory();
   const aptRef = useRef();
   const {doorman,code,hotel,code_door} = useSelector((state) => state.accountPref)
+  const {id,name} = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
 
-  let stripeData = "test"//****************************************** */
 
-  const handleDoorChange = event => {
-    dispatch(setDoorCode(event.target.value));
-    console.log(code_door)
+  async function handleDoorChange(e) {
+    dispatch(setDoorCode(e.target.value));
   };
 
   async function handleSubmit(e) {
@@ -65,12 +63,12 @@ export default function Address() {
         ,
       };
       addAddress(
-        stripeData.id,
+        id,
         nameArr[0],
         nameArr[1],
         nameArr[2],
         aptVal,
-        stripeData.name,
+        name,
         options
       );
       history.push("/time");
@@ -111,20 +109,6 @@ export default function Address() {
     setLoading(false);
   }
 
-  // async function handlePortal() {
-  //   setError("");
-
-  //   try {
-  //     setLoading(true);
-  //     customerPortal(userData.id, "time").then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     setError("Failed open portal");
-  //     console.log(err.message);
-  //   }
-  //   setLoading(false);
-  // }
   return (
     <div>
       <div className="homepage">
@@ -148,19 +132,6 @@ export default function Address() {
           justifyContent: "flex-end",
         }}
       >
-        {/* <Button
-          style={{
-            width: "20%",
-            height: "20%",
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-          variant="link"
-          onClick={handlePortal}
-        >
-          <u>Manage Account</u>
-        </Button> */}
         <Button
           style={{
             width: "20%",
@@ -206,7 +177,6 @@ export default function Address() {
             value={doorman}
             onChange={() => {
               dispatch(changeDoorman());
-              console.log("Doorman: " + !doorman);
             }}
           />
           <span style={{ padding: "5px" }}>Live in a doorman building? </span>
@@ -219,7 +189,6 @@ export default function Address() {
             value={hotel}
             onChange={() => {
               dispatch(changeHotel());
-              console.log("Hotel: " + !hotel);
             }}
           />
           <span style={{ padding: "5px" }}>
@@ -246,8 +215,8 @@ export default function Address() {
               name="code"
               placeholder="Door/Gate Code"
               value={code_door}
-              onChange={
-                handleDoorChange()}
+              onChange={(e) =>
+                handleDoorChange(e)}
             />
           )}
         </div>
@@ -269,12 +238,12 @@ export default function Address() {
       <div className="d-flex flex-column">
         <div style={{ padding: 5 }}>
           {" "}
-          <input type="radio" value="Call" name="contact" checked/> Call
+          <input type="radio" value="Call" name="contact" checked readOnly/> Call
         </div>
 
         <div style={{ padding: 5 }}>
           {" "}
-          <input type="radio" value="Text" name="contact" /> Text
+          <input type="radio" value="Text" name="contact" readOnly/> Text
         </div>
       </div>
       <div className="address">

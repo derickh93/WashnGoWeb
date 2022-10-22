@@ -124,6 +124,7 @@ export default function Signup() {
                 ref={passwordRef}
                 required
                 placeholder="Password"
+                autoComplete="on"
               />
                                 <img style={{height:25,width:25,padding: 5}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
 
@@ -138,6 +139,7 @@ export default function Signup() {
                 ref={passwordConfirmRef}
                 required
                 placeholder="Confirm Password"
+                autoComplete="on"
               />
               </div>
             </Form.Group>

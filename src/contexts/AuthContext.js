@@ -19,7 +19,6 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [currentStripeUser, setCurrentStripeUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [currentAddress, setCurrentAddress] = useState();
   const [currentStripeInstance, setCurrentStripeInstance] = useState();
 
   const { additional,detergentScent} = useSelector((state) => state.preference);
@@ -51,17 +50,6 @@ export function AuthProvider({ children }) {
       .on("child_added", (snapshot) => {
         getCustomer(snapshot.child("custID").val());
       });
-  };
-
-  const checkPhoneNumber = async (uid,) => {
-    var ref = firebase.database().ref("user_profile");
-    const result = await ref
-      .orderByChild("authID")
-      .equalTo(uid)
-      .on("child_added", (snapshot) => {
-        getCustomer(snapshot.child("phoneNumber").val());
-      });
-      console.log(result);
   };
 
   const signup = async (email, password, stripeUser,phoneNumber) => {
@@ -233,8 +221,6 @@ export function AuthProvider({ children }) {
     currentStripeInstance,
     setCurrentStripeInstance,
     currentStripeUser,
-    setCurrentAddress,
-    currentAddress,
     getCustomer,
     addAddress,
     createCustomer,

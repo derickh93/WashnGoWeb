@@ -10,14 +10,12 @@ import { increment, decrement, resetDry } from "../redux/dry-clean-qty";
 import { incrementWash, decrementWash, resetWash } from "../redux/wash-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
-import { clearAdditional,clearDetergentScent } from "../redux/preference";
-import { clearPickupDate,clearPickupTime } from "../redux/pickup";
+import { clearAdditional, setDetergentScent } from "../redux/preference";
+import { setPickupTime } from "../redux/pickup";
 
 
 export default function Products() {
-  const { logout, 
-    //customerPortal, 
-    readProfile, currentUser } = useAuth();
+  const { logout } = useAuth();
   const [error, setError] = useState("");
 
   const { arr } = useSelector((state) => state.dryClean);
@@ -142,9 +140,8 @@ export default function Products() {
             dispatch(resetWash());
             dispatch(resetDry());
             dispatch(clearAdditional());
-            dispatch(clearDetergentScent());
-            dispatch(clearPickupDate());
-            dispatch(clearPickupTime());
+            dispatch(setDetergentScent('Scented'));
+            dispatch(setPickupTime("5pm - 9pm"))
           }}
         >
           <div className="d-flex flex-column justify-content-center align-items-center">
@@ -153,22 +150,6 @@ export default function Products() {
           <u>Clear</u>
           </div>
         </Button>}
-
-
-
-        {/* <Button
-          style={{
-            width: "20%",
-            height: "20%",
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-          variant="link"
-          onClick={handlePortal}
-        >
-          <u>Manage Account</u>
-        </Button> */}
 
         <Button
           style={{

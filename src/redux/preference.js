@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const preferenceSlice = createSlice({
     name: "preference",
-    initialState: {additional:'',detergentScent:''},
+    initialState: {additional:'',detergentScent:'Scented'},
     reducers:{
         setAdditional: (state,{payload}) => {
             state.additional = payload;

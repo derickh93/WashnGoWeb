@@ -9,10 +9,7 @@ import { setPickupDate, setPickupTime } from "../redux/pickup";
 
 export default function Time() {
   const {
-    logout,
-    readProfile,
-    currentUser,
-    //customerPortal,
+    logout
   } = useAuth();
 
   const [error, setError] = useState("");
