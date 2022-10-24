@@ -31,9 +31,6 @@ export default function Time() {
       setLoading(true);
       await logout()
         .then(() => {
-          sessionStorage.clear();
-        })
-        .then(() => {
           history.push("/login");
         });
     } catch (err) {
@@ -42,21 +39,6 @@ export default function Time() {
     }
     setLoading(false);
   }
-
-  // async function handlePortal() {
-  //   setError("");
-
-  //   try {
-  //     setLoading(true);
-  //     customerPortal(userData.id,'time').then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     setError("Failed open portal");
-  //     console.log(err.message);
-  //   }
-  //   setLoading(false);
-  // }
 
   function selectedDay(val) {
       let currentTime = new Date();

@@ -39,9 +39,6 @@ const handleMessageChange = event => {
     try {
       await logout()
         .then(() => {
-          sessionStorage.clear();
-        })
-        .then(() => {
           history.push("/login");
         });
     } catch (err) {

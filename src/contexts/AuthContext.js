@@ -85,32 +85,30 @@ export function AuthProvider({ children }) {
 
   const addAddress = async (
     stripeID,
-    addr,
-    cty,
-    st_zi,
+    address,
+    city,
+    state,
     apt,
     full_name,
-    opt
+    options
   ) => {
     const response = await axios
       .post(`${domain}add-address`, {
         cid: stripeID,
-        address: addr,
-        address2: apt,
-        city: cty,
-        state: st_zi,
+        address,
+        apt,
+        city,
+        state,
         full_name,
-        options: opt,
+        options,
       })
       .catch((error) => {
         throw new Error(error.message);
       });
 
     if (response.data.success) {
-      // sessionStorage.setItem(
-      //   "stripeInstance",
-      //   JSON.stringify(response.data.result)
-      // );
+      const res = response.data.result;
+      dispatch(setShipping(res.shipping))
     }
     return response.data.portalURL;
   };

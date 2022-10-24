@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage";
 import accountPrefReducer from "./account-prefs"
 import accountReducer from "./account"
 import userReducer from "./user"
+import bulkyReducer from "./bulky-qty"
 
 import {
     persistReducer,
@@ -32,7 +33,8 @@ const reducer = combineReducers({
     pickup: pickupReducer,
     accountPref: accountPrefReducer,
     account: accountReducer,
-    user: userReducer
+    user: userReducer,
+    bulky:bulkyReducer
 })
 
 const persistedReducer = persistReducer(persistConfig,reducer)

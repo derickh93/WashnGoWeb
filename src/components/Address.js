@@ -1,41 +1,86 @@
 import React, { useState, useRef } from "react";
-import GoogleMap from "./GoogleMap";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import "../App.css";
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert, Button } from "react-bootstrap";
-import { useSelector,useDispatch } from "react-redux";
-import {changeDoorman,changeHotel,setDoorCode,changeCode} from "../redux/account-prefs"
+import { useSelector, useDispatch } from "react-redux";
+import {
+  changeDoorman,
+  changeHotel,
+  setDoorCode,
+  changeCode,
+} from "../redux/account-prefs";
+
+const QUEENS_CITIES = [
+  'Arverne',
+  'Astoria',
+  'Bayside',
+  'Bellerose',
+  'Breezy Point',
+  'Cambria Heights',
+  'College Point',
+  'Corona',
+  'East Elmhurst',
+  'Elmhurst',
+  'Far Rockaway',
+  'Floral Park',
+  'Flushing',
+  'Forest Hills',
+  'Fresh Meadows',
+  'Glen Oaks',
+  'Hollis',
+  'Howard Beach',
+  'Jackson Heights',
+  'Jamaica',
+  'Kew Gardens',
+  'Little Neck',
+  'Long Island City',
+  'Maspeth',
+  'Middle Village',
+  'Oakland Gardens',
+  'Ozone Park',
+  'Queens Village',
+  'Rego Park',
+  'Richmond Hill',
+  'Ridgewood',
+  'Rockaway Park',
+  'Rosedale',
+  'Saint Albans',
+  'South Ozone Park',
+  'South Richmond Hill',
+  'Springfield Gardens',
+  'Sunnyside',
+  'Whitestone',
+  'Woodhaven',
+  'Woodside',
+];
 
 
 export default function Address() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const {
-    addAddress,
-    setCurrentAddress,
-    currentAddress,
-    logout,
-  } = useAuth();
+  const { addAddress, logout } = useAuth();
   const history = useHistory();
   const aptRef = useRef();
-  const {doorman,code,hotel,code_door} = useSelector((state) => state.accountPref)
-  const {id,name} = useSelector((state) => state.user);
+  const { doorman, code, hotel, code_door } = useSelector(
+    (state) => state.accountPref
+  );
+  const { id, name } = useSelector((state) => state.user);
+  const [value, setValue] = useState(null);
 
   const dispatch = useDispatch();
 
-
-
   async function handleDoorChange(e) {
     dispatch(setDoorCode(e.target.value));
-  };
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     try {
       if (error.length > 0) {
-        throw new Error("Out of Zone");
+        throw new Error("Not In Service Area");
       }
       setError("");
       setLoading(true);
@@ -47,48 +92,25 @@ export default function Address() {
         aptVal = aptRef.current.value;
       }
 
-      try {
-        var nameArr = currentAddress.split(",");
-      } catch (err) {
+      if(!value) {
         setError("Please add an address");
-        console.log(err);
-        throw new Error("Please add an address");
       }
 
       const options = {
         Doorman: doorman,
         Hotel: hotel,
         Door_Gate_Code: code_door,
-        Contact: document.querySelector('input[name="contact"]:checked').value
-        ,
+        Contact: document.querySelector('input[name="contact"]:checked').value,
       };
-      addAddress(
-        id,
-        nameArr[0],
-        nameArr[1],
-        nameArr[2],
-        aptVal,
-        name,
-        options
-      );
+      addAddress(id, value.value.terms[0].value + " " + value.value.terms[1].value, value.value.terms[2].value, value.value.terms[3].value, aptVal, name, options);
+
       history.push("/time");
     } catch (err) {
       setError(err.message);
-      console.log(err);
     }
 
     setLoading(false);
   }
-
-  const handleCallback = (childData) => {
-    setError("");
-    const { address, zone } = childData;
-    setCurrentAddress(address);
-    if (zone === "In") {
-    } else {
-      setError("Out of Zone, We currently do not serve your area.");
-    }
-  };
 
   async function handleLogout() {
     setError("");
@@ -97,13 +119,9 @@ export default function Address() {
       setLoading(true);
       await logout()
         .then(() => {
-          sessionStorage.clear();
-        })
-        .then(() => {
           history.push("/login");
         });
     } catch (err) {
-      console.log(err.message);
       setError("Failed to log out");
     }
     setLoading(false);
@@ -147,15 +165,34 @@ export default function Address() {
         </Button>
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <GoogleMap parentCallback={handleCallback} />
+        <GooglePlacesAutocomplete
+          apiKey="AIzaSyBF8DyH9rlRyQ_3rWiOJ6NdkR7D79D6S6A"
+          autocompletionRequest={{
+            componentRestrictions: {
+              country: ["us"],
+            },
+          }}
+          selectProps={{
+            value,
+            onChange: (val) => {
+              setValue(val);
+              if(!QUEENS_CITIES.includes(val.value.terms[2].value)) {
+                setError("Not In Service Area");
+              }
+            },
+          }}
+        />
+
         <input
           type="text"
           id="apt"
           name="apt"
           placeholder="Apartment #"
           ref={aptRef}
+          style={{marginBlock:'8px'}}
+          className="form-control"
         />
-      </div>
+      </div> 
       <div
         style={{
           fontWeight: "bold",
@@ -210,13 +247,13 @@ export default function Address() {
           </span>
           {code && (
             <input
+            className="form-control"
               type="text"
               id="code"
               name="code"
               placeholder="Door/Gate Code"
               value={code_door}
-              onChange={(e) =>
-                handleDoorChange(e)}
+              onChange={(e) => handleDoorChange(e)}
             />
           )}
         </div>
@@ -238,12 +275,19 @@ export default function Address() {
       <div className="d-flex flex-column">
         <div style={{ padding: 5 }}>
           {" "}
-          <input type="radio" value="Call" name="contact" checked readOnly/> Call
+          <input
+            type="radio"
+            value="Call"
+            name="contact"
+            checked
+            readOnly
+          />{" "}
+          Call
         </div>
 
         <div style={{ padding: 5 }}>
           {" "}
-          <input type="radio" value="Text" name="contact" readOnly/> Text
+          <input type="radio" value="Text" name="contact" readOnly /> Text
         </div>
       </div>
       <div className="address">

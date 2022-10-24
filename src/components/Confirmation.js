@@ -7,6 +7,7 @@ import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
 import dryCleanProds from "./product-data/products-prod.json";
 import washProds from "./product-data/product-wash-prod.json";
+import bulkyProds from "./product-data/bulky-prod.json"
 
 import { useHistory } from "react-router-dom";
 
@@ -17,6 +18,8 @@ export default function Confirmation() {
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
+  const { bulkyArr } = useSelector((state) => state.bulky);
+
   const { additional,detergentScent} = useSelector((state) => state.preference);
   const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
   const {id,name,shipping} = useSelector((state) => state.user);
@@ -61,6 +64,21 @@ export default function Confirmation() {
     }
   }
 
+  for (let i = 0; i < bulkyArr.length; i++) {
+    if (bulkyArr[i] > 0) {
+      validSum += parseFloat(bulkyProds[i].price.substring(1));
+      line_items.push({
+        price: bulkyProds[i].price_id,
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 99,
+        },
+        quantity: bulkyArr[i],
+      });
+    }
+  }
+
   if (validSum < 30) {
     const finalSum = 3000 - validSum * 100;
     line_items.push({
@@ -85,27 +103,13 @@ export default function Confirmation() {
         window.location = url;
       });
     } catch (err) {
-      console.log(err.message);
       setLoading(false);
     }
   }
 
-  // async function handlePortal() {
-  //   try {
-  //     customerPortal(userData.id, "confirmation").then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // }
-
   async function handleLogout() {
     try {
       await logout()
-        .then(() => {
-          sessionStorage.clear();
-        })
         .then(() => {
           history.push("/login");
         });

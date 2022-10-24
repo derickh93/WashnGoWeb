@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import dryCleanProds from "./product-data/products-prod.json";
 import washProds from "./product-data/product-wash-prod.json";
+import bulkyProds from "./product-data/bulky-prod.json";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement, resetDry } from "../redux/dry-clean-qty";
 import { incrementWash, decrementWash, resetWash } from "../redux/wash-qty";
+import { incrementBulky,decrementBulky,resetBulky } from "../redux/bulky-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
 import { clearAdditional, setDetergentScent } from "../redux/preference";
@@ -22,6 +24,8 @@ export default function Products() {
   const { arrWash } = useSelector((state) => state.wash);
 
   const [openDC, setOpenDC] = React.useState(false);
+  const [openBulky, setOpenBulky] = React.useState(false);
+
   const [openWash, setOpenWash] = React.useState(true);
 
   const history = useHistory();
@@ -43,9 +47,6 @@ export default function Products() {
     try {
       await logout()
         .then(() => {
-          sessionStorage.clear();
-        })
-        .then(() => {
           history.push("/login");
         });
     } catch (err) {
@@ -53,19 +54,6 @@ export default function Products() {
       setError("Failed to log out");
     }
   }
-
-  // async function handlePortal() {
-  //   setError("");
-
-  //   try {
-  //     customerPortal(userData.id, "products").then((url) => {
-  //       window.location = url;
-  //     });
-  //   } catch (err) {
-  //     setError("Failed open portal");
-  //     console.log(err.message);
-  //   }
-  // }
 
   async function nextPage() {
     try {
@@ -139,6 +127,7 @@ export default function Products() {
           onClick={() =>{
             dispatch(resetWash());
             dispatch(resetDry());
+            dispatch(resetBulky())
             dispatch(clearAdditional());
             dispatch(setDetergentScent('Scented'));
             dispatch(setPickupTime("5pm - 9pm"))
@@ -171,8 +160,9 @@ export default function Products() {
           <Button
             style={{ backgroundColor: "#1C2F74",margin:5}}
             onClick={() => {
-              setOpenWash(!openWash);
-              setOpenDC(!openDC);
+              setOpenDC(false);
+              setOpenWash(true);
+              setOpenBulky(false)
             }}
             aria-controls="example-collapse-text1"
             aria-expanded={openWash}
@@ -219,14 +209,74 @@ export default function Products() {
             ))}
           </div>
         </Collapse>
+
+        {!openBulky && (
+          <div>
+
+            <Button
+              style={{ backgroundColor: "#1C2F74", margin:20}}
+              onClick={() => {
+                setOpenDC(false);
+                setOpenWash(false);
+                setOpenBulky(true)
+              }}
+              aria-controls="example-collapse-text3"
+              aria-expanded={openDC}
+            >
+              Bulky
+            </Button>
+          </div>
+        )}
+        <Collapse in={openBulky}>
+  
+          <div id="example-collapse-text3">
+          <img
+              src={dryClean}
+              alt="bulky"
+              style={{ height: 50, width: 50, padding: 5 }}
+            />
+            {bulkyProds.map((item, idx) => (
+              <div key={idx} style={{backgroundColor: idx%2 === 0 ? "#F0F8FF" : ""}}>
+                <div className="row d-flex align-items-center">
+                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-2">{item.price}</h6>
+                  <div className=" col-6 d-flex flex-row align-items-center">
+                  <Button
+                    className="buttonEffects"
+                    style={{ backgroundColor: "#1C2F74", padding:0}}
+                    onClick={() => {
+                      dispatch(decrementBulky(idx));
+                    }}
+                  >
+                    -
+                  </Button>
+                  <h1 style={{ padding: "10px" }}>{arr[idx]}</h1>
+
+                  <Button
+                    className="buttonEffects"
+                    style={{ backgroundColor: "#1C2F74", padding:0}}
+                    onClick={() => {
+                      dispatch(incrementBulky(idx));
+                    }}
+                  >
+                    +
+                  </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Collapse>
+        
         {!openDC && (
           <div>
 
             <Button
               style={{ backgroundColor: "#1C2F74", margin:20}}
               onClick={() => {
-                setOpenDC(!openDC);
-                setOpenWash(!openWash);
+                setOpenDC(true);
+                setOpenWash(false);
+                setOpenBulky(false)
               }}
               aria-controls="example-collapse-text2"
               aria-expanded={openDC}
@@ -275,6 +325,12 @@ export default function Products() {
             ))}
           </div>
         </Collapse>
+
+
+
+        
+
+        
 
 
         <button className="nextBtn" onClick={() =>{

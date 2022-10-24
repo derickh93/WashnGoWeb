@@ -14,7 +14,6 @@ export default function Signup() {
   const passwordConfirmRef = useRef();
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  //const cellPhoneRef = useRef();
   const [phone, setPhone] = React.useState("");
 
   const { signup, sendMessage, currentUser } = useAuth();
@@ -102,6 +101,8 @@ export default function Signup() {
 
             <div style={{ paddingBottom: "15px" }}>
               <InputMask
+                className="form-control"
+                placeholder="Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 mask="+1\(999) 999-9999"
@@ -126,8 +127,7 @@ export default function Signup() {
                 placeholder="Password"
                 autoComplete="on"
               />
-                                <img style={{height:25,width:25,padding: 5}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
-
+              <img style={{height:25,width:25,padding: 5}} alt="eye" src={type === "password" ? eyeShow : eyeHide} onClick={() => {showHide()}}/>
                           </div>
             </Form.Group>
 

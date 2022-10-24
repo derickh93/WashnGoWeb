@@ -111,7 +111,10 @@ h3 {
   transition: 0.5s all ease-out;
   outline: invert;
   background-color: #1C2F74;
-  margin: 5px
+  margin: 5px;
+  position:sticky;
+  bottom: 16px;
+
 }
 
 .nextBtn:hover {
@@ -210,4 +213,36 @@ h3 {
   display: flex;
   flex-direction: column;
   padding: 5px;
+}
+
+/* Fix for react-horizontal-datepicker hardcoded values */
+[class^='DatePicker_dateDayItem'][style]:not([style='']) {
+  position: relative;
+  border: none !important;
+}
+
+[class^='DatePicker_dateDayItem'][style]:not([style=''])::after {
+  content: '';
+  display: block;
+  /* top: -0.2em;
+  left: -0.3em;
+  width: 3.5em;
+  height: 3.5em; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1;
+  transform: scale(1.15) translateY(2px);
+  border-radius: 50%;
+  border: 2px solid rgb(28, 47, 116);
+  position: absolute;
+}
+
+[class^='DatePicker_daysContainer'] {
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+[class^='DatePicker_button'] {
+  transform: translateY(-4px);
 }

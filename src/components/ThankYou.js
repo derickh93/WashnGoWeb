@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 
 import "../App.css";
 import { clearPickupDate, clearPickupTime } from "../redux/pickup";
+import { resetBulky } from "../redux/bulky-qty";
 
 export default function Confirmation() {
 
@@ -37,9 +38,6 @@ export default function Confirmation() {
     try {
       await logout()
         .then(() => {
-          sessionStorage.clear();
-        })
-        .then(() => {
           history.push("/login");
         });
     } catch (err) {
@@ -49,7 +47,6 @@ export default function Confirmation() {
 
   async function schedule() {
     try {
-      sessionStorage.clear();
       history.push("/time");
     } catch (err) {}
   }
@@ -88,6 +85,7 @@ export default function Confirmation() {
     
       dispatch(resetWash());
       dispatch(resetDry());
+      dispatch(resetBulky());
       dispatch(clearAdditional());
       dispatch(clearDetergentScent());
       dispatch(clearPickupDate());
