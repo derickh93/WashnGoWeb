@@ -20,6 +20,11 @@ export const bulkySlice = createSlice({
     }
 });
 
+export function sumBulkyArr(state) {
+
+    return state.bulky.bulkyArr.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);}
 export const {incrementBulky,decrementBulky,resetBulky} = bulkySlice.actions;
 
 export default bulkySlice.reducer;

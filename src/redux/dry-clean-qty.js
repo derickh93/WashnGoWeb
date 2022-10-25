@@ -20,6 +20,10 @@ export const dryCleanSlice = createSlice({
     }
 });
 
+export function sumDryCleanArr(state) {
+    return state.dryClean.arr.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);}
 export const {increment,decrement,resetDry} = dryCleanSlice.actions;
 
 export default dryCleanSlice.reducer;

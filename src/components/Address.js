@@ -176,10 +176,12 @@ export default function Address() {
             value,
             onChange: (val) => {
               setValue(val);
-              if(!QUEENS_CITIES.includes(val.value.terms[2].value)) {
-                setError("Not In Service Area");
-              }
-            },
+              console.log(val)
+                if(val.value.terms.some(term => QUEENS_CITIES.includes(term.value)))
+                  setError("")
+                else 
+                  setError("Not In Service Area");
+            }
           }}
         />
 
@@ -233,7 +235,7 @@ export default function Address() {
           </span>
         </div>
         <div style={{ display: "flex" }}>
-          <input
+          <label>        <input
             type="checkbox"
             id="code"
             name="code"
@@ -241,8 +243,9 @@ export default function Address() {
             onChange={() => {
               dispatch(changeCode());
             }}
-          ></input>
-          <span style={{ padding: "5px" }}>
+          /></label>
+  
+          <span style={{ margin: "5px" }}>
             Will you give us a key or door code?
           </span>
           {code && (

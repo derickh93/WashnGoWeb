@@ -20,6 +20,13 @@ export const washSlice = createSlice({
     }
 });
 
+export function sumArrWash(state) {
+
+    return state.wash.arrWash.reduce((accumulator, value) => {
+        return accumulator + value;
+      }, 0);
+}
+
 export const {incrementWash,decrementWash,resetWash} = washSlice.actions;
 
 export default washSlice.reducer;

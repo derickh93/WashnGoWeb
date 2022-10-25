@@ -5,11 +5,12 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
-import dryCleanProds from "./product-data/products-prod.json";
-import washProds from "./product-data/product-wash-prod.json";
+import dryCleanProds from "./product-data/products.json";
+import washProds from "./product-data/product-wash.json";
 import bulkyProds from "./product-data/bulky-prod.json"
 
 import { useHistory } from "react-router-dom";
+import { sumArrWash } from "../redux/wash-qty";
 
 export default function Confirmation() {
   const { logout ,
@@ -24,15 +25,13 @@ export default function Confirmation() {
   const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
   const {id,name,shipping} = useSelector((state) => state.user);
 
+  const sumArrWashValue = useSelector(sumArrWash);
 
-  let arrWashSum = arrWash.reduce((accumulator, value) => {
-    return accumulator + value;
-  }, 0);
 
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   let validSum = 0;
-  //////////////////////////////////////////////////////////////////////
+  
   const line_items = [];
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] > 0) {
@@ -135,7 +134,7 @@ export default function Confirmation() {
       address: address,
       det: detergentScent,
       addit: additional,
-      arrWashSum: arrWashSum,
+      arrWashSum: sumArrWashValue,
     };
   } catch (err) {
     console.log(err);
@@ -182,20 +181,7 @@ export default function Confirmation() {
                 size="lg"
                 color="#1C2F74"
               />
-            </Button>{" "}
-            {/* <Button
-              style={{
-                width: "20%",
-                height: "20%",
-                fontSize: "12px",
-                backgroundColor: "transparent",
-                boxShadow: "none",
-              }}
-              variant="link"
-              onClick={handlePortal}
-            >
-              <u>Manage Account</u>
-            </Button> */}
+            </Button>
             <Button
               style={{
                 width: "20%",

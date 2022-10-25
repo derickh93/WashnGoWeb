@@ -4,43 +4,40 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector,useDispatch} from "react-redux";
-import { setAdditional,setDetergentScent} from "../redux/preference";
+import { useSelector, useDispatch } from "react-redux";
+import { setAdditional, setDetergentScent } from "../redux/preference";
+import { sumArrWash } from "../redux/wash-qty";
+import { sumBulkyArr } from "../redux/bulky-qty";
 
 export default function Preferences() {
   const [error, setError] = useState("");
   const detergentChoice = "Scented";
   const detergentChoiceTwo = "Non-Scented";
 
-  const { additional,detergentScent} = useSelector((state) => state.preference);
+  const { additional, detergentScent } = useSelector(
+    (state) => state.preference
+  );
 
+  const dispatch = useDispatch();
 
-const dispatch = useDispatch();
+  const handleMessageChange = (event) => {
+    dispatch(setAdditional(event.target.value));
+  };
 
-const handleMessageChange = event => {
-  dispatch(setAdditional(event.target.value));
-};
+  const sumArrWashValue = useSelector(sumArrWash);
+  const sumBulkyValue = useSelector(sumBulkyArr);
 
-  const { arrWash } = useSelector((state) => state.wash);
-
-  const {
-    logout
-  } = useAuth();
+  const { logout } = useAuth();
 
   const history = useHistory();
-
-  let sumArrWash = arrWash.reduce((accumulator, value) => {
-    return accumulator + value;
-  }, 0);
 
   async function handleLogout() {
     setError("");
 
     try {
-      await logout()
-        .then(() => {
-          history.push("/login");
-        });
+      await logout().then(() => {
+        history.push("/login");
+      });
     } catch (err) {
       console.log(err.message);
       setError("Failed to log out");
@@ -48,7 +45,9 @@ const handleMessageChange = event => {
   }
 
   const handleDetergent = () => {
-    const val = document.querySelector('input[name="detergentScent"]:checked').value
+    const val = document.querySelector(
+      'input[name="detergentScent"]:checked'
+    ).value;
     dispatch(setDetergentScent(val));
   };
 
@@ -126,63 +125,58 @@ const handleMessageChange = event => {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
-
-
-        {sumArrWash > 0 && (
+        {(sumArrWashValue > 0 || sumBulkyValue > 0) && (
           <div style={{ padding: "10px" }}>
             <span>Detergent Scent</span>
             <div style={{ padding: "10px" }}>
               <div className="d-flex flex-column">
                 <div style={{ padding: 5 }}>
                   {" "}
-
-                  {
-                  detergentScent === 'Scented'?
-                  <input
-                    type="radio"
-                    value={detergentChoice}
-                    name="detergentScent"
-                    defaultChecked
-                    onChange={() =>{
-                      handleDetergent()
-                    }}
-                  />
-:
-
-
-                  <input
-                    type="radio"
-                    value={detergentChoice}
-                    name="detergentScent"
-                    onChange={() =>{
-                      handleDetergent()
-                    }}
-                  />
-}
+                  {detergentScent === "Scented" ? (
+                    <input
+                      type="radio"
+                      value={detergentChoice}
+                      name="detergentScent"
+                      defaultChecked
+                      onChange={() => {
+                        handleDetergent();
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="radio"
+                      value={detergentChoice}
+                      name="detergentScent"
+                      onChange={() => {
+                        handleDetergent();
+                      }}
+                    />
+                  )}
                   Scented
                 </div>
 
                 <div style={{ padding: 5 }}>
                   {" "}
-                  {
-                  detergentScent === 'Non-Scented'?
-                  <input
-                    type="radio"
-                    value={detergentChoiceTwo}
-                    name="detergentScent"
-                    defaultChecked
-                    onChange={() =>{
-                      handleDetergent()
-                    }}
-                  />:
-                  <input
-                  type="radio"
-                  value={detergentChoiceTwo}
-                  name="detergentScent"
-                  onChange={() =>{
-                    handleDetergent()
-                  }}
-                />}
+                  {detergentScent === "Non-Scented" ? (
+                    <input
+                      type="radio"
+                      value={detergentChoiceTwo}
+                      name="detergentScent"
+                      defaultChecked
+                      onChange={() => {
+                        handleDetergent();
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="radio"
+                      value={detergentChoiceTwo}
+                      name="detergentScent"
+                      onChange={() => {
+                        handleDetergent();
+                      }}
+                    />
+                  )}
                   Non-Scented
                 </div>
               </div>
@@ -198,7 +192,7 @@ const handleMessageChange = event => {
           display: "flex",
         }}
       >
-        Additional Instructions                               
+        Additional Instructions
       </span>
       <Card>
         <Card.Body>
