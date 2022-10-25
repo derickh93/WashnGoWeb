@@ -1,6 +1,5 @@
 import React from "react";
 import Signup from "./Signup";
-// import Dashboard from "./Dashboard";
 import Login from "./Login";
 import PrivateRoute from "./PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
@@ -55,7 +54,6 @@ function App() {
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
-              {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
               <PrivateRoute path="/address" component={Address} />
               <PrivateRoute path="/time" component={Time} />
               <PrivateRoute path="/products" component={Products} />
