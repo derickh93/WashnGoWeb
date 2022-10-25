@@ -43,12 +43,10 @@ export function AuthProvider({ children }) {
 
   const readProfile = async (uid) => {
     var ref = firebase.database().ref("user_profile");
-    console.log(ref)
      ref
       .orderByChild("authID")
       .equalTo(uid)
       .on("child_added", (snapshot) => {
-        console.log(snapshot)
         getCustomer(snapshot.child("custID").val());
       });
   };
@@ -76,7 +74,6 @@ export function AuthProvider({ children }) {
       });
       if (response.data.success) {
         const res = response.data.stripeCust;
-        console.log(res)
         setCurrentStripeInstance(res.stripeCust);
         addNewProfile(uid, response.data.stripeCust.id,phoneNumber);
         dispatch(setId(res.id));
@@ -100,7 +97,6 @@ export function AuthProvider({ children }) {
     full_name,
     options
   ) => {
-    console.log(stripeID);
     const response = await axios
       .post(`${domain}add-address`, {
         cid: stripeID,
@@ -126,17 +122,16 @@ export function AuthProvider({ children }) {
     const authObj = await auth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result)
         readProfile(result.user.uid);
       })
       .catch((error) => {
-        throw new Error(error.message);
+        console.log('catch error')
+        throw new Error('');
       })
-    return authObj;
+      return authObj;
   };
 
   const getCustomer = async (cst) => {
-    console.log(cst)
     const response = await axios
       .post(`${domain}get-customer`, {
         custID: cst,
@@ -147,7 +142,6 @@ export function AuthProvider({ children }) {
 
     if (response.data.success) {
       const res = response.data.result;
-      console.log(res)
       dispatch(setId(res.id));
       dispatch(setName(res.name))
       dispatch(setShipping(res.shipping))
@@ -191,7 +185,6 @@ export function AuthProvider({ children }) {
         },
       })
       .catch((error) => {
-        console.log(error);
         throw new Error(error.message);
       });
 

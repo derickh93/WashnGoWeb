@@ -274,6 +274,7 @@ export default function Products() {
             </Button>
           </div>
         )}
+
         <Collapse in={openDC}>
           <div id="example-collapse-text2">
             <img

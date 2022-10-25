@@ -176,7 +176,6 @@ export default function Address() {
             value,
             onChange: (val) => {
               setValue(val);
-              console.log(val)
                 if(val.value.terms.some(term => QUEENS_CITIES.includes(term.value)))
                   setError("")
                 else 
