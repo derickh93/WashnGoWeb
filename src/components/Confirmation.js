@@ -7,7 +7,7 @@ import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
 import dryCleanProds from "./product-data/products.json";
 import washProds from "./product-data/product-wash.json";
-import bulkyProds from "./product-data/bulky-prod.json"
+import bulkyProds from "./product-data/bulky.json"
 
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";

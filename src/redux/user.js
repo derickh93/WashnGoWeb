@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const userSlice = createSlice({
     name: "user",
-    initialState: {id:'',name:'',phone:'',email:'',shipping:'',contact:''},
+    initialState: {id:'',name:'',phone:'',email:'',shipping:'',contact:'',zip:''},
     reducers:{
         setId: (state,{payload}) => {
             state.id = payload;
@@ -49,8 +49,7 @@ export const userSlice = createSlice({
         ,
         clearContact: (state) =>{
             state.contact = '';
-        },
-        
+        }
     }
 });
 

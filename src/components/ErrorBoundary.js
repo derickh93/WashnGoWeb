@@ -20,18 +20,19 @@ class ErrorBoundary extends React.Component {
 
   render() {
     async function handleSite() {
-      window.location = "https://www.washgolaundry.com";
+      window.location = "https://www.laundrypickupday.com";
     }
 
     async function handleSchedule() {
-      window.location = "https://washgolaundry.netlify.app/login";
+      window.location = "https://lpdweb.netlify.app";
     }
 
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
         <div>
-          <h4>Something went wrong!</h4>)
+          <h4>Something went wrong!</h4>
+          {this.state.error}
           <Button
             style={{
               width: "20%",
@@ -43,7 +44,7 @@ class ErrorBoundary extends React.Component {
             variant="link"
             onClick={handleSite}
           >
-            <u>Laundry Pickup NYC Home</u>
+            <u>Laundry Pickup Day Home</u>
           </Button>
           <Button
             style={{
@@ -56,7 +57,7 @@ class ErrorBoundary extends React.Component {
             variant="link"
             onClick={handleSchedule}
           >
-            <u>Laundry Pickup NYC Scheduling App</u>
+            <u>Laundry Pickup Day Scheduling App</u>
           </Button>
         </div>
       );

@@ -50,7 +50,7 @@ export default function Signup() {
       signup(emailRef.current.value, passwordRef.current.value, stripeUser,phone)
         .then(() =>
           sendMessage(
-            `Welcome to Laundry Pickup NYC  ${firstNameRef.current.value}.`,
+            `Welcome to Laundry Pickup Day  ${firstNameRef.current.value}.`,
             phone
           )
             .catch((error) => {

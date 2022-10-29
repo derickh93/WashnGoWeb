@@ -18,10 +18,16 @@ export const accountPrefSlice = createSlice({
         ,
         setDoorCode: (state,{payload}) => {
             state.code_door = payload;
+        },
+        resetAccountPrefs: (state,{payload}) => {
+            state.code = false;
+            state.doorman = false;
+            state.hotel = false;
+            state.code_door = '';
         }
     }
 });
 
-export const {changeDoorman,changeHotel,changeCode,setDoorCode} = accountPrefSlice.actions;
+export const {changeDoorman,changeHotel,changeCode,setDoorCode,resetAccountPrefs} = accountPrefSlice.actions;
 
 export default accountPrefSlice.reducer;

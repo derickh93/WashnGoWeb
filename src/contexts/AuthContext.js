@@ -93,19 +93,23 @@ export function AuthProvider({ children }) {
     address,
     city,
     state,
-    apt,
+    address2,
     full_name,
-    options
+    options,
+    phone,
+    zip
   ) => {
     const response = await axios
       .post(`${domain}add-address`, {
         cid: stripeID,
         address,
-        apt,
+        address2,
         city,
         state,
         full_name,
         options,
+        phone,
+        zip
       })
       .catch((error) => {
         throw new Error(error.message);
@@ -125,8 +129,7 @@ export function AuthProvider({ children }) {
         readProfile(result.user.uid);
       })
       .catch((error) => {
-        console.log('catch error')
-        throw new Error('');
+        throw new Error(error);
       })
       return authObj;
   };
@@ -216,6 +219,27 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password);
   }
 
+  async function getZipCode(placesID) {
+    const response = await axios
+      .post(`${domain}getZipCode`, {
+        placesID
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+
+    if (response.data.success) {
+      const zipArr = response.data.result.result.address_components;
+      const zipCode = zipArr.filter(obj => obj.types[0] === 'postal_code');
+      try {
+      if(zipCode[0].long_name) 
+        return zipCode[0].long_name;
+      } catch {
+        return('zip code not found')
+      }
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser((prevuser) => user);
@@ -245,7 +269,8 @@ export function AuthProvider({ children }) {
     detergent,
     setDetergent,
     sendMessage,
-    checkoutSession
+    checkoutSession,
+    getZipCode
   };
 
   return (

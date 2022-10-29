@@ -7,25 +7,40 @@ import dryCleanProds from "./product-data/products.json";
 import washProds from "./product-data/product-wash.json";
 import bulkyProds from "./product-data/bulky-prod.json";
 import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement, resetDry, sumDryCleanArr } from "../redux/dry-clean-qty";
-import { incrementWash, decrementWash, resetWash, sumArrWash } from "../redux/wash-qty";
-import { incrementBulky, decrementBulky, resetBulky, sumBulkyArr } from "../redux/bulky-qty";
+import {
+  increment,
+  decrement,
+  resetDry,
+  sumDryCleanArr,
+} from "../redux/dry-clean-qty";
+import {
+  incrementWash,
+  decrementWash,
+  resetWash,
+  sumArrWash,
+} from "../redux/wash-qty";
+import {
+  incrementBulky,
+  decrementBulky,
+  resetBulky,
+  sumBulkyArr,
+} from "../redux/bulky-qty";
 import washingMachine from "../Assets/washing-machine.png";
 import dryClean from "../Assets/dry-cleaning.png";
+import bulkyPic from "../Assets/washing.png";
 import { clearAdditional, setDetergentScent } from "../redux/preference";
 import { setPickupTime } from "../redux/pickup";
-
 
 export default function Products() {
   const { logout } = useAuth();
   const [error, setError] = useState("");
 
-  const { arr} = useSelector((state) => state.dryClean);
-  const { arrWash} = useSelector((state) => state.wash);
-  const { bulkyArr} = useSelector((state) => state.bulky);
+  const { arr } = useSelector((state) => state.dryClean);
+  const { arrWash } = useSelector((state) => state.wash);
+  const { bulkyArr } = useSelector((state) => state.bulky);
 
   const sumArrWashValue = useSelector(sumArrWash);
-  const sumArrDryCleanVal = useSelector(sumDryCleanArr)
+  const sumArrDryCleanVal = useSelector(sumDryCleanArr);
   const sumBulkyValue = useSelector(sumBulkyArr);
 
   const [openDC, setOpenDC] = React.useState(false);
@@ -52,8 +67,7 @@ export default function Products() {
 
   async function nextPage() {
     try {
-
-      if (sumArrWashValue === 0 && sumArrDryCleanVal === 0 && sumBulkyValue) {
+      if (arrCount === 0) {
         setError("Select an option");
       } else history.push("/preferences");
     } catch (err) {
@@ -142,27 +156,30 @@ export default function Products() {
         </Button>
       </div>
       <div className="w-100 text-center mt-3">
-        {!openWash && (
-          <Button
-            style={{ backgroundColor: "#1C2F74", margin: 5 }}
-            onClick={() => {
-              setOpenDC(false);
-              setOpenWash(true);
-              setOpenBulky(false);
-            }}
-            aria-controls="example-collapse-text1"
-            aria-expanded={openWash}
-          >
-            Wash
-          </Button>
-        )}
+        <div
+          onClick={() => {
+            setOpenWash(!openWash);
+          }}
+          aria-controls="example-collapse-text1"
+          aria-expanded={openWash}
+        >
+          <span>
+            <u>Wash</u>
+          </span>
+
+          <img
+            src={washingMachine}
+            alt="washing machine"
+            style={{ height: 50, width: 50, padding: 5 }}
+          />
+          {!openWash ? (
+            <FontAwesomeIcon icon="chevron-down" size="lg" color="#1C2F74" />
+          ) : (
+            <FontAwesomeIcon icon="chevron-up" size="lg" color="#1C2F74" />
+          )}
+        </div>
         <Collapse in={openWash}>
           <div id="example-collapse-text1">
-            <img
-              src={washingMachine}
-              alt="washing machine"
-              style={{ height: 50, width: 50, padding: 5 }}
-            />
             {washProds.map((item, idx) => (
               <div
                 key={idx + 100}
@@ -200,29 +217,30 @@ export default function Products() {
             ))}
           </div>
         </Collapse>
-        {!openBulky && (
-          <div>
-            <Button
-              style={{ backgroundColor: "#1C2F74", margin: 20 }}
-              onClick={() => {
-                setOpenDC(false);
-                setOpenWash(false);
-                setOpenBulky(true);
-              }}
-              aria-controls="example-collapse-text3"
-              aria-expanded={openBulky}
-            >
-              Bulky
-            </Button>
-          </div>
-        )}
+        <div
+          onClick={() => {
+            setOpenBulky(!openBulky);
+          }}
+          aria-controls="example-collapse-text3"
+          aria-expanded={openBulky}
+        >
+          <span>
+            <u>Bulky Items</u>
+          </span>
+
+          <img
+            src={bulkyPic}
+            alt="bulky items"
+            style={{ height: 50, width: 50, padding: 5 }}
+          />
+          {!openBulky ? (
+            <FontAwesomeIcon icon="chevron-down" size="lg" color="#1C2F74" />
+          ) : (
+            <FontAwesomeIcon icon="chevron-up" size="lg" color="#1C2F74" />
+          )}
+        </div>
         <Collapse in={openBulky}>
           <div id="example-collapse-text3">
-            <img
-              src={dryClean}
-              alt="bulky"
-              style={{ height: 50, width: 50, padding: 5 }}
-            />
             {bulkyProds.map((item, idx) => (
               <div
                 key={idx}
@@ -258,30 +276,30 @@ export default function Products() {
             ))}
           </div>
         </Collapse>
-        {!openDC && (
-          <div>
-            <Button
-              style={{ backgroundColor: "#1C2F74", margin: 20 }}
-              onClick={() => {
-                setOpenDC(true);
-                setOpenWash(false);
-                setOpenBulky(false);
-              }}
-              aria-controls="example-collapse-text2"
-              aria-expanded={openDC}
-            >
-              Dry Clean
-            </Button>
-          </div>
-        )}
+        <div
+          onClick={() => {
+            setOpenDC(!openDC);
+          }}
+          aria-controls="example-collapse-text2"
+          aria-expanded={openBulky}
+        >
+          <span>
+            <u>Dry Clean</u>
+          </span>
 
+          <img
+            src={dryClean}
+            alt="dry clean"
+            style={{ height: 50, width: 50, padding: 5 }}
+          />
+          {!openDC ? (
+            <FontAwesomeIcon icon="chevron-down" size="lg" color="#1C2F74" />
+          ) : (
+            <FontAwesomeIcon icon="chevron-up" size="lg" color="#1C2F74" />
+          )}
+        </div>
         <Collapse in={openDC}>
           <div id="example-collapse-text2">
-            <img
-              src={dryClean}
-              alt="dry clean"
-              style={{ height: 50, width: 50, padding: 5 }}
-            />
             {dryCleanProds.map((item, idx) => (
               <div
                 key={idx}

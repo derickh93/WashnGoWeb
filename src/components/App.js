@@ -24,7 +24,9 @@ import {
   faChevronCircleRight,
   faPlusCircle,
   faMinusCircle,
-  faCartArrowDown
+  faCartArrowDown,
+  faChevronDown,
+  faChevronUp
 } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
@@ -35,7 +37,7 @@ function App() {
     faChevronCircleLeft,
     faChevronCircleRight,
     faPlusCircle,
-    faMinusCircle,faCartArrowDown
+    faMinusCircle,faCartArrowDown,faChevronDown,faChevronUp
   );
 
   return (

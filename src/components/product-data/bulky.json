@@ -3,39 +3,39 @@
       "id": 0,
       "price": "$22.00",
       "description": "Mattress Pad (All Sizes)",
-      "price_id": "price_1LvYwKEkFqXnuEeNZZD4uotH"
+      "price_id": "price_1LxGLnEkFqXnuEeNDruKd5k5"
     },
     {
         "id": 1,
         "price": "$27.90",
         "description": "Pillow - Down",
-        "price_id": "price_1LvYuFEkFqXnuEeNyJDnhOLz"
+        "price_id": "price_1LxGMdEkFqXnuEeNLhktWjtr"
       },
       {
         "id": 2,
         "price": "$22.90",
         "description": "Pillow - Synthetic",
-        "price_id": "price_1LvYtREkFqXnuEeNbcs1MJkt"
+        "price_id": "price_1LxGNDEkFqXnuEeNo8Tv56bN"
       }
       ,
       {
         "id": 3,
         "price": "$24.50",
         "description": "Blankets (All Sizes)",
-        "price_id": "price_1LvYmeEkFqXnuEeNTZLxa1Z3"
+        "price_id": "price_1LxGNjEkFqXnuEeNEjN8yhuP"
       }
       ,
       {
         "id": 4,
         "price": "$37.90",
         "description": "Synthetic Comforter (All Sizes)",
-        "price_id": "price_1LvYl7EkFqXnuEeN0JxfwM8E"
+        "price_id": "price_1LxGOLEkFqXnuEeNKjCr9Ep9"
       }
       ,
       {
         "id": 5,
         "price": "$42.90",
         "description": "Down Comforter (All Sizes)",
-        "price_id": "price_1LvYhYEkFqXnuEeNY37ZwP8e"
+        "price_id": "price_1LxGOrEkFqXnuEeNpITZ4gGv"
       }
   ]

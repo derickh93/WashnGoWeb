@@ -4,10 +4,11 @@ import { Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { resetDry, sumDryCleanArr } from "../redux/dry-clean-qty";
 import { resetWash, sumArrWash } from "../redux/wash-qty";
-import { clearAdditional, clearDetergentScent } from "../redux/preference";
+import { clearAdditional, setDetergentScent } from "../redux/preference";
 import { useHistory } from "react-router-dom";
 import "../App.css";
 import { resetBulky, sumBulkyArr } from "../redux/bulky-qty";
+import { resetAccountPrefs } from "../redux/account-prefs";
 
 export default function Confirmation() {
   const { logout, sendMessage } = useAuth();
@@ -41,30 +42,33 @@ export default function Confirmation() {
 
   const sumArrValue = useSelector(sumArrWash);
   const sumDryCleanValue = useSelector(sumDryCleanArr);
-  const sumBulkyValue = useSelector(sumBulkyArr)
+  const sumBulkyValue = useSelector(sumBulkyArr);
 
   useEffect(() => {
-    const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
-    const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
-    \nAddress: ${shipping.line1}\n${shipping.city}\n${shipping.postal_code}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\n
-    Bulky Items: ${sumBulkyValue}`;
-    sendMessage(customerMSG, phone, contact === "Text" ? true : false)
-      .catch((error) => {
-        console.log(error);
-      })
-      .then(() => {
-        sendMessage(adminMSG, process.env.REACT_APP_TWILIO_TO, true).catch(
-          (error) => {
-            console.log(error);
-          }
-        );
-      });
-
-    dispatch(resetWash());
-    dispatch(resetDry());
-    dispatch(resetBulky());
-    dispatch(clearAdditional());
-    dispatch(clearDetergentScent());
+    if (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0) {
+      const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
+      const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
+    \nAddress: ${shipping.address.line1}, ${shipping.address.line2}\n${shipping.address.city},\n${shipping.address.state}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\nBulky Items: ${sumBulkyValue}`;
+      sendMessage(customerMSG, phone, contact === "Text" ? true : false)
+        .catch((error) => {
+          console.log(error);
+        })
+        .then(() => {
+          sendMessage(adminMSG, process.env.REACT_APP_TWILIO_TO, true).catch(
+            (error) => {
+              console.log(error);
+            }
+          );
+        })
+        .then(() => {
+          dispatch(resetWash());
+          dispatch(resetDry());
+          dispatch(resetBulky());
+          dispatch(clearAdditional());
+          dispatch(setDetergentScent('Scented'));
+          dispatch(resetAccountPrefs())
+        });
+    }
     // eslint-disable-next-line
   }, []); // <-- empty dependency array
 

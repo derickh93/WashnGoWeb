@@ -33,7 +33,7 @@ export default function Login() {
         .catch((err) => {
           if (
             err.message ===
-            "There is no user record corresponding to this identifier. The user may have been deleted."
+            "Error: There is no user record corresponding to this identifier. The user may have been deleted."
           ) {
             setError(
               "There is no account associated with this email. Please sign up below."
@@ -45,7 +45,7 @@ export default function Login() {
     } catch (err) {
       if (
         err.message ===
-        "There is no user record corresponding to this identifier. The user may have been deleted."
+        "Error: There is no user record corresponding to this identifier. The user may have been deleted."
       ) {
         setError(
           "There is no account associated with this email. Please sign up below."
