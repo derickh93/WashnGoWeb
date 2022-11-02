@@ -73,13 +73,14 @@ export default function Login() {
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
-                  <Form.Label id="email">Email</Form.Label>
-                  <Form.Control name="email" type="email" ref={emailRef} required />
+                  <Form.Label htmlFor="emaillabel">Email</Form.Label>
+                  <Form.Control id="emaillabel" name="email" type="email" ref={emailRef} required />
                 </Form.Group>
                 <Form.Group id="password">
-                  <Form.Label id="password">Password</Form.Label>
+                  <Form.Label htmlFor="passwordlabel">Password</Form.Label>
                   <div className="d-flex align-items-center justify-content-center">
                     <Form.Control
+                    id="passwordlabel"
                     name="password"
                       type={type}
                       ref={passwordRef}
