@@ -114,7 +114,7 @@ export default function Time() {
             selectedDay(val)
           }}
           endDate={31}
-          //selectDate={new Date(pickupDate)}
+          selectDate={new Date(pickupDate)}
           labelFormat={"MMM"}
           color={"#1C2F74"}
         />

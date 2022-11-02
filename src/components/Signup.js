@@ -99,6 +99,7 @@ export default function Signup() {
               />
             </Form.Group>
 
+            <Form.Group id="phonenumber">
             <div style={{ paddingBottom: "15px" }}>
               <InputMask
                 className="form-control"
@@ -107,8 +108,11 @@ export default function Signup() {
                 onChange={(e) => setPhone(e.target.value)}
                 mask="+1\(999) 999-9999"
                 maskchar=""
+                required
               />
             </div>
+            </Form.Group>
+
             <Form.Group id="email">
               <Form.Control
                 type="email"

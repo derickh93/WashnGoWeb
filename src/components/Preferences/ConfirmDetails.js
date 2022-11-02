@@ -17,24 +17,11 @@ export default class ConfirmDetails extends Component {
       dayOfWeek: this.props.commonProps.dayOfWeek,
       detergent: this.props.commonProps.det,
       additional: this.props.commonProps.addit,
-      arrWashSum : this.props.commonProps.arrWashSum
-
+      arrWashSum : this.props.commonProps.arrWashSum,
+      bulkySum : this.props.commonProps.arrBulkySum
     };
-    this.handleNameChange.bind(this);
   }
   
-
-  handleNameChange(e) {
-    const course = {
-      name: e.target.value,
-      address: e.target.value,
-      puDate: e.target.value,
-      puTime: e.target.value,
-      detergent: e.target.value,
-      additional: e.target.value,
-    };
-    this.setState({ course });
-  }
   render() {
     return (
       <div style={{ padding: "10px" }}>
@@ -44,20 +31,20 @@ export default class ConfirmDetails extends Component {
           ) : (
             <div>
               <span className="prefTitle">Pickup Address</span>
-              <div className="prefDetails" onChange={this.handlechange}>
+              <div className="prefDetails" >
                 {this.state.address.line1}
               </div>
               {this.state.address.line2 ? (
-                <div className="prefDetails" onChange={this.handlechange}>
+                <div className="prefDetails" >
                   {this.state.address.line2}
                 </div>
               ) : (
                 ""
               )}
-              <div className="prefDetails" onChange={this.handlechange}>
+              <div className="prefDetails" >
                 {this.state.address.city}, {this.state.address.state}
               </div>
-              <div className="prefDetails" onChange={this.handlechange}>
+              <div className="prefDetails" >
                 {this.state.address.postal_code}
               </div>
             </div>
@@ -71,7 +58,7 @@ export default class ConfirmDetails extends Component {
         <div style={{ display: "flex" }}>
           <div>
             <span className="prefTitle">Pickup Date</span>
-            <div className="prefDetails" onChange={this.handlechange}>
+            <div className="prefDetails" >
               {this.state.puDate} between{" "}
               {this.state.puTime}
             </div>
@@ -85,13 +72,12 @@ export default class ConfirmDetails extends Component {
         <ProductConfirmation/>
           <div style={{ display: "flex" }}>
             <div>
-              {(this.state.arrWashSum > 0 || this.state.additional !== "" )&&
-            <span className="prefTitle">Preferences</span>}
-              {this.state.arrWashSum > 0 && <div>
-              <div className="prefDetails" onChange={this.handlechange}>
+            <span className="prefTitle">Preferences</span>
+              {(this.state.arrWashSum > 0 || this.state.bulkySum > 0) && <div>
+              <div className="prefDetails">
                 Detergent: {this.state.detergent}
               </div></div>}
-              <div className="prefDetails" onChange={this.handlechange} >
+              <div className="prefDetails">
                 {this.state.additional === "" ? "": 'Instructions: ' + this.state.additional}
               </div>
             </div>

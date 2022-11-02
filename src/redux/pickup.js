@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const pickupSlice = createSlice({
     name: "pickup",
-    initialState: {pickupDate: new Date().toDateString(),pickupTime:''},
+    initialState: {pickupDate: '',pickupTime:''},
     reducers:{
         setPickupDate: (state,{payload}) => {
             state.pickupDate = payload;

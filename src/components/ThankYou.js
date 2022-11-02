@@ -114,10 +114,6 @@ export default function Confirmation() {
         <span>
           We will be seeing you {pickupDate} between {pickupTime}
         </span>
-        <div className="prefDetails">{shipping.line1}</div>
-        <div className="prefDetails">{shipping.city}</div>
-        <div className="prefDetails">{shipping.state}</div>
-        <div className="prefDetails">{shipping.postal_code}</div>
       </div>
       <div
         style={{
@@ -133,13 +129,11 @@ export default function Confirmation() {
             schedule();
           }}
         >
-          Schedule Another Order
+          Schedule Order
         </button>
         <div style={{ padding: "8px" }}>
           <Button
             style={{
-              width: "20%",
-              height: "20%",
               fontSize: "11px",
               backgroundColor: "transparent",
               boxShadow: "none",

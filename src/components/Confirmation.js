@@ -11,6 +11,7 @@ import bulkyProds from "./product-data/bulky.json"
 
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";
+import { sumBulkyArr } from "../redux/bulky-qty";
 
 export default function Confirmation() {
   const { logout ,
@@ -26,6 +27,9 @@ export default function Confirmation() {
   const {id,name,shipping} = useSelector((state) => state.user);
 
   const sumArrWashValue = useSelector(sumArrWash);
+  const sumArrBulkyValue = useSelector(sumBulkyArr);
+
+
 
 
   const history = useHistory();
@@ -135,6 +139,7 @@ export default function Confirmation() {
       det: detergentScent,
       addit: additional,
       arrWashSum: sumArrWashValue,
+      arrBulkySum : sumArrBulkyValue
     };
   } catch (err) {
     console.log(err);
@@ -199,7 +204,6 @@ export default function Confirmation() {
           <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
           {commonProps.address !== "N/A" && (
             <div className="d-flex justify-content-center">
-              {" "}
               <Button
                 className="mt-2"
                 style={{ backgroundColor: "#1C2F74" }}
