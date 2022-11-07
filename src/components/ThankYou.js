@@ -20,7 +20,7 @@ export default function Confirmation() {
 
   const history = useHistory();
 
-  const firstName = name.split(" ")[0];
+  const firstName = name?.split(" ")?.[0];
 
   const dispatch = useDispatch();
 

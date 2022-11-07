@@ -72,19 +72,17 @@ export default function Preferences() {
 
   return (
     <>
-      <div
+   <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-
-          justifyContent: "flex-end",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "center",
+          justifyItems: 'center',
         }}
       >
         <Button
           variant="outline-primary"
           style={{
-            width: "20%",
-            height: "20%",
             fontSize: "12px",
             backgroundColor: "transparent",
             boxShadow: "none",
@@ -96,24 +94,9 @@ export default function Preferences() {
             size="lg"
             color="#1C2F74"
           />
-        </Button>{" "}
-        {/* <Button
-          style={{
-            width: "20%",
-            height: "20%",
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-          variant="link"
-          onClick={handlePortal}
-        >
-          <u>Manage Account</u>
-        </Button> */}
+        </Button>
         <Button
           style={{
-            width: "20%",
-            height: "20%",
             fontSize: "12px",
             backgroundColor: "transparent",
             boxShadow: "none",

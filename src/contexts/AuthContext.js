@@ -2,10 +2,16 @@ import React, { useContext, useState, useEffect } from "react";
 import firebase from "../firebase";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setId, setName, setPhone, setShipping,setContact} from "../redux/user";
+import {
+  setEmail,
+  setId,
+  setName,
+  setPhone,
+  setShipping,
+  setContact,
+} from "../redux/user";
 
 require("dotenv").config();
-
 
 const AuthContext = React.createContext();
 const auth = firebase.auth();
@@ -21,21 +27,23 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [currentStripeInstance, setCurrentStripeInstance] = useState();
 
-  const { additional,detergentScent} = useSelector((state) => state.preference);
+  const { additional, detergentScent } = useSelector(
+    (state) => state.preference
+  );
 
-  const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
+  const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
 
   const [detergent, setDetergent] = useState();
 
   const domain = process.env.REACT_APP_DOMAIN;
   const dispatch = useDispatch();
 
-  const addNewProfile = async (authID, custID,phoneNumber) => {
+  const addNewProfile = async (authID, custID, phoneNumber) => {
     const user_profileRef = data.ref("user_profile");
     const user_profile = {
       authID,
       custID,
-      phoneNumber
+      phoneNumber,
     };
     const result = await user_profileRef.push(user_profile);
     return result;
@@ -43,7 +51,7 @@ export function AuthProvider({ children }) {
 
   const readProfile = async (uid) => {
     var ref = firebase.database().ref("user_profile");
-     ref
+    ref
       .orderByChild("authID")
       .equalTo(uid)
       .on("child_added", (snapshot) => {
@@ -51,7 +59,26 @@ export function AuthProvider({ children }) {
       });
   };
 
-  const signup = async (email, password, stripeUser,phoneNumber) => {
+  const passPhoneVal = async (phoneVal) => {
+    return phoneVal;
+  }
+
+  const checkPhoneNum = async (phone) => {
+    var ref = firebase.database().ref("user_profile");
+    const result =
+    await ref
+      .orderByChild("phoneNumber")
+      .equalTo(phone)
+      .once("value",snapshot => {
+        const val = snapshot.exists()
+        return val
+    }).then((val) => {
+      return passPhoneVal(val);
+    });
+    return result.exists();
+  };
+
+  const signup = async (email, password, stripeUser, phoneNumber) => {
     const authObj = await auth
       .createUserWithEmailAndPassword(email, password)
       .catch((error) => {
@@ -59,12 +86,12 @@ export function AuthProvider({ children }) {
       })
       .then((result) => {
         const uid = result.user.uid;
-        createCustomer(uid, stripeUser,phoneNumber);
+        createCustomer(uid, stripeUser, phoneNumber);
       });
     return authObj;
   };
 
-  const createCustomer = async (uid, stripeUser,phoneNumber) => {
+  const createCustomer = async (uid, stripeUser, phoneNumber) => {
     try {
       const response = await axios.post(`${domain}create`, {
         firstName: stripeUser.firstName,
@@ -75,13 +102,13 @@ export function AuthProvider({ children }) {
       if (response.data.success) {
         const res = response.data.stripeCust;
         setCurrentStripeInstance(res.stripeCust);
-        addNewProfile(uid, response.data.stripeCust.id,phoneNumber);
+        addNewProfile(uid, response.data.stripeCust.id, phoneNumber);
         dispatch(setId(res.id));
-        dispatch(setName(res.name))
-        dispatch(setShipping(res.shipping))
-        dispatch(setPhone(res.phone))
-        dispatch(setEmail(res.email))
-        dispatch(setContact(res.metadata.contact))
+        dispatch(setName(res.name));
+        dispatch(setShipping(res.shipping));
+        dispatch(setPhone(res.phone));
+        dispatch(setEmail(res.email));
+        dispatch(setContact(res.metadata.contact));
       }
     } catch (error) {
       console.log("Error", error);
@@ -109,7 +136,7 @@ export function AuthProvider({ children }) {
         full_name,
         options,
         phone,
-        zip
+        zip,
       })
       .catch((error) => {
         throw new Error(error.message);
@@ -117,7 +144,7 @@ export function AuthProvider({ children }) {
 
     if (response.data.success) {
       const res = response.data.result;
-      dispatch(setShipping(res.shipping))
+      dispatch(setShipping(res.shipping));
     }
     return response.data.portalURL;
   };
@@ -130,8 +157,8 @@ export function AuthProvider({ children }) {
       })
       .catch((error) => {
         throw new Error(error);
-      })
-      return authObj;
+      });
+    return authObj;
   };
 
   const getCustomer = async (cst) => {
@@ -146,11 +173,11 @@ export function AuthProvider({ children }) {
     if (response.data.success) {
       const res = response.data.result;
       dispatch(setId(res.id));
-      dispatch(setName(res.name))
-      dispatch(setShipping(res.shipping))
-      dispatch(setPhone(res.phone))
-      dispatch(setEmail(res.email))
-      dispatch(setContact(res.metadata.contact))
+      dispatch(setName(res.name));
+      dispatch(setShipping(res.shipping));
+      dispatch(setPhone(res.phone));
+      dispatch(setEmail(res.email));
+      dispatch(setContact(res.metadata.contact));
 
       setCurrentStripeInstance(response.data.result);
     }
@@ -158,7 +185,6 @@ export function AuthProvider({ children }) {
   };
 
   const sendMessage = async (message, number, boolSend) => {
-
     if (boolSend) {
       const response = await axios
         .post(`${domain}twilio-message`, {
@@ -175,7 +201,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const checkoutSession = async (cidP,line_items) => {
+  const checkoutSession = async (cidP, line_items) => {
     const response = await axios
       .post(`${domain}create-checkout-session`, {
         cid: cidP,
@@ -199,11 +225,11 @@ export function AuthProvider({ children }) {
   function logout() {
     setCurrentStripeInstance(null);
     dispatch(setId(null));
-    dispatch(setName(null))
-    dispatch(setShipping(null))
-    dispatch(setPhone(null))
-    dispatch(setEmail(null))
-    dispatch(setContact(null))
+    dispatch(setName(null));
+    dispatch(setShipping(null));
+    dispatch(setPhone(null));
+    dispatch(setEmail(null));
+    dispatch(setContact(null));
     return auth.signOut();
   }
 
@@ -222,7 +248,7 @@ export function AuthProvider({ children }) {
   async function getZipCode(placesID) {
     const response = await axios
       .post(`${domain}getZipCode`, {
-        placesID
+        placesID,
       })
       .catch((error) => {
         throw new Error(error.message);
@@ -230,12 +256,11 @@ export function AuthProvider({ children }) {
 
     if (response.data.success) {
       const zipArr = response.data.result.result.address_components;
-      const zipCode = zipArr.filter(obj => obj.types[0] === 'postal_code');
+      const zipCode = zipArr.filter((obj) => obj.types[0] === "postal_code");
       try {
-      if(zipCode[0].long_name) 
-        return zipCode[0].long_name;
+        if (zipCode[0].long_name) return zipCode[0].long_name;
       } catch {
-        return('zip code not found')
+        return "zip code not found";
       }
     }
   }
@@ -270,7 +295,8 @@ export function AuthProvider({ children }) {
     setDetergent,
     sendMessage,
     checkoutSession,
-    getZipCode
+    getZipCode,
+    checkPhoneNum,
   };
 
   return (

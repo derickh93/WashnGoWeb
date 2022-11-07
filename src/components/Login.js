@@ -9,7 +9,7 @@ import eyeHide from "../Assets/eye-slash-regular.svg";
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, currentUser } = useAuth();
+  const { login, currentUser} = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -88,7 +88,7 @@ export default function Login() {
                       autoComplete="on"
                     />
                     <img
-                      style={{ height: 25, width: 25, padding: 5 }}
+                      style={{ height: '1em', width: '1em', paddingInlineStart: '0.5em', paddingInlineEnd: '0.25em', boxSizing: 'content-box' }}
                       alt="eye"
                       src={type === "password" ? eyeShow : eyeHide}
                       onClick={() => {

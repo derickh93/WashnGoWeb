@@ -5,12 +5,15 @@ import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import animation from "../Assets/8166-laundry-illustration-animation.gif";
+
 import {
   changeDoorman,
   changeHotel,
   setDoorCode,
   changeCode,
 } from "../redux/account-prefs";
+import { setContact } from "../redux/user";
 
 const ZIP_CODES = [
   "11236",
@@ -160,7 +163,7 @@ export default function Address() {
   const { doorman, code, hotel, code_door } = useSelector(
     (state) => state.accountPref
   );
-  const { id, name, phone} = useSelector((state) => state.user);
+  const { id, name, phone } = useSelector((state) => state.user);
   const [value, setValue] = useState(null);
 
   const dispatch = useDispatch();
@@ -190,6 +193,12 @@ export default function Address() {
         setError("Please add an address");
       }
 
+      dispatch(
+        setContact(
+          document.querySelector('input[name="contact"]:checked').value
+        )
+      );
+
       const options = {
         Doorman: doorman,
         Hotel: hotel,
@@ -217,176 +226,187 @@ export default function Address() {
   }
 
   async function getAddress(val) {
+    setLoading(true);
     const res = await getZipCode(val.value.place_id);
     setValue(val);
     zipRef.current.value = res;
-    console.log(res)
     if (ZIP_CODES.includes(zipRef.current.value)) setError("");
     else setError("Not In Service Area");
+    setLoading(false);
   }
 
   return (
     <div>
-      <div className="homepage">
-        {error && <Alert variant="danger">{error}</Alert>}
-      </div>
-      <span
-        style={{
-          fontWeight: "bold",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        Let's start with your address
-      </span>
-
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <GooglePlacesAutocomplete
-          apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-          autocompletionRequest={{
-            componentRestrictions: {
-              country: ["us"],
-            },
-          }}
-          selectProps={{
-            value,
-            onChange: (val) => {
-              getAddress(val);
-            },
-            placeholder : 'Enter Address'
-          }}
-        />
-        <input
-        maxLength={5}
-          type="number"
-          id="zipcode"
-          name="zipcode"
-          placeholder="Zip Code"
-          ref={zipRef}
-          style={{ marginBlock: "8px" }}
-          className="form-control"
-        />
-
-        <input
-          type="text"
-          id="apt"
-          name="apt"
-          placeholder="Apartment #"
-          ref={aptRef}
-          style={{ marginBlock: "8px" }}
-          className="form-control"
-        />
-      </div>
-      <div
-        style={{
-          fontWeight: "bold",
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          textAlign: "center",
-          padding: "5px",
-        }}
-      >
-        Other Information
-      </div>
-      <div>
-        <div>
-          <input
-            type="checkbox"
-            id="doorman"
-            name="doorman"
-            value={doorman}
-            onChange={() => {
-              dispatch(changeDoorman());
-            }}
-          />
-          <span style={{ padding: "5px" }}>Live in a doorman building? </span>
+      {loading ? (
+        <div className="homepage">
+          <img src={animation} alt="loading..." />
         </div>
+      ) : (
         <div>
-          <input
-            type="checkbox"
-            id="hotel"
-            name="hotel"
-            value={hotel}
-            onChange={() => {
-              dispatch(changeHotel());
+          <div className="homepage">
+            {error && <Alert variant="danger">{error}</Alert>}
+          </div>
+          <span
+            style={{
+              fontWeight: "bold",
+              display: "flex",
+              justifyContent: "center",
             }}
-          />
-          <span style={{ padding: "5px" }}>
-            Are you a guest of a hotel or motel?{" "}
+          >
+            Let's start with your address
           </span>
-        </div>
-        <div style={{ display: "flex" }}>
-          <label>
-            {" "}
-            <input
-              type="checkbox"
-              id="code"
-              name="code"
-              value={code}
-              onChange={() => {
-                dispatch(changeCode());
+
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <GooglePlacesAutocomplete
+              apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+              autocompletionRequest={{
+                componentRestrictions: {
+                  country: ["us"],
+                },
+              }}
+              selectProps={{
+                value,
+                onChange: (val) => {
+                  getAddress(val);
+                },
+                placeholder: "Enter Address",
               }}
             />
-          </label>
-
-          <span style={{ margin: "5px" }}>
-            Will you give us a key or door code?
-          </span>
-          {code && (
             <input
+              maxLength={5}
+              type="number"
+              id="zipcode"
+              name="zipcode"
+              placeholder="Zip Code"
+              ref={zipRef}
+              style={{ marginBlock: "8px" }}
               className="form-control"
-              type="text"
-              id="code"
-              name="code"
-              placeholder="Door/Gate Code"
-              value={code_door}
-              onChange={(e) => handleDoorChange(e)}
             />
-          )}
-        </div>
-        <span style={{ padding: "20px" }}>(If Key, enter 'Yes') </span>
-      </div>
 
-      <div
-        style={{
-          fontWeight: "bold",
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          textAlign: "center",
-          padding: "5px",
-        }}
-      >
-        Contact Preference
-      </div>
-      <div className="d-flex flex-column">
-        <div style={{ padding: 5 }}>
-          <label>
-            {" "}
             <input
-              type="radio"
-              value="Call"
-              name="contact"
-              checked
-              readOnly
-            />{" "}
-            Call
-          </label>
-        </div>
+              type="text"
+              id="apt"
+              name="apt"
+              placeholder="Apartment #"
+              ref={aptRef}
+              style={{ marginBlock: "8px" }}
+              className="form-control"
+            />
+          </div>
+          <div
+            style={{
+              fontWeight: "bold",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              textAlign: "center",
+              padding: "5px",
+            }}
+          >
+            Other Information
+          </div>
+          <div>
+            <div>
+              <input
+                type="checkbox"
+                id="doorman"
+                name="doorman"
+                value={doorman}
+                onChange={() => {
+                  dispatch(changeDoorman());
+                }}
+              />
+              <span style={{ padding: "5px" }}>
+                Live in a doorman building?{" "}
+              </span>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                id="hotel"
+                name="hotel"
+                value={hotel}
+                onChange={() => {
+                  dispatch(changeHotel());
+                }}
+              />
+              <span style={{ padding: "5px" }}>
+                Are you a guest of a hotel or motel?{" "}
+              </span>
+            </div>
+            <div style={{ display: "flex" }}>
+              <label>
+                {" "}
+                <input
+                  type="checkbox"
+                  id="code"
+                  name="code"
+                  value={code}
+                  onChange={() => {
+                    dispatch(changeCode());
+                  }}
+                />
+              </label>
 
-        <div style={{ padding: 5 }}>
-          {" "}
-          <label>
-            <input type="radio" value="Text" name="contact" readOnly /> Text
-          </label>
+              <span style={{ margin: "5px" }}>
+                Will you give us a key or door code?
+              </span>
+              {code && (
+                <input
+                  className="form-control"
+                  type="text"
+                  id="code"
+                  name="code"
+                  placeholder="Door/Gate Code"
+                  value={code_door}
+                  onChange={(e) => handleDoorChange(e)}
+                />
+              )}
+            </div>
+            <span style={{ padding: "20px" }}>(If Key, enter 'Yes') </span>
+          </div>
+
+          <div
+            style={{
+              fontWeight: "bold",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              textAlign: "center",
+              padding: "5px",
+            }}
+          >
+            Contact Preference
+          </div>
+          <div className="d-flex flex-column">
+            <div style={{ padding: 5 }}>
+              <label>
+                {" "}
+                <input
+                  type="radio"
+                  value="Call"
+                  name="contact"
+                  defaultChecked={true}
+                  readOnly
+                />{" "}
+                Call
+              </label>
+            </div>
+
+            <div style={{ padding: 5 }}>
+              {" "}
+              <label>
+                <input type="radio" value="Text" name="contact" readOnly /> Text
+              </label>
+            </div>
+          </div>
+          <div className="address">
+            <button disabled={loading} onClick={handleSubmit}>
+              Schedule Service
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="address">
-        <button disabled={loading} onClick={handleSubmit}>
-          Schedule Service
-        </button>
-      </div>
+      )}
     </div>
   );
 }

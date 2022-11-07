@@ -8,7 +8,6 @@ export default class CounterButton extends Component {
     this.state = {
       count: 0,
     };
-    console.log("got here");
   }
 
   incrementCount = () => {

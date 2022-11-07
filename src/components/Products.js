@@ -90,17 +90,15 @@ export default function Products() {
       </div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-
-          justifyContent: "flex-end",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          alignItems: "center",
+          justifyItems: 'center',
         }}
       >
         <Button
           variant="outline-primary"
           style={{
-            width: "20%",
-            height: "20%",
             fontSize: "12px",
             backgroundColor: "transparent",
             boxShadow: "none",
@@ -114,14 +112,12 @@ export default function Products() {
           />
         </Button>
 
-        {arrCount > 0 && (
           <Button
             style={{
-              width: "20%",
-              height: "20%",
               fontSize: "12px",
               backgroundColor: "transparent",
               boxShadow: "none",
+              height: 'auto',
             }}
             variant="link"
             onClick={() => {
@@ -133,18 +129,18 @@ export default function Products() {
               dispatch(setPickupTime("5pm - 9pm"));
             }}
           >
-            <div className="d-flex flex-column justify-content-center align-items-center">
-              {arrCount}
-              <FontAwesomeIcon icon="cart-arrow-down" />
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span>
+                {arrCount}
+                <FontAwesomeIcon icon="cart-arrow-down" />
+              </span>
               <u>Clear</u>
             </div>
           </Button>
-        )}
+        
 
         <Button
           style={{
-            width: "20%",
-            height: "20%",
             fontSize: "12px",
             backgroundColor: "transparent",
             boxShadow: "none",

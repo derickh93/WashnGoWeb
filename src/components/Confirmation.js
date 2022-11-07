@@ -163,44 +163,40 @@ export default function Confirmation() {
         <div>
           <div className="homepage"></div>
           <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button
-              variant="outline-primary"
-              style={{
-                width: "20%",
-                height: "20%",
-                fontSize: "12px",
-                backgroundColor: "transparent",
-                boxShadow: "none",
-              }}
-              onClick={goBack}
-            >
-              <FontAwesomeIcon
-                icon="chevron-circle-left"
-                size="lg"
-                color="#1C2F74"
-              />
-            </Button>
-            <Button
-              style={{
-                width: "20%",
-                height: "20%",
-                fontSize: "12px",
-                backgroundColor: "transparent",
-                boxShadow: "none",
-              }}
-              variant="link"
-              onClick={handleLogout}
-            >
-              <u>Log Out</u>
-            </Button>
-          </div>
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          alignItems: "center",
+          justifyItems: 'center',
+        }}
+      >
+        <Button
+          variant="outline-primary"
+          style={{
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          onClick={goBack}
+        >
+          <FontAwesomeIcon
+            icon="chevron-circle-left"
+            size="lg"
+            color="#1C2F74"
+          />
+        </Button>
+        <Button
+          style={{
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={handleLogout}
+        >
+          <u>Log Out</u>
+        </Button>
+      </div>
           <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
           {commonProps.address !== "N/A" && (
             <div className="d-flex justify-content-center">
