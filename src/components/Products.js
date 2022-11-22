@@ -3,9 +3,9 @@ import { Alert, Collapse, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
-import dryCleanProds from "./product-data/products.json";
-import washProds from "./product-data/product-wash.json";
-import bulkyProds from "./product-data/bulky.json"
+import dryCleanProds from "./product-data/products-prod.json";
+import washProds from "./product-data/product-wash-prod.json";
+import bulkyProds from "./product-data/bulky-prod.json"
 import { useSelector, useDispatch } from "react-redux";
 import {
   increment,

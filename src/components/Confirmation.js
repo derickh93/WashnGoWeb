@@ -5,9 +5,9 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
-import dryCleanProds from "./product-data/products.json";
-import washProds from "./product-data/product-wash.json";
-import bulkyProds from "./product-data/bulky.json"
+import dryCleanProds from "./product-data/products-prod.json";
+import washProds from "./product-data/product-wash-prod.json";
+import bulkyProds from "./product-data/bulky-prod.json"
 
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";
@@ -98,13 +98,13 @@ export default function Confirmation() {
     });
   }
 
-  // line_items.push({
-  //   price: 'price_1M2HFQEkFqXnuEeN0Xeucby0',
-  //   adjustable_quantity: {
-  //     enabled: false
-  //   },
-  //   quantity: 1,
-  // });
+  line_items.push({
+    price: 'price_1M2HFQEkFqXnuEeN0Xeucby0',
+    adjustable_quantity: {
+      enabled: false
+    },
+    quantity: 1,
+  });
 
   async function handlePayment(e) {
     e.preventDefault();
