@@ -5,7 +5,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import animation from "../Assets/8166-laundry-illustration-animation.gif";
 
 import {
   changeDoorman,
@@ -237,11 +236,6 @@ export default function Address() {
 
   return (
     <div>
-      {loading ? (
-        <div className="homepage">
-          <img src={animation} alt="loading..." />
-        </div>
-      ) : (
         <div>
           <div className="homepage">
             {error && <Alert variant="danger">{error}</Alert>}
@@ -406,7 +400,6 @@ export default function Address() {
             </button>
           </div>
         </div>
-      )}
     </div>
   );
 }

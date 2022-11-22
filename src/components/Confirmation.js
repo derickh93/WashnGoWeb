@@ -15,7 +15,7 @@ import { sumBulkyArr } from "../redux/bulky-qty";
 
 export default function Confirmation() {
   const { logout ,
-    checkoutSession } =
+    checkoutSession} =
     useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);
@@ -98,6 +98,14 @@ export default function Confirmation() {
     });
   }
 
+  // line_items.push({
+  //   price: 'price_1M2HFQEkFqXnuEeN0Xeucby0',
+  //   adjustable_quantity: {
+  //     enabled: false
+  //   },
+  //   quantity: 1,
+  // });
+
   async function handlePayment(e) {
     e.preventDefault();
     setLoading(true);
@@ -129,7 +137,7 @@ export default function Confirmation() {
     if (shipping) {
       address = shipping.address;
     } else {
-      address = "N/A";
+      address = "N/A"
     }
     commonProps = {
       name: name,

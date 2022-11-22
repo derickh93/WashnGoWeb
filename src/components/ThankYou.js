@@ -9,20 +9,63 @@ import { useHistory } from "react-router-dom";
 import "../App.css";
 import { resetBulky, sumBulkyArr } from "../redux/bulky-qty";
 import { resetAccountPrefs } from "../redux/account-prefs";
+import axios from "axios";
 
 export default function Confirmation() {
   const { logout, sendMessage } = useAuth();
-  const { name, phone, email, shipping, contact } = useSelector(
+  const { name, phone, email, shipping, contact, id } = useSelector(
     (state) => state.user
   );
 
   const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
+
+  const { additional, detergentScent } = useSelector(
+    (state) => state.preference
+  );
 
   const history = useHistory();
 
   const firstName = name?.split(" ")?.[0];
 
   const dispatch = useDispatch();
+
+  async function postOrder(
+    name,
+    address,
+    bagCount,
+    dryCount,
+    bulkyCount,
+    prefs,
+    puTime,
+    puDate,
+    id
+  ) {
+    const data = new FormData();
+    data.append(
+      "data",
+      JSON.stringify({
+        customer_Name: name,
+        pickup_Address: address,
+        laundryBag_Count: bagCount,
+        dryClean_Count: dryCount,
+        bulky_Count: bulkyCount,
+        preferences: prefs,
+        pickup_Time: puTime,
+        pickup_Date: puDate,
+        customer_id: id,
+      })
+    );
+
+    const config = {
+      headers: { Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}` }
+  };
+    const returnVal = await axios
+      .post("https://lpday-strapi.herokuapp.com/api/Orders", data,config)
+      .then((res) => {
+        console.log(res);
+      });
+    return returnVal;
+  }
 
   async function handleLogout() {
     try {
@@ -36,7 +79,7 @@ export default function Confirmation() {
 
   async function schedule() {
     try {
-      history.push("/time");
+      history.push("/orders");
     } catch (err) {}
   }
 
@@ -61,12 +104,24 @@ export default function Confirmation() {
           );
         })
         .then(() => {
-          dispatch(resetWash());
-          dispatch(resetDry());
-          dispatch(resetBulky());
-          dispatch(clearAdditional());
-          dispatch(setDetergentScent('Scented'));
-          dispatch(resetAccountPrefs())
+          postOrder(
+            name,
+            JSON.stringify(shipping.address),
+            sumArrValue,
+            sumDryCleanValue,
+            sumBulkyValue,
+            detergentScent + " : " + additional,
+            pickupTime,
+            pickupDate,
+            id
+          ).then((res) => {
+            dispatch(resetWash());
+            dispatch(resetDry());
+            dispatch(resetBulky());
+            dispatch(clearAdditional());
+            dispatch(setDetergentScent("Scented"));
+            dispatch(resetAccountPrefs());
+          });
         });
     }
     // eslint-disable-next-line
@@ -129,7 +184,7 @@ export default function Confirmation() {
             schedule();
           }}
         >
-          Schedule Order
+          View Orders
         </button>
         <div style={{ padding: "8px" }}>
           <Button

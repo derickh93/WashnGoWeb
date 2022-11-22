@@ -28,7 +28,7 @@ export default function Login() {
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value)
         .then(() => {
-          history.push("/time");
+          history.push("/orders");
         })
         .catch((err) => {
           if (

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
 import dryCleanProds from "./product-data/products.json";
 import washProds from "./product-data/product-wash.json";
-import bulkyProds from "./product-data/bulky-prod.json";
+import bulkyProds from "./product-data/bulky.json"
 import { useSelector, useDispatch } from "react-redux";
 import {
   increment,
