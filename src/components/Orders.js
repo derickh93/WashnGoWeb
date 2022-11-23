@@ -69,7 +69,7 @@ function Orders() {
       .catch((err) => {
         console.log(err);
       });
-      data = orderData.data.data
+      orderData.data.data.length > 0 ? data = orderData.data.data : data = [];
     return data;
   };
 
@@ -86,7 +86,7 @@ function Orders() {
       .catch((err) => {
         console.log(err);
       });
-      data = orderData.data.data
+      orderData.data.data.length > 0 ? data = orderData.data.data : data = [];
       return data;
     };
 
