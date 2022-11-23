@@ -57,10 +57,12 @@ export default function Confirmation() {
     );
 
     const config = {
-      headers: { Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}` }
-  };
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}`,
+      },
+    };
     const returnVal = await axios
-      .post("https://lpday-strapi.herokuapp.com/api/Orders", data,config)
+      .post("https://lpday-strapi.herokuapp.com/api/Orders", data, config)
       .then((res) => {
         console.log(res);
       });
@@ -87,8 +89,31 @@ export default function Confirmation() {
   const sumDryCleanValue = useSelector(sumDryCleanArr);
   const sumBulkyValue = useSelector(sumBulkyArr);
 
+  const data = {
+    Name: name,
+    Bags: sumArrValue,
+    Dry_Clean: sumDryCleanValue,
+    Bulky: sumBulkyValue,
+    Scent: detergentScent,
+    Instructions: additional,
+  };
+
+  async function postGSheets() {
+    await axios
+      .post(
+        "https://sheet.best/api/sheets/bb593659-47c1-4214-897b-9981436d0d2a",
+        data
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  }
+
   useEffect(() => {
-    if ((sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0) && phone && contact) {
+    if (
+      (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0)
+    ) {
+      postGSheets();
       const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
       const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
     \nAddress: ${shipping.address.line1}, ${shipping.address.line2}\n${shipping.address.city},\n${shipping.address.state}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\nBulky Items: ${sumBulkyValue}`;
@@ -125,7 +150,7 @@ export default function Confirmation() {
         });
     }
     // eslint-disable-next-line
-  }, [contact,phone,sumArrValue,sumDryCleanValue,sumBulkyValue]); // <-- empty dependency array
+  }, [contact, phone, sumArrValue, sumDryCleanValue, sumBulkyValue]); // <-- empty dependency array
 
   return (
     <div>
