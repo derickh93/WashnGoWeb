@@ -57,6 +57,7 @@ function Orders() {
   };
 
   const getActiveOrderData = async () => {
+    let data = [];
     const orderData = await axios
       .get(
         `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$ne]=delivered`,
@@ -64,14 +65,16 @@ function Orders() {
       )
       .then((res) => {
         console.log(res);
+        data = res.data.data;
       })
       .catch((err) => {
         console.log(err);
       });
-    return orderData.data.data;
+    return data;
   };
 
   const getCompleteOrderData = async () => {
+    let data = [];
     const orderData = await axios
       .get(
         `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$eq]=delivered`,
@@ -79,12 +82,12 @@ function Orders() {
       )
       .then((res) => {
         console.log(res);
-      })
+        data = res.data.data;      })
       .catch((err) => {
         console.log(err);
       });
-    return orderData.data.data;
-  };
+      return data;
+    };
 
   useEffect(() => {
     if (id) {
