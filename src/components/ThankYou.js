@@ -88,7 +88,6 @@ export default function Confirmation() {
   const sumBulkyValue = useSelector(sumBulkyArr);
 
   useEffect(() => {
-    if (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0) {
       const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
       const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
     \nAddress: ${shipping.address.line1}, ${shipping.address.line2}\n${shipping.address.city},\n${shipping.address.state}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\nBulky Items: ${sumBulkyValue}`;
@@ -123,7 +122,7 @@ export default function Confirmation() {
             dispatch(resetAccountPrefs());
           });
         });
-    }
+    
     // eslint-disable-next-line
   }, []); // <-- empty dependency array
 
