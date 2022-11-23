@@ -65,11 +65,11 @@ function Orders() {
       )
       .then((res) => {
         console.log(res);
-        data = res.data.data;
       })
       .catch((err) => {
         console.log(err);
       });
+      data = orderData.data.data
     return data;
   };
 
@@ -82,10 +82,11 @@ function Orders() {
       )
       .then((res) => {
         console.log(res);
-        data = res.data.data;      })
+      })
       .catch((err) => {
         console.log(err);
       });
+      data = orderData.data.data
       return data;
     };
 
