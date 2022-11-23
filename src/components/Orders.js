@@ -51,33 +51,53 @@ function Orders() {
   }
 
   const config = {
-    headers: { Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}` }
-};
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}`,
+    },
+  };
 
   const getActiveOrderData = async () => {
-    const orderData = await axios.get(
-      `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$ne]=delivered`,config
-    );
+    const orderData = await axios
+      .get(
+        `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$ne]=delivered`,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     return orderData.data.data;
   };
 
   const getCompleteOrderData = async () => {
-    const orderData = await axios.get(
-      `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$eq]=delivered`,config
-    );
+    const orderData = await axios
+      .get(
+        `https://lpday-strapi.herokuapp.com/api/Orders?filters[customer_id][$eq]=${id}&filters[status][$eq]=delivered`,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     return orderData.data.data;
   };
 
   useEffect(() => {
-    getActiveOrderData().then((res) => {
-      console.log(res);
-      setActiveOrders(res);
-    });
+    if (id) {
+      getActiveOrderData().then((res) => {
+        console.log(res);
+        setActiveOrders(res);
+      });
 
-    getCompleteOrderData().then((res) => {
-      console.log(res);
-      setCompleteOrders(res);
-    });
+      getCompleteOrderData().then((res) => {
+        console.log(res);
+        setCompleteOrders(res);
+      });
+    }
     // eslint-disable-next-line
   }, [id]); // <-- empty dependency array
   return (
