@@ -8,14 +8,14 @@ import { useSelector } from "react-redux";
 
 
 export default function ManageAccount() {
-  const { logout } = useAuth();
+  const { logout,sendMessage} = useAuth();
 
   const emailRef = useRef();
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  const {email} = useSelector((state) => state.user);
+  const {name,email} = useSelector((state) => state.user);
 
 
   const [viewOption, setViewOption] = useState(false);
@@ -28,8 +28,13 @@ export default function ManageAccount() {
       setError("");
       setSuccess("")
       setLoading(true);
-      emailRef.current.value === email ? setSuccess("Success, our team will process your request and reach out within 48 hours with confirmation") 
-        : setError("Email does not match");
+      if(emailRef.current.value === email){
+        setSuccess("Success, our team will process your request and reach out within 48 hours with confirmation") 
+        sendMessage(name+' : ' + email + ': Has requested to delete their account', process.env.REACT_APP_TWILIO_TO, true)
+      } 
+      else{
+        setError("Email does not match");
+      }
 
     } catch (err) {
     }
