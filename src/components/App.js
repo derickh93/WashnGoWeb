@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Preferences from "./Preferences";
 import Confirmation from "./Confirmation";
 import ThankYou from "./ThankYou";
+import ManageAccount from "./ManageAccount"
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -64,6 +65,8 @@ function App() {
               <PrivateRoute path="/confirmation" component={Confirmation} />
               <PrivateRoute path="/thankyou" component={ThankYou} />
               <PrivateRoute path="/orders" component={Orders} />
+              <PrivateRoute path="/manageAccount" component={ManageAccount} />
+
 
             </Switch>
           </AuthProvider>
