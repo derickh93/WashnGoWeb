@@ -52,6 +52,20 @@ export default function Time() {
     }
   }
 
+
+  async function manageAccount() {
+    setError("");
+
+    try {
+      setLoading(true);
+        history.push("/manageAccount");
+    } catch (err) {
+      console.log(err.message);
+      setError("Failed to redirect");
+    }
+    setLoading(false);
+  }
+
   async function nextPage() {
     if (error === "") {
       try {
@@ -81,6 +95,19 @@ export default function Time() {
           justifyContent: "flex-end",
         }}
       >
+          <Button
+          style={{
+            width: "20%",
+            height: "20%",
+            fontSize: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+          variant="link"
+          onClick={manageAccount}
+        >
+          <u>Manage Account</u>
+        </Button>
         <Button
           style={{
             width: "20%",
