@@ -44,7 +44,7 @@ class ErrorBoundary extends React.Component {
             variant="link"
             onClick={handleSite}
           >
-            <u>Laundry Pickup Day Home</u>
+            <u>St. Albans Laundromat Home</u>
           </Button>
           <Button
             style={{
@@ -57,7 +57,7 @@ class ErrorBoundary extends React.Component {
             variant="link"
             onClick={handleSchedule}
           >
-            <u>Laundry Pickup Day Scheduling App</u>
+            <u>St. Albans Laundromat Scheduling App</u>
           </Button>
         </div>
       );

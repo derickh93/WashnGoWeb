@@ -56,7 +56,7 @@ export default function Signup() {
           )
             .then(() =>
               sendMessage(
-                `Welcome to Laundry Pickup Day  ${firstNameRef.current.value}.`,
+                `Welcome to St. Albans Laundromat  ${firstNameRef.current.value}.`,
                 phone,
                 false
               ).then(() => history.push("/address"))
