@@ -29,45 +29,45 @@ export default function Confirmation() {
 
   const dispatch = useDispatch();
 
-  async function postOrder(
-    name,
-    address,
-    bagCount,
-    dryCount,
-    bulkyCount,
-    prefs,
-    puTime,
-    puDate,
-    id
-  ) {
-    const data = new FormData();
-    data.append(
-      "data",
-      JSON.stringify({
-        customer_Name: name,
-        pickup_Address: address,
-        laundryBag_Count: bagCount,
-        dryClean_Count: dryCount,
-        bulky_Count: bulkyCount,
-        preferences: prefs,
-        pickup_Time: puTime,
-        pickup_Date: puDate,
-        customer_id: id,
-      })
-    );
+  // async function postOrder(
+  //   name,
+  //   address,
+  //   bagCount,
+  //   dryCount,
+  //   bulkyCount,
+  //   prefs,
+  //   puTime,
+  //   puDate,
+  //   id
+  // ) {
+  //   const data = new FormData();
+  //   data.append(
+  //     "data",
+  //     JSON.stringify({
+  //       customer_Name: name,
+  //       pickup_Address: address,
+  //       laundryBag_Count: bagCount,
+  //       dryClean_Count: dryCount,
+  //       bulky_Count: bulkyCount,
+  //       preferences: prefs,
+  //       pickup_Time: puTime,
+  //       pickup_Date: puDate,
+  //       customer_id: id,
+  //     })
+  //   );
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}`,
-      },
-    };
-    const returnVal = await axios
-      .post("https://lpday-strapi.herokuapp.com/api/Orders", data, config)
-      .then((res) => {
-        console.log(res);
-      });
-    return returnVal;
-  }
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}`,
+  //     },
+  //   };
+  //   const returnVal = await axios
+  //     .post("https://lpday-strapi.herokuapp.com/api/Orders", data, config)
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  //   return returnVal;
+  // }
 
   async function handleLogout() {
     try {
@@ -79,11 +79,11 @@ export default function Confirmation() {
     }
   }
 
-  async function schedule() {
-    try {
-      history.push("/orders");
-    } catch (err) {}
-  }
+  // async function schedule() {
+  //   try {
+  //     history.push("/orders");
+  //   } catch (err) {}
+  // }
 
   const sumArrValue = useSelector(sumArrWash);
   const sumDryCleanValue = useSelector(sumDryCleanArr);
@@ -128,25 +128,13 @@ export default function Confirmation() {
             }
           );
         })
-        .then(() => {
-          postOrder(
-            name,
-            JSON.stringify(shipping.address),
-            sumArrValue,
-            sumDryCleanValue,
-            sumBulkyValue,
-            detergentScent + " : " + additional,
-            pickupTime,
-            pickupDate,
-            id
-          ).then((res) => {
+        .then((res) => {
             dispatch(resetWash());
             dispatch(resetDry());
             dispatch(resetBulky());
             dispatch(clearAdditional());
             dispatch(setDetergentScent("Scented"));
             dispatch(resetAccountPrefs());
-          });
         });
     }
     // eslint-disable-next-line
@@ -203,14 +191,14 @@ export default function Confirmation() {
           margin: "10px",
         }}
       >
-        <button
+        {/* <button
           className="nextBtn"
           onClick={() => {
             schedule();
           }}
         >
           View Orders
-        </button>
+        </button> */}
         <div style={{ padding: "8px" }}>
           <Button
             style={{

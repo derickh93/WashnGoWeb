@@ -13,10 +13,8 @@ import bulkyProds from "./product-data/bulky-prod.json";
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";
 import { sumBulkyArr } from "../redux/bulky-qty";
-import { getWashData } from "./Data";
 
 export default function Confirmation() {
-  console.log(getWashData())
   const { logout, checkoutSession } = useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);

@@ -29,7 +29,7 @@ import {
   faChevronDown,
   faChevronUp
 } from "@fortawesome/free-solid-svg-icons";
-import Orders from "./Orders";
+// import Orders from "./Orders";
 
 function App() {
   library.add(
@@ -54,7 +54,7 @@ function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact path="/" component={Orders} />
+              <PrivateRoute exact path="/" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/login" component={Login} />
               <Route path="/forgot-password" component={ForgotPassword} />
@@ -64,7 +64,7 @@ function App() {
               <PrivateRoute path="/preferences" component={Preferences} />
               <PrivateRoute path="/confirmation" component={Confirmation} />
               <PrivateRoute path="/thankyou" component={ThankYou} />
-              <PrivateRoute path="/orders" component={Orders} />
+              {/* <PrivateRoute path="/orders" component={Orders} /> */}
               <PrivateRoute path="/manageAccount" component={ManageAccount} />
 
 
