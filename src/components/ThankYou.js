@@ -13,7 +13,7 @@ import axios from "axios";
 
 export default function Confirmation() {
   const { logout, sendMessage } = useAuth();
-  const { name, phone, email, shipping, contact, id } = useSelector(
+  const { name, phone, email, shipping, contact} = useSelector(
     (state) => state.user
   );
 
