@@ -5,37 +5,35 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
-import dryCleanProds from "./product-data/products.json";
-import washProds from "./product-data/product-wash.json";
-import bulkyProds from "./product-data/bulky.json"
+
+import dryCleanProds from "./product-data/products-prod.json";
+import washProds from "./product-data/product-wash-prod.json";
+import bulkyProds from "./product-data/bulky-prod.json";
 
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";
 import { sumBulkyArr } from "../redux/bulky-qty";
 
 export default function Confirmation() {
-  const { logout ,
-    checkoutSession } =
-    useAuth();
+  const { logout, checkoutSession } = useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
   const { bulkyArr } = useSelector((state) => state.bulky);
 
-  const { additional,detergentScent} = useSelector((state) => state.preference);
-  const {pickupDate,pickupTime} = useSelector((state) => state.pickup);
-  const {id,name,shipping} = useSelector((state) => state.user);
+  const { additional, detergentScent } = useSelector(
+    (state) => state.preference
+  );
+  const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
+  const { id, name, shipping } = useSelector((state) => state.user);
 
   const sumArrWashValue = useSelector(sumArrWash);
   const sumArrBulkyValue = useSelector(sumBulkyArr);
 
-
-
-
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   let validSum = 0;
-  
+
   const line_items = [];
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] > 0) {
@@ -98,6 +96,19 @@ export default function Confirmation() {
     });
   }
 
+  let price = "";
+  process.env.REACT_APP_ENV === "DEV"
+    ? (price = "price_1M8SRREkFqXnuEeNnVLGutr2")
+    : (price = "price_1M2HFQEkFqXnuEeN0Xeucby0");
+
+  line_items.push({
+    price: price,
+    adjustable_quantity: {
+      enabled: false,
+    },
+    quantity: 1,
+  });
+
   async function handlePayment(e) {
     e.preventDefault();
     setLoading(true);
@@ -112,10 +123,9 @@ export default function Confirmation() {
 
   async function handleLogout() {
     try {
-      await logout()
-        .then(() => {
-          history.push("/login");
-        });
+      await logout().then(() => {
+        history.push("/login");
+      });
     } catch (err) {
       console.log(err.message);
     }
@@ -124,7 +134,6 @@ export default function Confirmation() {
   let commonProps;
 
   try {
-
     var address;
     if (shipping) {
       address = shipping.address;
@@ -139,7 +148,7 @@ export default function Confirmation() {
       det: detergentScent,
       addit: additional,
       arrWashSum: sumArrWashValue,
-      arrBulkySum : sumArrBulkyValue
+      arrBulkySum: sumArrBulkyValue,
     };
   } catch (err) {
     console.log(err);
@@ -163,40 +172,40 @@ export default function Confirmation() {
         <div>
           <div className="homepage"></div>
           <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          alignItems: "center",
-          justifyItems: 'center',
-        }}
-      >
-        <Button
-          variant="outline-primary"
-          style={{
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-          onClick={goBack}
-        >
-          <FontAwesomeIcon
-            icon="chevron-circle-left"
-            size="lg"
-            color="#1C2F74"
-          />
-        </Button>
-        <Button
-          style={{
-            fontSize: "12px",
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          }}
-          variant="link"
-          onClick={handleLogout}
-        >
-          <u>Log Out</u>
-        </Button>
-      </div>
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              alignItems: "center",
+              justifyItems: "center",
+            }}
+          >
+            <Button
+              variant="outline-primary"
+              style={{
+                fontSize: "12px",
+                backgroundColor: "transparent",
+                boxShadow: "none",
+              }}
+              onClick={goBack}
+            >
+              <FontAwesomeIcon
+                icon="chevron-circle-left"
+                size="lg"
+                color="#1C2F74"
+              />
+            </Button>
+            <Button
+              style={{
+                fontSize: "12px",
+                backgroundColor: "transparent",
+                boxShadow: "none",
+              }}
+              variant="link"
+              onClick={handleLogout}
+            >
+              <u>Log Out</u>
+            </Button>
+          </div>
           <ConfirmDetails commonProps={commonProps}></ConfirmDetails>
           {commonProps.address !== "N/A" && (
             <div className="d-flex justify-content-center">

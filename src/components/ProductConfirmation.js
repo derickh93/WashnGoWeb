@@ -15,13 +15,13 @@ function ProductConfirmation() {
       <div>
         <span className="prefTitle">Pickup Amount</span>
         {arrWash[0] > 0 && (
-          <div className="prefDetails">No. Mixed bags: {arrWash[0]}</div>
+          <div className="prefDetails">No. Separate bags: {arrWash[0]}</div>
         )}
         {arrWash[1] > 0 && (
-          <div className="prefDetails">No. Seperate bags: {arrWash[1]}</div>
+          <div className="prefDetails">No. Additional bags: {arrWash[1]}</div>
         )}
         {arrWash[2] > 0 && (
-          <div className="prefDetails">No. Additional bags: {arrWash[2]}</div>
+          <div className="prefDetails">No. Mixed bags: {arrWash[2]}</div>
         )}
         {sumBulkyValue > 0 && (
           <div className="prefDetails">Bulky Items: {sumBulkyValue}</div>

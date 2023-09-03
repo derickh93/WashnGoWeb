@@ -9,20 +9,65 @@ import { useHistory } from "react-router-dom";
 import "../App.css";
 import { resetBulky, sumBulkyArr } from "../redux/bulky-qty";
 import { resetAccountPrefs } from "../redux/account-prefs";
+import axios from "axios";
 
 export default function Confirmation() {
   const { logout, sendMessage } = useAuth();
-  const { name, phone, email, shipping, contact } = useSelector(
+  const { name, phone, email, shipping, contact} = useSelector(
     (state) => state.user
   );
 
   const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
+
+  const { additional, detergentScent } = useSelector(
+    (state) => state.preference
+  );
 
   const history = useHistory();
 
   const firstName = name?.split(" ")?.[0];
 
   const dispatch = useDispatch();
+
+  // async function postOrder(
+  //   name,
+  //   address,
+  //   bagCount,
+  //   dryCount,
+  //   bulkyCount,
+  //   prefs,
+  //   puTime,
+  //   puDate,
+  //   id
+  // ) {
+  //   const data = new FormData();
+  //   data.append(
+  //     "data",
+  //     JSON.stringify({
+  //       customer_Name: name,
+  //       pickup_Address: address,
+  //       laundryBag_Count: bagCount,
+  //       dryClean_Count: dryCount,
+  //       bulky_Count: bulkyCount,
+  //       preferences: prefs,
+  //       pickup_Time: puTime,
+  //       pickup_Date: puDate,
+  //       customer_id: id,
+  //     })
+  //   );
+
+  //   const config = {
+  //     headers: {
+  //       Authorization: `Bearer ${process.env.REACT_APP_STRAPI_API_KEY}`,
+  //     },
+  //   };
+  //   const returnVal = await axios
+  //     .post("https://lpday-strapi.herokuapp.com/api/Orders", data, config)
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  //   return returnVal;
+  // }
 
   async function handleLogout() {
     try {
@@ -34,18 +79,41 @@ export default function Confirmation() {
     }
   }
 
-  async function schedule() {
-    try {
-      history.push("/time");
-    } catch (err) {}
-  }
+  // async function schedule() {
+  //   try {
+  //     history.push("/orders");
+  //   } catch (err) {}
+  // }
 
   const sumArrValue = useSelector(sumArrWash);
   const sumDryCleanValue = useSelector(sumDryCleanArr);
   const sumBulkyValue = useSelector(sumBulkyArr);
 
+  const data = {
+    Name: name,
+    Bags: sumArrValue,
+    Dry_Clean: sumDryCleanValue,
+    Bulky: sumBulkyValue,
+    Scent: detergentScent,
+    Instructions: additional,
+  };
+
+  async function postGSheets() {
+    await axios
+      .post(
+        "https://sheet.best/api/sheets/bb593659-47c1-4214-897b-9981436d0d2a",
+        data
+      )
+      .then((res) => {
+        console.log(res);
+      });
+  }
+
   useEffect(() => {
-    if (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0) {
+    if (
+      (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0)
+    ) {
+      postGSheets();
       const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
       const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
     \nAddress: ${shipping.address.line1}, ${shipping.address.line2}\n${shipping.address.city},\n${shipping.address.state}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\nBulky Items: ${sumBulkyValue}`;
@@ -60,17 +128,17 @@ export default function Confirmation() {
             }
           );
         })
-        .then(() => {
-          dispatch(resetWash());
-          dispatch(resetDry());
-          dispatch(resetBulky());
-          dispatch(clearAdditional());
-          dispatch(setDetergentScent('Scented'));
-          dispatch(resetAccountPrefs())
+        .then((res) => {
+            dispatch(resetWash());
+            dispatch(resetDry());
+            dispatch(resetBulky());
+            dispatch(clearAdditional());
+            dispatch(setDetergentScent("Scented"));
+            dispatch(resetAccountPrefs());
         });
     }
     // eslint-disable-next-line
-  }, []); // <-- empty dependency array
+  }, [contact, phone, sumArrValue, sumDryCleanValue, sumBulkyValue]); // <-- empty dependency array
 
   return (
     <div>
@@ -123,14 +191,14 @@ export default function Confirmation() {
           margin: "10px",
         }}
       >
-        <button
+        {/* <button
           className="nextBtn"
           onClick={() => {
             schedule();
           }}
         >
-          Schedule Order
-        </button>
+          View Orders
+        </button> */}
         <div style={{ padding: "8px" }}>
           <Button
             style={{
