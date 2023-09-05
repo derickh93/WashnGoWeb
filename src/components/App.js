@@ -48,7 +48,6 @@ function App() {
       style={{ minHeight: "97vh" }}
     >
       <div className="w-100" style={{ maxWidth: "400px" }}>
-        DEVELOP
       <div className="homepage">
         <img className="logo" src={logo} alt="washngo" />
       </div>
