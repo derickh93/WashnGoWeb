@@ -3,18 +3,22 @@
       "id": 0,
       "price": "$65.70",
       "description": "Separate wash (up to 30 lbs of light and dark clothes)",
-      "price_id": "price_1LukDxEkFqXnuEeNdhxVNzxY"
+      "price_id_PROD": "price_1LukDxEkFqXnuEeNdhxVNzxY",
+      "price_id_DEV": "price_1LtgDvEkFqXnuEeNlNoWxzaj"
+
     },
     {
         "id": 1,
         "price": "$32.85",
         "description": "Additional washes (up to 15 lbs each)",
-        "price_id": "price_1LukDrEkFqXnuEeNCzGl9Ew4"
+        "price_id": "price_1LukDrEkFqXnuEeNCzGl9Ew4",
+        "price_id_DEV": "price_1LtgEfEkFqXnuEeN1bdcTJ3P"
       },
       {
         "id": 2,
         "price": "$32.85",
         "description": "Mixed wash (up to 15 lbs)",
-        "price_id": "price_1LukDUEkFqXnuEeNYh4hQxSX"
+        "price_id": "price_1LukDUEkFqXnuEeNYh4hQxSX",
+        "price_id_DEV": "price_1LtgFTEkFqXnuEeNqwfGw0fN"
       }
   ]

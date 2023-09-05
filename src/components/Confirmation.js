@@ -34,12 +34,15 @@ export default function Confirmation() {
   const [loading, setLoading] = useState(false);
   let validSum = 0;
 
+  let env = process.env.REACT_APP_ENV;
+  let priceID = 'price_id_' + env;
+
   const line_items = [];
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] > 0) {
       validSum += parseFloat(dryCleanProds[i].price.substring(1));
       line_items.push({
-        price: dryCleanProds[i].price_id,
+        price: dryCleanProds[i][priceID],
         adjustable_quantity: {
           enabled: true,
           minimum: 1,
@@ -54,7 +57,7 @@ export default function Confirmation() {
     if (arrWash[i] > 0) {
       validSum += parseFloat(washProds[i].price.substring(1));
       line_items.push({
-        price: washProds[i].price_id,
+        price: washProds[i][priceID],
         adjustable_quantity: {
           enabled: true,
           minimum: 1,
@@ -69,7 +72,7 @@ export default function Confirmation() {
     if (bulkyArr[i] > 0) {
       validSum += parseFloat(bulkyProds[i].price.substring(1));
       line_items.push({
-        price: bulkyProds[i].price_id,
+        price: bulkyProds[i][priceID],
         adjustable_quantity: {
           enabled: true,
           minimum: 1,

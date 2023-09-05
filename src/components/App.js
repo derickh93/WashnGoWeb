@@ -41,7 +41,7 @@ function App() {
     faPlusCircle,
     faMinusCircle,faCartArrowDown,faChevronDown,faChevronUp
   );
-
+  
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
