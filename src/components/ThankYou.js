@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import "../App.css";
 import { resetBulky, sumBulkyArr } from "../redux/bulky-qty";
 import { resetAccountPrefs } from "../redux/account-prefs";
-import axios from "axios";
+// import axios from "axios";
 
 export default function Confirmation() {
   const { logout, sendMessage } = useAuth();
@@ -19,9 +19,9 @@ export default function Confirmation() {
 
   const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
 
-  const { additional, detergentScent } = useSelector(
-    (state) => state.preference
-  );
+  // const { additional, detergentScent } = useSelector(
+  //   (state) => state.preference
+  // );
 
   const history = useHistory();
 
@@ -89,25 +89,25 @@ export default function Confirmation() {
   const sumDryCleanValue = useSelector(sumDryCleanArr);
   const sumBulkyValue = useSelector(sumBulkyArr);
 
-  const data = {
-    Name: name,
-    Bags: sumArrValue,
-    Dry_Clean: sumDryCleanValue,
-    Bulky: sumBulkyValue,
-    Scent: detergentScent,
-    Instructions: additional,
-  };
+  // const data = {
+  //   Name: name,
+  //   Bags: sumArrValue,
+  //   Dry_Clean: sumDryCleanValue,
+  //   Bulky: sumBulkyValue,
+  //   Scent: detergentScent,
+  //   Instructions: additional,
+  // };
 
-  async function postGSheets() {
-    await axios
-      .post(
-        "https://sheet.best/api/sheets/bb593659-47c1-4214-897b-9981436d0d2a",
-        data
-      )
-      .then((res) => {
-        console.log(res);
-      });
-  }
+  // async function postGSheets() {
+  //   await axios
+  //     .post(
+  //       "https://sheet.best/api/sheets/bb593659-47c1-4214-897b-9981436d0d2a",
+  //       data
+  //     )
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // }
 
   useEffect(() => {
     if (
