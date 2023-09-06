@@ -79,11 +79,11 @@ export default function Confirmation() {
     }
   }
 
-  // async function schedule() {
-  //   try {
-  //     history.push("/orders");
-  //   } catch (err) {}
-  // }
+  async function schedule() {
+    try {
+      history.push("/time");
+    } catch (err) {}
+  }
 
   const sumArrValue = useSelector(sumArrWash);
   const sumDryCleanValue = useSelector(sumDryCleanArr);
@@ -191,14 +191,14 @@ export default function Confirmation() {
           margin: "10px",
         }}
       >
-        {/* <button
+        <button
           className="nextBtn"
           onClick={() => {
             schedule();
           }}
         >
-          View Orders
-        </button> */}
+          Schedule
+        </button>
         <div style={{ padding: "8px" }}>
           <Button
             style={{
