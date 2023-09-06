@@ -113,7 +113,7 @@ export default function Confirmation() {
     if (
       (sumArrValue > 0 || sumDryCleanArr > 0 || sumBulkyArr > 0)
     ) {
-      postGSheets();
+      // postGSheets();
       const customerMSG = `Thank you for your order ${name}. Please have your clothes ready for pickup on ${pickupDate} between ${pickupTime}.`;
       const adminMSG = `${name} has placed an order for pickup on ${pickupDate} between ${pickupTime}.
     \nAddress: ${shipping.address.line1}, ${shipping.address.line2}\n${shipping.address.city},\n${shipping.address.state}\nBags: ${sumArrValue}\nDry Clean: ${sumDryCleanValue}\nBulky Items: ${sumBulkyValue}`;

@@ -37,6 +37,7 @@ export default function Confirmation() {
   let env = process.env.REACT_APP_ENV;
   let priceID = 'price_id_' + env;
 
+  //sum up dry clean product prices
   const line_items = [];
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] > 0) {
@@ -53,6 +54,7 @@ export default function Confirmation() {
     }
   }
 
+  //sum up wash product prices
   for (let i = 0; i < arrWash.length; i++) {
     if (arrWash[i] > 0) {
       validSum += parseFloat(washProds[i].price.substring(1));
@@ -68,6 +70,7 @@ export default function Confirmation() {
     }
   }
 
+  //sum up bulky product prices
   for (let i = 0; i < bulkyArr.length; i++) {
     if (bulkyArr[i] > 0) {
       validSum += parseFloat(bulkyProds[i].price.substring(1));
@@ -83,6 +86,7 @@ export default function Confirmation() {
     }
   }
 
+  //minimum charge
   if (validSum < 30) {
     const finalSum = 3000 - validSum * 100;
     line_items.push({
@@ -99,6 +103,7 @@ export default function Confirmation() {
     });
   }
 
+  //service fee
   let price = "";
   process.env.REACT_APP_ENV === "DEV"
     ? (price = "price_1M8SRREkFqXnuEeNnVLGutr2")
