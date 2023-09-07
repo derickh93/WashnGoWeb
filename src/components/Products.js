@@ -126,7 +126,7 @@ export default function Products() {
               dispatch(resetBulky());
               dispatch(clearAdditional());
               dispatch(setDetergentScent("Scented"));
-              dispatch(setPickupTime("5pm - 9pm"));
+              dispatch(setPickupTime("6pm - 9pm"));
             }}
           >
             <div style={{ display: 'flex', flexDirection: 'column' }}>
