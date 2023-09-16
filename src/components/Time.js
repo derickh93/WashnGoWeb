@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import DatePicker from "react-horizontal-datepicker";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Button, Alert } from "react-bootstrap";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector, useDispatch } from "react-redux";
 import { setPickupDate } from "../redux/pickup";
-
+import AirDatepickerReact from "./DatePicker";
+import localeEn from "air-datepicker/locale/en";
 
 export default function Time() {
   const { logout } = useAuth();
@@ -16,9 +16,12 @@ export default function Time() {
   const history = useHistory();
 
   const { pickupDate, pickupTime } = useSelector((state) => state.pickup);
+  const minDate = new Date(); //get current date
 
+  const maxdate = new Date(); //get current date
+  maxdate.setDate(maxdate.getDate() + 30); //add 30 days
 
-  let date = pickupDate;
+  let selectedDate = pickupDate;
 
   const dispatch = useDispatch();
 
@@ -38,27 +41,27 @@ export default function Time() {
   }
 
   function selectedDay(val) {
-    console.log("val: " + val);
+    let {date} = val;
+    console.log("val: " + new Date(date).toDateString());
     let currentTime = new Date();
     if (
       currentTime.getHours() >= 17 &&
-      new Date(val).getDate() === currentTime.getDate() &&
-      new Date(val).getMonth() === currentTime.getMonth()
+      new Date(date).getDate() === currentTime.getDate() &&
+      new Date(date).getMonth() === currentTime.getMonth()
     ) {
       setError("Please select next available date");
     } else {
       setError("");
-      date = new Date(val).toDateString();
+      selectedDate = new Date(date).toDateString();
     }
   }
-
 
   async function manageAccount() {
     setError("");
 
     try {
       setLoading(true);
-        history.push("/manageAccount");
+      history.push("/manageAccount");
     } catch (err) {
       console.log(err.message);
       setError("Failed to redirect");
@@ -70,7 +73,7 @@ export default function Time() {
     if (error === "") {
       try {
         setLoading(true);
-        dispatch(setPickupDate(date));
+        dispatch(setPickupDate(selectedDate));
         history.push("/products");
         //}
       } catch (err) {
@@ -95,7 +98,7 @@ export default function Time() {
           justifyContent: "flex-end",
         }}
       >
-          <Button
+        <Button
           style={{
             width: "20%",
             height: "20%",
@@ -122,16 +125,22 @@ export default function Time() {
           <u>Log Out</u>
         </Button>
       </div>
-      <div className="w-100 text-center mt-3">
+      <div className="w-100 text-center mt-3" id="datePicker">
         {error && <Alert variant="danger">{error}</Alert>}
-        <DatePicker
-          getSelectedDay={(val) => {
+        <AirDatepickerReact
+          multipleDates={false}
+          dateFormat={'E MMM d yyyy'}
+          isMobile={true}
+          autoClose={true}
+          locale={localeEn}
+          onSelect={(val) => {
             selectedDay(val);
           }}
-          endDate={31}
-          selectDate={new Date(pickupDate)}
-          labelFormat={"MMM"}
-          color={"#1C2F74"}
+          disableNavWhenOutOfRange={true}
+          minDate={minDate}
+          maxDate={maxdate}
+          selectDate={new Date(pickupDate).toDateString()}
+          setViewDate={new Date(pickupDate).toDateString()}
         />
         <div
           style={{
