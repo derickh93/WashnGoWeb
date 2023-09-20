@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { Alert, Collapse, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useHistory } from "react-router-dom";
-import dryCleanProds from "./product-data/products-prod.json";
-import washProds from "./product-data/product-wash-prod.json";
-import bulkyProds from "./product-data/bulky-prod.json"
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   increment,
@@ -32,7 +30,7 @@ import { clearAdditional, setDetergentScent } from "../redux/preference";
 import { setPickupTime } from "../redux/pickup";
 
 export default function Products() {
-  const { logout } = useAuth();
+  const { logout,getProducts} = useAuth();
   const [error, setError] = useState("");
 
   const { arr } = useSelector((state) => state.dryClean);
@@ -51,6 +49,24 @@ export default function Products() {
   const dispatch = useDispatch();
 
   let arrCount = sumArrWashValue + sumArrDryCleanVal + sumBulkyValue;
+
+  const [dryCleanProds, setDryCleanProds] = useState([]);
+  const [washProds, setWashProds] = useState([]);
+  const [bulkyProds, setBuilkyProds] = useState([]);
+
+  useEffect(() => {
+    async function getProductList() {
+      const res = await getProducts();
+      return res;
+    }
+
+   getProductList().then((res) =>{
+    setDryCleanProds(res.dry_clean);
+    setWashProds(res.wash);
+    setBuilkyProds(res.bulky_item);
+   })
+
+    }, [])
 
   async function handleLogout() {
     setError("");
@@ -182,7 +198,7 @@ export default function Products() {
                 style={{ backgroundColor: idx % 2 === 0 ? "#F0F8FF" : "" }}
               >
                 <div className="row d-flex align-items-center">
-                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-4">{item.name}</h6>
                   <h6 className="col-2">{item.price}</h6>
                   <div className=" col-6 d-flex flex-row align-items-center">
                     <Button
@@ -243,7 +259,7 @@ export default function Products() {
                 style={{ backgroundColor: idx % 2 === 0 ? "#F0F8FF" : "" }}
               >
                 <div className="row d-flex align-items-center">
-                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-4">{item.name}</h6>
                   <h6 className="col-2">{item.price}</h6>
                   <div className=" col-6 d-flex flex-row align-items-center">
                     <Button
@@ -302,7 +318,7 @@ export default function Products() {
                 style={{ backgroundColor: idx % 2 === 0 ? "#F0F8FF" : "" }}
               >
                 <div className="row d-flex align-items-center">
-                  <h6 className="col-4">{item.description}</h6>
+                  <h6 className="col-4">{item.name}</h6>
                   <h6 className="col-2">{item.price}</h6>
                   <div className=" col-6 d-flex flex-row align-items-center">
                     <Button

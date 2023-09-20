@@ -64,6 +64,7 @@
   "devDependencies": {
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
-    "workbox-cli": "^6.5.4"
+    "workbox-cli": "^6.5.4",
+      "react-error-overlay": "6.0.9" 
   }
 }

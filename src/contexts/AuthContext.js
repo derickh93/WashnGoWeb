@@ -265,6 +265,19 @@ export function AuthProvider({ children }) {
     }
   }
 
+  async function getProducts() {
+    const response = await axios
+      .post(`${domain}listProducts`, {
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
+
+    if (response.data.success) {
+      return response.data.result;
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser((prevuser) => user);
@@ -297,6 +310,7 @@ export function AuthProvider({ children }) {
     checkoutSession,
     getZipCode,
     checkPhoneNum,
+    getProducts
   };
 
   return (

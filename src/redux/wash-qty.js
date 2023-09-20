@@ -2,7 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export const washSlice = createSlice({
     name: "wash",
-    initialState: {arrWash: new Array(3).fill(0)},
+    initialState: {arrWash: new Array(2).fill(0)},
     reducers:{
         incrementWash: (state,{payload}) => {
             state.arrWash[payload] += 1;
@@ -15,7 +15,7 @@ export const washSlice = createSlice({
         }
         ,
         resetWash: (state) =>{
-            state.arrWash = new Array(3).fill(0);
+            state.arrWash = new Array(2).fill(0);
         }
     }
 });

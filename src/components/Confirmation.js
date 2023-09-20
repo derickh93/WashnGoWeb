@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import ConfirmDetails from "../components/Preferences/ConfirmDetails";
 import { Button } from "react-bootstrap";
@@ -6,16 +6,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import animation from "../Assets/8166-laundry-illustration-animation.gif";
 import { useSelector } from "react-redux";
 
-import dryCleanProds from "./product-data/products-prod.json";
-import washProds from "./product-data/product-wash-prod.json";
-import bulkyProds from "./product-data/bulky-prod.json";
+// import dryCleanProds from "./product-data/products-prod.json";
+// import washProds from "./product-data/product-wash-prod.json";
+// import bulkyProds from "./product-data/bulky-prod.json";
 
 import { useHistory } from "react-router-dom";
 import { sumArrWash } from "../redux/wash-qty";
 import { sumBulkyArr } from "../redux/bulky-qty";
 
 export default function Confirmation() {
-  const { logout, checkoutSession } = useAuth();
+  const { logout, checkoutSession, getProducts } = useAuth();
 
   const { arr } = useSelector((state) => state.dryClean);
   const { arrWash } = useSelector((state) => state.wash);
@@ -34,88 +34,112 @@ export default function Confirmation() {
   const [loading, setLoading] = useState(false);
   let validSum = 0;
 
-  let env = process.env.REACT_APP_ENV;
-  let priceID = 'price_id_' + env;
-
-  //sum up dry clean product prices
+  const [dryCleanProds, setDryCleanProds] = useState([]);
+  const [washProds, setWashProds] = useState([]);
+  const [bulkyProds, setBuilkyProds] = useState([]);
   const line_items = [];
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] > 0) {
-      validSum += parseFloat(dryCleanProds[i].price.substring(1));
-      line_items.push({
-        price: dryCleanProds[i][priceID],
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 99,
-        },
-        quantity: arr[i],
+
+  useEffect(() => {
+    async function getProductList() {
+      const res = await getProducts();
+      console.log(res);
+      return res;
+    }
+
+    if (dryCleanProds.length === 0) {
+      getProductList().then((res) => {
+        setDryCleanProds(res.dry_clean);
+        setWashProds(res.wash);
+        setBuilkyProds(res.bulky_item);
       });
     }
-  }
 
-  //sum up wash product prices
-  for (let i = 0; i < arrWash.length; i++) {
-    if (arrWash[i] > 0) {
-      validSum += parseFloat(washProds[i].price.substring(1));
+    if (dryCleanProds.length > 0) {
+      //sum up dry clean product prices
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > 0) {
+          validSum += parseFloat(dryCleanProds[i]["price"]);
+          line_items.push({
+            price: dryCleanProds[i]["price_id"],
+            adjustable_quantity: {
+              enabled: true,
+              minimum: 1,
+              maximum: 99,
+            },
+            quantity: arr[i],
+          });
+        }
+      }
+    }
+
+    if (washProds.length > 0) {
+      //sum up wash product prices
+      for (let i = 0; i < arrWash.length; i++) {
+        console.log(washProds[i]);
+        if (arrWash[i] > 0) {
+          validSum += parseFloat(washProds[i]["price"]);
+          line_items.push({
+            price: washProds[i]["price_id"],
+            adjustable_quantity: {
+              enabled: true,
+              minimum: 1,
+              maximum: 99,
+            },
+            quantity: arrWash[i],
+          });
+        }
+      }
+    }
+
+    if (bulkyProds.length > 0) {
+      //sum up bulky product prices
+      for (let i = 0; i < bulkyArr.length; i++) {
+        if (bulkyArr[i] > 0) {
+          validSum += parseFloat(bulkyProds[i]["price"]);
+          line_items.push({
+            price: bulkyProds[i]["price_id"],
+            adjustable_quantity: {
+              enabled: true,
+              minimum: 1,
+              maximum: 99,
+            },
+            quantity: bulkyArr[i],
+          });
+        }
+      }
+    }
+
+    //minimum charge
+    if (validSum < 30) {
+      const finalSum = 3000 - validSum * 100;
       line_items.push({
-        price: washProds[i][priceID],
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 99,
+        price_data: {
+          currency: "usd",
+          unit_amount: finalSum,
+          product_data: {
+            name: "Minimum",
+            description: "$30 minimum",
+            images: ["https://example.com/t-shirt.png"],
+          },
         },
-        quantity: arrWash[i],
+        quantity: 1,
       });
     }
-  }
 
-  //sum up bulky product prices
-  for (let i = 0; i < bulkyArr.length; i++) {
-    if (bulkyArr[i] > 0) {
-      validSum += parseFloat(bulkyProds[i].price.substring(1));
-      line_items.push({
-        price: bulkyProds[i][priceID],
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 99,
-        },
-        quantity: bulkyArr[i],
-      });
-    }
-  }
+    //service fee
+    let price = "";
+    process.env.REACT_APP_ENV === "DEV"
+      ? (price = "price_1M8SRREkFqXnuEeNnVLGutr2")
+      : (price = "price_1M2HFQEkFqXnuEeN0Xeucby0");
 
-  //minimum charge
-  if (validSum < 30) {
-    const finalSum = 3000 - validSum * 100;
     line_items.push({
-      price_data: {
-        currency: "usd",
-        unit_amount: finalSum,
-        product_data: {
-          name: "Minimum",
-          description: "$30 minimum",
-          images: ["https://example.com/t-shirt.png"],
-        },
+      price: price,
+      adjustable_quantity: {
+        enabled: false,
       },
       quantity: 1,
     });
-  }
-
-  //service fee
-  let price = "";
-  process.env.REACT_APP_ENV === "DEV"
-    ? (price = "price_1M8SRREkFqXnuEeNnVLGutr2")
-    : (price = "price_1M2HFQEkFqXnuEeN0Xeucby0");
-
-  line_items.push({
-    price: price,
-    adjustable_quantity: {
-      enabled: false,
-    },
-    quantity: 1,
-  });
+  }, [dryCleanProds, washProds, bulkyProds]);
 
   async function handlePayment(e) {
     e.preventDefault();

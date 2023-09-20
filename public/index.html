@@ -32,6 +32,10 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script>
+      // Required by some npm packages
+      window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
+  </script>
     <script src="https://js.radar.io/v3/radar.min.js"></script>
 
     <div id="root"></div>
